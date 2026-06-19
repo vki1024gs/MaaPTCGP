@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import json
-import re
 import shutil
 import stat
 import sys
@@ -245,13 +244,6 @@ def dump_json(path: Path, data):
         f.write("\n")
 
 
-def is_dev_install_version():
-    match = re.search(r"(\d+)(?:\.(\d+))?(?:\.(\d+))?", version)
-    if not match:
-        return False
-    return int(match.group(1)) < 1
-
-
 def prefer_dev_resource(resources):
     return sorted(resources, key=lambda item: 0 if item.get("name") == "Dev" else 1)
 
@@ -261,18 +253,15 @@ def normalize_release_interface():
     interface = load_json(interface_path)
 
     interface["version"] = version
-    if is_dev_install_version():
-        interface["resource"] = prefer_dev_resource(interface.get("resource", []))
-    else:
-        interface["resource"] = [
-            resource
-            for resource in interface.get("resource", [])
-            if resource.get("name") != "Dev"
-        ]
-        resource_names = {item.get("name") for item in interface.get("resource", [])}
-        if "Default" not in resource_names:
-            print('Install normalization failed. Release interface must include "Default" resource.')
-            sys.exit(1)
+    interface["resource"] = [
+        resource
+        for resource in interface.get("resource", [])
+        if resource.get("name") != "Dev"
+    ]
+    resource_names = {item.get("name") for item in interface.get("resource", [])}
+    if "Default" not in resource_names:
+        print('Install normalization failed. Release interface must include "Default" resource.')
+        sys.exit(1)
 
     dump_json(interface_path, interface)
 
@@ -280,10 +269,7 @@ def normalize_release_interface():
 def normalize_release_tasks():
     for task_file in (install_path / "tasks").rglob("*.json"):
         data = load_json(task_file)
-        if is_dev_install_version():
-            prefer_dev_task_resources(data)
-        else:
-            strip_dev_resource(data)
+        strip_dev_resource(data)
         dump_json(task_file, data)
 
 
@@ -451,16 +437,15 @@ def verify_install():
 
     interface = load_json(install_path / "interface.json")
     resource_names = {item.get("name") for item in interface.get("resource", [])}
-    if "Dev" in resource_names and not is_dev_install_version():
+    if "Dev" in resource_names:
         print('Install verification failed. Release interface must not include "Dev" resource.')
         sys.exit(1)
 
-    if not is_dev_install_version():
-        for task_file in (install_path / "tasks").rglob("*.json"):
-            text = task_file.read_text(encoding="utf-8")
-            if '"Dev"' in text:
-                print(f'Install verification failed. Release task still references "Dev": {task_file}')
-                sys.exit(1)
+    for task_file in (install_path / "tasks").rglob("*.json"):
+        text = task_file.read_text(encoding="utf-8")
+        if '"Dev"' in text:
+            print(f'Install verification failed. Release task still references "Dev": {task_file}')
+            sys.exit(1)
 
 
 def verify_cli_install():

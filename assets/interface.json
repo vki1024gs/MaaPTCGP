@@ -19,22 +19,22 @@
     ],
     "resource": [
         {
-            "name": "Dev",
-            "label": "$resource.Dev.label",
-            "description": "$resource.Dev.description",
+            "name": "Default",
+            "label": "$resource.Default.label",
+            "description": "$resource.Default.description",
             "path": [
-                "../assets/resource"
+                "./resource"
             ],
             "controller": [
                 "ADB"
             ]
         },
         {
-            "name": "Default",
-            "label": "$resource.Default.label",
-            "description": "$resource.Default.description",
+            "name": "Dev",
+            "label": "$resource.Dev.label",
+            "description": "$resource.Dev.description",
             "path": [
-                "./resource"
+                "../assets/resource"
             ],
             "controller": [
                 "ADB"
