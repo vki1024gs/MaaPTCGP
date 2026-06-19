@@ -1,0 +1,282 @@
+{
+    "WonderPick_AutoRestore": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    600,
+                    562,
+                    70,
+                    612
+                ],
+                "template": [
+                    "WonderPick/AutoRestore.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    -133,
+                    59,
+                    0,
+                    0
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_PickCard",
+            "[JumpBack]Common_ClickOkRIGHT",
+            "[JumpBack]Common_ClickOkMID"
+        ],
+        "on_error": [
+            "WonderPick_NoEnergyExitFlow"
+        ]
+    },
+    "WonderPick_Click": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    329,
+                    1042,
+                    54,
+                    68
+                ]
+            }
+        },
+        "repeat": 3,
+        "repeat_delay": 66
+    },
+    "WonderPick_ClickRecoverEnergy": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    459,
+                    1039,
+                    130,
+                    118
+                ],
+                "expected": [
+                    "恢復"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "WonderPick_AutoRestore"
+        ],
+        "on_error": [
+            "WonderPick_NoEnergyExitFlow"
+        ]
+    },
+    "WonderPick_ClickUtlThx": {
+        "anchor": {
+            "Interaction_AddCollectionFinishTarget": "WonderPick_ThxVisible"
+        },
+        "next": [
+            "Interaction_AddCollSKIP",
+            "WonderPick_ThxVisible",
+            "[JumpBack]WonderPick_Click"
+        ]
+    },
+    "WonderPick_ConfirmPickFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    447,
+                    963,
+                    155,
+                    169
+                ],
+                "template": [
+                    "Common/OKButton.png",
+                    "Common/OKButton1.png",
+                    "Common/OKButton2.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_ClickOkRIGHT",
+            "WonderPick_PickCard"
+        ]
+    },
+    "WonderPick_ConfirmPickTarget": {
+        "next": [
+            "WonderPick_ConfirmPickFlow",
+            "WonderPick_EnergyRecoverPolicy"
+        ]
+    },
+    "WonderPick_EnergyRecoverPolicy": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    459,
+                    1039,
+                    130,
+                    118
+                ],
+                "expected": [
+                    "恢復"
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_NoEnergyExitFlow"
+        ]
+    },
+    "WonderPick_Enter": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    200,
+                    954,
+                    20,
+                    20
+                ]
+            }
+        },
+        "next": [
+            "WonderPickScout_SelectPlayerFlow"
+        ],
+        "on_error": [
+            "WonderPick_RecoverHomeThenRestart"
+        ]
+    },
+    "WonderPick_FinishFlow": {
+        "next": [
+            "[JumpBack]Common_ReturnClick",
+            "[JumpBack]Navigation_NotStableWait",
+            "WonderPick_Finished"
+        ]
+    },
+    "WonderPick_Finished": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "WonderPick_NoEnergyExitFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    304,
+                    1146,
+                    118,
+                    118
+                ],
+                "template": [
+                    "Common/CloseButton.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
+        "next": [
+            "WonderPick_NoEnergyExitFlow",
+            "WonderPick_FinishFlow"
+        ]
+    },
+    "WonderPick_PickCard": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "喜歡"
+                ],
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    337,
+                    453,
+                    48,
+                    59
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_ClickUtlThx"
+        ]
+    },
+    "WonderPick_RecoverEnergyFlow": {
+        "next": [
+            "WonderPick_ClickRecoverEnergy"
+        ]
+    },
+    "WonderPick_RecoverHomeThenRestart": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "WonderPick_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "WonderPick_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "WonderPick_Start"
+        },
+        "next": [
+            "WonderPick_Enter",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    },
+    "WonderPick_ThxVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    281,
+                    887,
+                    147,
+                    85
+                ],
+                "expected": [
+                    "謝謝"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    349,
+                    1194,
+                    23,
+                    28
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_FinishFlow"
+        ]
+    }
+}

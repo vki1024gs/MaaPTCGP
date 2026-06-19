@@ -1,0 +1,191 @@
+{
+    "Share_AfterSendPolicy": {
+        "next": [
+            "Share_FinishFlow"
+        ]
+    },
+    "Share_ClickShare": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    304,
+                    968,
+                    110,
+                    62
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Share_SelectedRecipientStrategy"
+        ]
+    },
+    "Share_EnterCommu": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    304,
+                    1180,
+                    118,
+                    96
+                ],
+                "template": [
+                    "Share/CommuIcon.png"
+                ],
+                "threshold": [
+                    0.9
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 3000,
+        "next": [
+            "Share_EnterShare"
+        ],
+        "on_error": [
+            "Share_RecoverHomeThenRestart"
+        ]
+    },
+    "Share_EnterShare": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    140,
+                    966,
+                    96,
+                    59
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Share_ClickShare"
+        ]
+    },
+    "Share_FinishFlow": {
+        "next": [
+            "Share_Finished",
+            "[JumpBack]Navigation_ClickHomeButton"
+        ]
+    },
+    "Share_Finished": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "Share_NoReceivableFriendFinish": {
+        "next": [
+            "Share_FinishFlow"
+        ]
+    },
+    "Share_RecoverHomeThenRestart": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "Share_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "Share_RepeatAfterSendUntilNoTarget": {
+        "next": [
+            "Share_FinishFlow"
+        ]
+    },
+    "Share_SelectFirstStarredFriend": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    577,
+                    193,
+                    101,
+                    902
+                ],
+                "template": [
+                    "Share/Starred.png"
+                ],
+                "threshold": [
+                    0.88
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    -81,
+                    92,
+                    -10,
+                    -11
+                ]
+            }
+        },
+        "next": [
+            "Share_SelectCard"
+        ],
+        "on_error": [
+            "Share_NoReceivableFriendFinish"
+        ]
+    },
+    "Share_SelectFirstUnstarredFriend": {
+        "next": [
+            "Share_SelectCard"
+        ],
+        "on_error": [
+            "Share_NoReceivableFriendFinish"
+        ]
+    },
+    "Share_SelectedRecipientStrategy": {
+        "next": [
+            "Share_SelectFirstStarredFriend"
+        ]
+    },
+    "Share_SelectCard": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    177,
+                    44,
+                    251,
+                    82
+                ],
+                "expected": [
+                    "選擇"
+                ]
+            }
+        },
+        "next": [
+            "ShareFilter_SelectCardFlow"
+        ]
+    },
+    "Share_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "Share_Start"
+        },
+        "next": [
+            "Share_EnterCommu",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    }
+}

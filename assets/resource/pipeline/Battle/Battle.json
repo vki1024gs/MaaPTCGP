@@ -1,0 +1,154 @@
+{
+    "Battle_AbortUnverifiedEnd": {
+        "action": {
+            "type": "StopTask"
+        }
+    },
+    "Battle_ClickAutoMode": {
+        "enabled": false,
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "Battle_EndResultClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    64,
+                    365,
+                    130,
+                    90
+                ],
+                "expected": [
+                    "紀錄"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    0,
+                    200,
+                    0,
+                    0
+                ]
+            }
+        }
+    },
+    "Battle_EndResultFlow": {
+        "rate_limit": 200,
+        "next": [
+            "[JumpBack]Battle_EndResultClick",
+            "[JumpBack]Battle_MissionClearClick",
+            "[JumpBack]Common_ContinueClick",
+            "[JumpBack]Common_ClickOkMID",
+            "[JumpBack]Common_CloseClick",
+            "Battle_ReturnAfterEnd"
+        ]
+    },
+    "Battle_EndScreenVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    216,
+                    1132,
+                    285,
+                    104
+                ],
+                "expected": [
+                    "點擊"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Battle_EndResultFlow"
+        ]
+    },
+    "Battle_FinishFlow": {
+        "next": [
+            "Battle_FinishReturnHomeFlow"
+        ]
+    },
+    "Battle_FinishReturnHomeFlow": {
+        "next": [
+            "[JumpBack]Common_HomeClick",
+            "[JumpBack]Navigation_NotStableWait",
+            "Battle_Finished"
+        ]
+    },
+    "Battle_Finished": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "Battle_MissionClearClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    244,
+                    1157,
+                    242,
+                    85
+                ],
+                "expected": [
+                    "點擊"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "Battle_MonitorFlow": {
+        "timeout": 600000,
+        "rate_limit": 3000,
+        "next": [
+            "Battle_EndScreenVisible",
+            "[JumpBack]Battle_ClickAutoMode"
+        ],
+        "on_error": [
+            "Battle_AbortUnverifiedEnd"
+        ]
+    },
+    "Battle_ReturnAfterEnd": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    30,
+                    1045,
+                    121,
+                    82
+                ],
+                "template": [
+                    "Battle/DeckIcon2.png",
+                    "Battle/DeckIcon.png"
+                ],
+                "threshold": [
+                    0.92
+                ]
+            }
+        },
+        "next": [
+            "Battle_FinishFlow"
+        ]
+    },
+    "Battle_Start": {
+        "next": [
+            "Battle_MonitorFlow"
+        ]
+    }
+}

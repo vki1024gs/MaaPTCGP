@@ -1,0 +1,80 @@
+{
+    "task": [
+        {
+            "name": "Share",
+            "label": "$task.Share.label",
+            "description": "$task.Share.description",
+            "entry": "Share_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ],
+            "option": [
+                "ShareCardRarity",
+                "ShareRecipientStrategy"
+            ]
+        }
+    ],
+    "option": {
+        "ShareCardRarity": {
+            "type": "select",
+            "label": "$option.ShareCardRarity.label",
+            "description": "$option.ShareCardRarity.description",
+            "default_case": "FourDiamond",
+            "cases": [
+                {
+                    "name": "FourDiamond",
+                    "label": "$option.ShareCardRarity.FourDiamond.label",
+                    "description": "$option.ShareCardRarity.FourDiamond.description",
+                    "pipeline_override": {
+                        "ShareFilter_SelectedRarity": {
+                            "next": [
+                                "ShareFilter_SelectFourDiamondCards"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "ShareRecipientStrategy": {
+            "type": "select",
+            "label": "$option.ShareRecipientStrategy.label",
+            "description": "$option.ShareRecipientStrategy.description",
+            "default_case": "FirstStarredFriend",
+            "cases": [
+                {
+                    "name": "FirstStarredFriend",
+                    "label": "$option.ShareRecipientStrategy.FirstStarredFriend.label",
+                    "description": "$option.ShareRecipientStrategy.FirstStarredFriend.description",
+                    "pipeline_override": {
+                        "Share_SelectedRecipientStrategy": {
+                            "next": [
+                                "Share_SelectFirstStarredFriend"
+                            ]
+                        }
+                    }
+                }
+                // TODO: 全部星标好友循环策略后续再做，完成后再恢复到 MXU 选项中。
+                // ,
+                // {
+                //     "name": "AllStarredFriendsUntilBlocked",
+                //     "label": "$option.ShareRecipientStrategy.AllStarredFriendsUntilBlocked.label",
+                //     "description": "$option.ShareRecipientStrategy.AllStarredFriendsUntilBlocked.description",
+                //     "pipeline_override": {
+                //         "Share_SelectedRecipientStrategy": {
+                //             "next": [
+                //                 "Share_SelectAllStarredFriendsUntilBlocked"
+                //             ]
+                //         }
+                //     }
+                // }
+            ]
+        }
+    }
+}

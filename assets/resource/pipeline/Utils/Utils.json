@@ -1,0 +1,170 @@
+{
+    "Utils_ClickAchievedReward": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    281,
+                    1160,
+                    144,
+                    93
+                ],
+                "expected": [
+                    "達成"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "Utils_ClickClaimAllReward": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    493,
+                    971,
+                    155,
+                    68
+                ],
+                "expected": [
+                    "全部領取"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 2000,
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "[JumpBack]Common_ClickOkMID"
+        ],
+        "on_error": [
+            "Utils_ClickMissionIcon"
+        ]
+    },
+    "Utils_ClickClaimReward": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    490,
+                    523,
+                    141,
+                    536
+                ],
+                "template": [
+                    "Utils/ClaimAqua.png"
+                ],
+                "threshold": [
+                    0.9
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "Utils_ClickMissionIcon": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    580,
+                    1059,
+                    121,
+                    116
+                ],
+                "template": [
+                    "DailyMissions/Mission.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
+        "timeout": 5000,
+        "rate_limit": 200,
+        "next": [
+            "Utils_MissionClickResultFlow"
+        ],
+        "on_error": [
+            "Utils_NoMissionIconFinish"
+        ]
+    },
+    "Utils_CloseThenRetryMissionFlow": {
+        "timeout": 2000,
+        "rate_limit": 200,
+        "next": [
+            "[JumpBack]Common_CloseClick"
+        ],
+        "on_error": [
+            "Utils_ClickMissionIcon"
+        ]
+    },
+    "Utils_MissionClickResultFlow": {
+        "timeout": 5000,
+        "rate_limit": 200,
+        "next": [
+            "[JumpBack]Utils_ClickClaimReward",
+            "[JumpBack]Utils_ClickAchievedReward",
+            "[JumpBack]Common_ClickOkMID",
+            "Utils_ClickClaimAllReward"
+        ],
+        "on_error": [
+            "Utils_CloseThenRetryMissionFlow"
+        ]
+    },
+    "Utils_MissionRedDotCleaner": {
+        "next": [
+            "Utils_ClickMissionIcon"
+        ]
+    },
+    "Utils_NoMissionIconFinish": {},
+    "Utils_SwipeUpFinish": {},
+    "Utils_SwipeUpToSend": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    255,
+                    114,
+                    231,
+                    262
+                ],
+                "template": [
+                    "Common/SwipeUp.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    337,
+                    765,
+                    48,
+                    51
+                ],
+                "end": [
+                    [
+                        321,
+                        58,
+                        90,
+                        42
+                    ]
+                ],
+                "duration": [
+                    300
+                ],
+                "pressure": 3
+            }
+        },
+        "next": [
+            "Utils_SwipeUpFinish"
+        ]
+    }
+}

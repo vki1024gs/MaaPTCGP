@@ -1,0 +1,17 @@
+{
+    "preset": [
+        {
+            "name": "Utility",
+            "label": "$preset.Utility.label",
+            "description": "$preset.Utility.description",
+            "task": [
+                {
+                    "name": "SwipeUpToSend"
+                },
+                {
+                    "name": "MissionRedDotCleaner"
+                }
+            ]
+        }
+    ]
+}

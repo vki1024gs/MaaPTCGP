@@ -1,0 +1,146 @@
+{
+    "Startup_ConfirmDateChanged": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    220,
+                    520,
+                    300,
+                    120
+                ],
+                "expected": [
+                    ".*日期.*變更.*"
+                ],
+                "threshold": 0.8
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    360,
+                    845,
+                    10,
+                    10
+                ]
+            }
+        },
+        "post_delay": 1000
+    },
+    "Startup_ConfirmDownload": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    340,
+                    780,
+                    350,
+                    140
+                ],
+                "template": "Startup/resource_download_ok.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 1000
+    },
+    "Startup_HomeMGVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    515,
+                    58,
+                    203,
+                    147
+                ],
+                "template": [
+                    "Common/MailandGift.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        }
+    },
+    "Startup_HomeVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    47,
+                    1187,
+                    82,
+                    85
+                ],
+                "template": [
+                    "Navigation/home_selected.png",
+                    "Navigation/home_navigation.png"
+                ],
+                "threshold": [
+                    0.91
+                ]
+            }
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "Startup_RecoveryEntry": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "Startup_TapTitle",
+                    "Startup_ConfirmDateChanged",
+                    "Startup_ConfirmDownload"
+                ]
+            }
+        },
+        "timeout": 10000,
+        "next": [
+            "[JumpBack]Startup_ConfirmDateChanged",
+            "[JumpBack]Startup_TapTitle",
+            "[JumpBack]Startup_ConfirmDownload",
+            "[JumpBack]Common_CloseClick",
+            "Startup_HomeVisible"
+        ],
+        "on_error": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "Startup_TapTitle": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    180,
+                    1040,
+                    360,
+                    120
+                ],
+                "template": "Startup/title_tap_start.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 3000
+    },
+    "Startup_ToHome": {
+        "action": {
+            "type": "StartApp",
+            "param": {
+                "package": "jp.pokemon.pokemontcgp/com.unity3d.player.UnityPlayerActivity"
+            }
+        },
+        "post_delay": 1000,
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    }
+}

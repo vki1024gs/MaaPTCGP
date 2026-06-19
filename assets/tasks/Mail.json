@@ -1,0 +1,20 @@
+{
+    "task": [
+        {
+            "name": "ClaimGiftBoxMail",
+            "label": "$task.ClaimGiftBoxMail.label",
+            "description": "$task.ClaimGiftBoxMail.description",
+            "entry": "Mail_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ]
+        }
+    ]
+}

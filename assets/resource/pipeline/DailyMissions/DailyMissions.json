@@ -1,0 +1,179 @@
+{
+    "DailyMissions_ClickGetAllReward": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    512,
+                    977,
+                    110,
+                    45
+                ],
+                "expected": [
+                    "全部領取"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "DailyMissions_DailyNotVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    535,
+                    1169,
+                    113,
+                    68
+                ],
+                "expected": [
+                    "主題收藏"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "DailyMissions_Finished"
+        ]
+    },
+    "DailyMissions_Enter": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    560,
+                    1036,
+                    158,
+                    147
+                ],
+                "template": [
+                    "DailyMissions/Mission.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 1000,
+        "timeout": 3000,
+        "next": [
+            "DailyMissions_GetDailyRewardFlow"
+        ],
+        "on_error": [
+            "DailyMissions_DailyNotVisible",
+            "DailyMissions_RecoverHomeThenRestart"
+        ]
+    },
+    "DailyMissions_EntryFlow": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        },
+        "timeout": 2000,
+        "next": [
+            "DailyMissions_Enter"
+        ],
+        "on_error": [
+            "DailyMissions_NoRewardFinish"
+        ]
+    },
+    "DailyMissions_Finished": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "DailyMissions_GetDailyRewardFlow": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    13,
+                    1061,
+                    175,
+                    79
+                ],
+                "expected": [
+                    "每日"
+                ]
+            }
+        },
+        "next": [
+            "DailyMissions_GetDailyRewardOK",
+            "DailyMissions_Incomplete",
+            "[JumpBack]DailyMissions_ClickGetAllReward",
+            "[JumpBack]Common_ClickOkMID"
+        ]
+    },
+    "DailyMissions_GetDailyRewardOK": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    244,
+                    216,
+                    234,
+                    107
+                ],
+                "expected": [
+                    "所有"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "DailyMissions_Finished"
+        ]
+    },
+    "DailyMissions_Incomplete": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    402,
+                    915,
+                    316,
+                    178
+                ],
+                "template": [
+                    "DailyMissions/incompletegrey.png"
+                ],
+                "threshold": [
+                    0.92
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "DailyMissions_Finished"
+        ]
+    },
+    "DailyMissions_NoRewardFinish": {},
+    "DailyMissions_RecoverHomeThenRestart": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "DailyMissions_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "DailyMissions_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "DailyMissions_Start"
+        },
+        "next": [
+            "DailyMissions_EntryFlow",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    }
+}

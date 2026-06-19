@@ -1,0 +1,219 @@
+{
+    "Common_ClickOkMID": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    194,
+                    763,
+                    333,
+                    361
+                ],
+                "template": [
+                    "Common/OKButton.png",
+                    "Common/OKButton1.png",
+                    "Common/OKButton2.png"
+                ],
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "Common_ClickOkRIGHT": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    436,
+                    799,
+                    172,
+                    333
+                ],
+                "template": [
+                    "Common/OKButton.png",
+                    "Common/OKButton1.png",
+                    "Common/OKButton2.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "Common_ClickSkip": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    586,
+                    1149,
+                    124,
+                    121
+                ],
+                "template": [
+                    "Pack/skip2.png",
+                    "Pack/skip.png"
+                ],
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true,
+                "pressure": 2
+            }
+        },
+        "repeat": 2,
+        "repeat_delay": 100,
+        "post_delay": 120,
+        "rate_limit": 100
+    },
+    "Common_CloseClick": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    278,
+                    977,
+                    164,
+                    282
+                ],
+                "template": [
+                    "Common/CloseButton.png",
+                    "Common/CloseButton1.png"
+                ],
+                "threshold": [
+                    0.9
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "Common_ContinueClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    298,
+                    1098,
+                    133,
+                    149
+                ],
+                "expected": [
+                    "繼續"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "Common_HomeClick": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Navigation/home_navigation.png"
+                ],
+                "threshold": [
+                    0.92
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "Common_ReturnClick": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    301,
+                    1063,
+                    127,
+                    110
+                ],
+                "template": [
+                    "Common/ReturnButton.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "Common_ScrollDown": {
+        "action": {
+            "type": "Scroll",
+            "param": {
+                "target": [
+                    360,
+                    640,
+                    1,
+                    1
+                ],
+                "dy": -120
+            }
+        },
+        "post_delay": 300
+    },
+    "Common_SwipePack": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    188,
+                    180,
+                    338,
+                    214
+                ],
+                "expected": [
+                    "滑動"
+                ]
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    78,
+                    706,
+                    37,
+                    62
+                ],
+                "end": [
+                    [
+                        645,
+                        712,
+                        37,
+                        56
+                    ]
+                ],
+                "end_hold": [
+                    300
+                ],
+                "duration": [
+                    900
+                ],
+                "pressure": 3
+            }
+        }
+    }
+}

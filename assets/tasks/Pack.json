@@ -1,0 +1,77 @@
+{
+    "task": [
+        {
+            "name": "Pack",
+            "label": "$task.Pack.label",
+            "description": "$task.Pack.description",
+            "entry": "PackSelect_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ],
+            "option": [
+                "PackChoice"
+            ]
+        }
+    ],
+    "option": {
+        "PackChoice": {
+            "type": "select",
+            "label": "$option.PackChoice.label",
+            "description": "$option.PackChoice.description",
+            "default_case": "CurrentPack",
+            "cases": [
+                {
+                    "name": "CurrentPack",
+                    "label": "$option.PackChoice.CurrentPack.label",
+                    "pipeline_override": {
+                        "PackSelect_PackChoiceStrategy": {
+                            "next": [
+                                "PackSelect_SelectCurrentPack"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "RightPack",
+                    "label": "$option.PackChoice.RightPack.label",
+                    "pipeline_override": {
+                        "PackSelect_PackChoiceStrategy": {
+                            "next": [
+                                "PackSelect_SelectLast2Pack"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "LeftPack",
+                    "label": "$option.PackChoice.LeftPack.label",
+                    "pipeline_override": {
+                        "PackSelect_PackChoiceStrategy": {
+                            "next": [
+                                "PackSelect_SelectLast3Pack"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "FavoritePack",
+                    "label": "$option.PackChoice.FavoritePack.label",
+                    "pipeline_override": {
+                        "PackSelect_PackChoiceStrategy": {
+                            "next": [
+                                "PackSelect_SelectFavoritePackMID"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

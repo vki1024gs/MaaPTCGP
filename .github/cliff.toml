@@ -1,12 +1,10 @@
 [remote.github]
-owner = "MaaXYZ"
-repo = "MaaPracticeBoilerplate"
-#自用时换成自己的仓库owner和repo
-#注意，本地git user需与github一致才能实现成功@
+owner = "vki1024gs"
+repo = "MaaPTCGP"
+
 [changelog]
-# 标题
 header = """
-# 更新日志
+# MaaPTCGP Release Notes
 """
 
 body = """
@@ -15,10 +13,9 @@ body = """
 {%- endmacro -%}
 
 {% macro print_commit(commit) -%}
-    - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
-        {% if commit.breaking %}[**breaking**] {% endif %}\
-        {{ commit.message | split(pat="\n") | first | upper_first }} \
-        {% if commit.github.username %} @{{ commit.github.username }}{% else %} {{ commit.author.name }}{% endif %}
+    - {% if commit.scope %}**{{ commit.scope }}**: {% endif %}\
+        {% if commit.breaking %}**Breaking**: {% endif %}\
+        {{ commit.message | split(pat="\n") | first | upper_first }}
         {%- if commit.footers -%}
             {%- for footer in commit.footers -%}
                 {%- if footer.token == "Co-authored-by" -%}
@@ -29,13 +26,13 @@ body = """
 {% endmacro -%}
 
 {% if version %}\
-    ## {{ version | trim_start_matches(pat="v") }} ({{ timestamp | date(format="%Y-%m-%d") }})
+    ## {{ version }} ({{ timestamp | date(format="%Y-%m-%d") }})
 {% else %}\
     ## 未发布
 {% endif %}\
 
 {% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | striptags | trim | upper_first }}
+    ## {{ group | striptags | trim | upper_first }}
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
@@ -47,9 +44,20 @@ body = """
         {% endif -%}
     {% endfor -%}
 {% endfor -%}
+
+## ⚠️ 使用提示
+
+- 请在下方 Assets 中选择与你的系统匹配的 MaaPTCGP 安装包。
+- macOS 用户可下载 tar.gz 或 dmg；dmg 目前未公证，首次打开如被系统拦截，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”。
+- Windows 用户下载 zip，Linux 用户下载 tar.gz。
+- 升级后如任务配置异常，建议在 MXU 中重新检查资源、控制器与任务选项。
+- 对战、分送等开发中任务默认不会在基础日常任务中自动勾选，首次使用建议先单独运行。
+- 任务栏自动领取等小工具仍在开发中，可能不稳定；首次使用建议先单独运行。
+- 当前项目仍在持续开发中，遇到问题请通过 README 中的联系方式反馈。
+
 {%- if github -%}
 {% if github.contributors | filter(attribute="is_first_time", value=true) | length != 0 %}
-  ## 新贡献者 ❤️
+  ## 新贡献者
 {% endif %}\
 {% for contributor in github.contributors | filter(attribute="is_first_time", value=true) %}
   * @{{ contributor.username }} made their first contribution
@@ -77,17 +85,17 @@ commit_parsers = [
     { message = ".*\\[skip changelog\\].*", skip = true },
     { body = ".*\\[skip changelog\\].*", skip = true },
     { message = "^feat", group = "<!-- 0 -->✨ 新功能" },
-    { message = "^fix", group = "<!-- 1 -->🐛 Bug修复" },
-    { message = "^docs", group = "<!-- 4 -->📚 文档" },
-    { message = "^perf", group = "<!-- 3 -->🚀 性能优化" },
-    { message = "^refactor", group = "<!-- 2 -->🚜 代码重构" },
-    { message = "^style", group = "<!-- 5 -->🎨 样式" },
+    { message = "^fix", group = "<!-- 1 -->🐛 Bug 修复" },
+    { message = "^perf", group = "<!-- 2 -->🚀 体验优化" },
+    { message = "^docs", group = "<!-- 3 -->📚 文档" },
+    { message = "^refactor", group = "<!-- 4 -->🧰 开发者说明" },
+    { message = "^ci", group = "<!-- 5 -->🧰 发布与构建" },
     { message = "^test", group = "<!-- 6 -->🧪 测试" },
-    { message = "^chore\\(deps\\)", group = "📦 依赖更新" },
-    { message = "^chore", group = "<!-- 8 -->🔧 日常维护" },
-    { message = "^ci", group = "<!-- 7 -->⚙️ 持续集成" },
-    { body = ".*security", group = "<!-- 9 -->🔒 安全" },
-    { message = "^revert", group = "<!-- 10 -->◀️ 撤销" },
+    { message = "^chore\\(fun\\)", group = "<!-- 7 -->🐑 发癫" },
+    { message = "^chore\\(deps\\)", group = "<!-- 8 -->📦 依赖更新" },
+    { message = "^chore", group = "<!-- 9 -->🧰 维护" },
+    { body = ".*security", group = "<!-- 10 -->🔒 安全" },
+    { message = "^revert", group = "<!-- 11 -->◀️ 撤销" },
 ]
 
 # 忽略这些提交

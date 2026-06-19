@@ -1,0 +1,20 @@
+{
+    "task": [
+        {
+            "name": "SwipeUpToSend",
+            "label": "$task.SwipeUpToSend.label",
+            "description": "$task.SwipeUpToSend.description",
+            "entry": "Utils_SwipeUpToSend",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "utility"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "preset": [
+        {
+            "name": "BasicDailyRoutine",
+            "label": "$preset.BasicDailyRoutine.label",
+            "description": "$preset.BasicDailyRoutine.description",
+            "task": [
+                {
+                    "name": "StartToHome"
+                },
+                {
+                    "name": "ClaimGiftBoxMail"
+                },
+                {
+                    "name": "Pack",
+                    "option": {
+                        "PackChoice": "CurrentPack"
+                    }
+                },
+                {
+                    "name": "ClaimShopDailyReward"
+                },
+                {
+                    "name": "WonderPick",
+                    "option": {
+                        "WonderPickStrategy": "FirstPlayer",
+                        "WonderPickUseHourglass": "No"
+                    }
+                },
+                {
+                    "name": "Battle",
+                    "enabled": false,
+                    "option": {
+                        "BattleMode": "EventBattle",
+                        "BattleAutoRecovery": "No",
+                        "BattleContinue": "No"
+                    }
+                },
+                {
+                    "name": "Share",
+                    "enabled": false,
+                    "option": {
+                        "ShareCardRarity": "FourDiamond",
+                        "ShareRecipientStrategy": "FirstStarredFriend"
+                    }
+                },
+                {
+                    "name": "ClaimDailyMissions"
+                }
+            ]
+        }
+    ]
+}

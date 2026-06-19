@@ -1,0 +1,84 @@
+{
+    "Navigation_ClickHomeButton": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    36,
+                    1140,
+                    130,
+                    130
+                ],
+                "template": [
+                    "Navigation/home_navigation.png",
+                    "Navigation/home_selected.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "repeat": 2,
+        "repeat_delay": 200,
+        "post_delay": 1000
+    },
+    "Navigation_NotStableWait": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    16,
+                    61,
+                    144,
+                    127
+                ],
+                "template": [
+                    "Navigation/BlankCardWait.png"
+                ],
+                "threshold": [
+                    0.9
+                ]
+            }
+        },
+        "post_delay": 1000
+    },
+    "Navigation_ReturnHomeFlow": {
+        "timeout": 500000,
+        "rate_limit": 200,
+        "next": [
+            "Startup_RecoveryEntry",
+            "[JumpBack]Interaction_ReturnHomeInterruptionFlow",
+            "[JumpBack]Navigation_ClickHomeButton",
+            "[JumpBack]Navigation_NotStableWait",
+            "Navigation_Stable"
+        ]
+    },
+    "Navigation_Stable": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    515,
+                    58,
+                    203,
+                    147
+                ],
+                "template": [
+                    "Common/MailandGift.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "next": [
+            "[Anchor]Navigation_ReturnHomeTarget",
+            "Navigation_Stabled"
+        ]
+    },
+    "Navigation_Stabled": {}
+}

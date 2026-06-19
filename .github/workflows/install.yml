@@ -1,11 +1,19 @@
 name: install
 
+permissions:
+  contents: write
+  pull-requests: read
+
 env:
   # 版本控制：
   # - 设置 VERSION 为空字符串时，下载 latest 版本
   # - 设置 VERSION 为具体版本号时（如 v1.2.3），下载指定版本
   MAAFW_VERSION: ""
-  MFAA_VERSION: ""
+  MXU_VERSION: ""
+  # 发布产物上传模式：
+  # - direct：各平台 job 直接上传到 GitHub Release Assets，不占 Actions artifact quota
+  # - artifact：使用 Actions artifacts 在 job 间中转，最后统一发布
+  RELEASE_UPLOAD_MODE: "direct"
 
 on:
   push:
@@ -16,6 +24,8 @@ on:
     paths:
       - ".github/workflows/install.yml"
       - "assets/**"
+      - "agent/**"
+      - "tools/**"
       - "**.py"
   pull_request:
     branches:
@@ -23,6 +33,8 @@ on:
     paths:
       - ".github/workflows/install.yml"
       - "assets/**"
+      - "agent/**"
+      - "tools/**"
       - "**.py"
   workflow_dispatch:
 
@@ -30,9 +42,10 @@ jobs:
   meta:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+
       - id: set_tag
         run: |
           # 检查标签格式
@@ -46,7 +59,7 @@ jobs:
             tag=$(date "+$tag-%y%m%d-$(git rev-parse --short HEAD)")
           fi
 
-          if ! $($is_release) ; then
+          if [ "$is_release" != "true" ] ; then
             prefix=${tag%-*-*}
             suffix=${tag#$prefix-}
             tag="$prefix-ci.$suffix"
@@ -62,22 +75,74 @@ jobs:
           echo tag=$tag | tee -a $GITHUB_OUTPUT
           echo is_release=$is_release | tee -a $GITHUB_OUTPUT
           echo is_prerelease=$is_prerelease | tee -a $GITHUB_OUTPUT
+          echo upload_mode=$RELEASE_UPLOAD_MODE | tee -a $GITHUB_OUTPUT
     outputs:
       tag: ${{ steps.set_tag.outputs.tag }}
       is_release: ${{ steps.set_tag.outputs.is_release }}
       is_prerelease: ${{ steps.set_tag.outputs.is_prerelease }}
+      upload_mode: ${{ steps.set_tag.outputs.upload_mode }}
 
-  install:
-    needs: meta
+  release_direct:
+    if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' }}
+    needs: [meta, changelog]
     runs-on: ubuntu-latest
+    steps:
+      - name: Prepare release notes
+        id: release_notes
+        shell: bash
+        env:
+          RELEASE_BODY: ${{ needs.changelog.outputs.release_body }}
+          TAG: ${{ needs.meta.outputs.tag }}
+        run: |
+          {
+            echo "body<<END_RELEASE_BODY"
+            if [ -n "$RELEASE_BODY" ]; then
+              printf '%s\n' "$RELEASE_BODY"
+            else
+              printf '%s\n' \
+                "## ${TAG}" \
+                "" \
+                "## 新功能" \
+                "" \
+                "本版本包含 MaaPTCGP 的功能与稳定性更新。项目仍处于内测阶段，升级后建议先确认任务配置与设备连接状态。" \
+                "" \
+                "## 使用提示" \
+                "" \
+                "- 请在下方 Assets 中选择与你的系统匹配的 MaaPTCGP 安装包。" \
+                "- macOS 用户可下载 tar.gz 或 dmg；dmg 目前未公证，首次打开如被系统拦截，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”。" \
+                "- 如任务配置异常，建议在 MXU 中重新检查资源、控制器与任务选项。"
+            fi
+            echo "END_RELEASE_BODY"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.meta.outputs.tag }}
+          body: ${{ steps.release_notes.outputs.body }}
+          draft: false
+          prerelease: ${{ needs.meta.outputs.is_prerelease == 'true' }}
+
+  build_and_install:
+    needs: [meta, release_direct]
+    if: ${{ always() && needs.meta.result == 'success' && (needs.meta.outputs.is_release != 'true' || needs.meta.outputs.upload_mode != 'direct' || needs.release_direct.result == 'success') }}
+    runs-on: ${{ matrix.os == 'win' && 'windows-latest' || matrix.os == 'macos' && 'macos-latest' || 'ubuntu-latest' }}
     strategy:
       matrix:
-        os: [win, macos, linux, android]
-        arch: [aarch64, x86_64]
+        include:
+          - os: win
+            arch: x86_64
+          - os: win
+            arch: aarch64
+          - os: macos
+            arch: x86_64
+          - os: macos
+            arch: aarch64
+          - os: linux
+            arch: x86_64
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
 
@@ -91,59 +156,260 @@ jobs:
           out-file-path: "deps"
           extract: true
 
-      - name: Download MFAAvalonia
-        if: matrix.os != 'android'
-        id: download_mfa
+      - name: Download MXU
+        id: download_mxu
         uses: robinraju/release-downloader@v1
         with:
-          repository: SweetSmellFox/MFAAvalonia
-          fileName: "MFAAvalonia-*-${{ (matrix.os == 'win' && 'win') || (matrix.os == 'macos' && 'osx') || (matrix.os == 'linux' && 'linux') }}-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
-          latest: ${{ env.MFAA_VERSION == '' }}
-          tag: ${{ env.MFAA_VERSION }}
-          out-file-path: "MFA"
+          repository: MistEO/MXU
+          fileName: "*${{ matrix.os }}-${{ matrix.arch }}*"
+          latest: ${{ env.MXU_VERSION == '' }}
+          tag: ${{ env.MXU_VERSION }}
+          out-file-path: "MXU"
           extract: true
 
-      - name: Clean up MFAAvalonia archive
-        if: matrix.os != 'android'
+      - name: Clean up MXU archive
         shell: bash
         run: |
-          ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
+          ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mxu.outputs.downloaded_files)[0] }}"
           rm -f "${ARCHIVE_FILE_PATH}"
-          echo "Archive cleanup command executed for MFAAvalonia."
+          echo "Archive cleanup command executed for MXU."
 
-      - name: Remove built-in runtime in MFA
-        if: matrix.os != 'android'
-        shell: bash
-        run: |
-          rm -rf MFA/runtimes
-      
       - name: Install
         shell: bash
         run: |
-          if [[ "${{ matrix.os }}" != "android" ]]; then
-            if [ -d "MFA" ]; then
-              echo "Copying MFA files to install directory..."
-              mkdir -p install
-              rsync -av --ignore-existing MFA/ install/
-              echo "MFA files copied successfully."
-            else
-              echo "MFA directory not found, skipping copy."
-            fi
-          else
-            echo "Skipping copy MFA for Android."
-          fi
-
           cd tools/
           python -m pip install -r ./requirements.txt
           python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
           cd ..
 
-      - uses: actions/upload-artifact@v4
+      - name: Verify install contents
+        shell: bash
+        run: |
+          echo "Checking install directory contents..."
+          ls -la install/ | head -20
+          if [ -f "install/interface.json" ]; then
+            echo "interface.json found"
+          else
+            echo "interface.json NOT found"
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v6
+        if: ${{ needs.meta.outputs.upload_mode == 'artifact' }}
         with:
-          name: MaaXXX-${{ matrix.os }}-${{ matrix.arch }}
-          path: "install"
+          name: MaaPTCGP-${{ matrix.os }}-${{ matrix.arch }}-intermediate
+          path: install
+          retention-days: 1
+
+      - name: Convert PNG to ICO
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' && matrix.os == 'win' }}
+        shell: bash
+        run: |
+          choco install imagemagick -y
+          for size in 512 256 128 64 48 32 24 16; do
+            magick assets/logo.png -resize ${size}x${size} icon-${size}.png
+          done
+          magick icon-512.png icon-256.png icon-128.png icon-64.png icon-48.png icon-32.png icon-24.png icon-16.png MaaPTCGP.ico
+          cp MaaPTCGP.ico install/logo.ico
+
+      - name: Modify MXU exe icon
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' && matrix.os == 'win' }}
+        shell: bash
+        run: |
+          curl -L https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe -o rcedit.exe
+          if [ -f "install/MaaPTCGP.exe" ]; then
+            ./rcedit.exe "install/MaaPTCGP.exe" --set-icon "MaaPTCGP.ico"
+            echo "MXU icon modified successfully"
+          else
+            echo "MaaPTCGP.exe not found, skipping icon update."
+            exit 1
+          fi
+
+      - name: Package Windows ZIP
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' && matrix.os == 'win' }}
+        shell: pwsh
+        run: |
+          Compress-Archive -Path install/* -DestinationPath MaaPTCGP-win-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.zip
+
+      - name: Package Linux tar.gz
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' && matrix.os == 'linux' }}
+        shell: bash
+        run: |
+          if [[ -f install/MaaPTCGP ]]; then
+            chmod +x install/MaaPTCGP
+          fi
+          find install/maafw -type f -name "Maa*" ! -name "*.so" -exec chmod +x {} \;
+          cd install
+          tar -czvf ../MaaPTCGP-linux-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.tar.gz .
+
+      - name: Package macOS tar.gz
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' && matrix.os == 'macos' }}
+        shell: bash
+        run: |
+          if [[ -f install/MaaPTCGP ]]; then
+            chmod +x install/MaaPTCGP
+          fi
+          find install/maafw -type f -name "Maa*" ! -name "*.dylib" -exec chmod +x {} \;
+          cd install
+          tar -czvf ../MaaPTCGP-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.tar.gz .
+
+      - name: Package macOS DMG
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' && matrix.os == 'macos' }}
+        shell: bash
+        run: |
+          brew install create-dmg
+          tools/package_macos_dmg.sh install MaaPTCGP-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.dmg "${{ needs.meta.outputs.tag }}"
+
+      - name: Upload release asset
+        if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          case "${{ matrix.os }}" in
+            win)
+              asset="MaaPTCGP-win-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.zip"
+              ;;
+            linux)
+              asset="MaaPTCGP-linux-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.tar.gz"
+              ;;
+            macos)
+              asset="MaaPTCGP-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.tar.gz MaaPTCGP-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.dmg"
+              ;;
+          esac
+          gh release upload "${{ needs.meta.outputs.tag }}" $asset --clobber --repo "$GITHUB_REPOSITORY"
+
+  package_win_zip:
+    if: ${{ needs.meta.outputs.upload_mode == 'artifact' }}
+    needs: [meta, build_and_install]
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x86_64, aarch64]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: MaaPTCGP-win-${{ matrix.arch }}-intermediate
+          path: install
+
+      - name: Convert PNG to ICO
+        shell: bash
+        run: |
+          choco install imagemagick -y
+          for size in 512 256 128 64 48 32 24 16; do
+            magick assets/logo.png -resize ${size}x${size} icon-${size}.png
+          done
+          magick icon-512.png icon-256.png icon-128.png icon-64.png icon-48.png icon-32.png icon-24.png icon-16.png MaaPTCGP.ico
+          cp MaaPTCGP.ico install/logo.ico
+
+      - name: Modify MXU exe icon
+        shell: bash
+        run: |
+          curl -L https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe -o rcedit.exe
+          if [ -f "install/MaaPTCGP.exe" ]; then
+            ./rcedit.exe "install/MaaPTCGP.exe" --set-icon "MaaPTCGP.ico"
+            echo "MXU icon modified successfully"
+          else
+            echo "MaaPTCGP.exe not found, skipping icon update."
+            exit 1
+          fi
+
+      - name: Package ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path install/* -DestinationPath MaaPTCGP-win-${{ matrix.arch }}.zip
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: MaaPTCGP-win-${{ matrix.arch }}-zip
+          path: MaaPTCGP-win-${{ matrix.arch }}.zip
+          retention-days: 1
+
+  package_linux_tarball:
+    if: ${{ needs.meta.outputs.upload_mode == 'artifact' }}
+    needs: [meta, build_and_install]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [x86_64]
+      fail-fast: false
+
+    steps:
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: MaaPTCGP-linux-${{ matrix.arch }}-intermediate
+          path: install
+
+      - name: Repackage as tar.gz
+        shell: bash
+        run: |
+          if [[ -f install/MaaPTCGP ]]; then
+            chmod +x install/MaaPTCGP
+          fi
+          find install/maafw -type f -name "Maa*" ! -name "*.so" -exec chmod +x {} \;
+          cd install
+          tar -czvf ../MaaPTCGP-linux-${{ matrix.arch }}.tar.gz .
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: MaaPTCGP-linux-${{ matrix.arch }}-tarball
+          path: MaaPTCGP-linux-${{ matrix.arch }}.tar.gz
+          retention-days: 1
+
+  package_macos_dmg:
+    if: ${{ needs.meta.outputs.upload_mode == 'artifact' }}
+    needs: [meta, build_and_install]
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [x86_64, aarch64]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: MaaPTCGP-macos-${{ matrix.arch }}-intermediate
+          path: install
+
+      - name: Package DMG
+        shell: bash
+        run: |
+          brew install create-dmg
+          tools/package_macos_dmg.sh install MaaPTCGP.dmg "${{ needs.meta.outputs.tag }}"
+
+      - name: Package tar.gz
+        shell: bash
+        run: |
+          if [[ -f install/MaaPTCGP ]]; then
+            chmod +x install/MaaPTCGP
+          fi
+          find install/maafw -type f -name "Maa*" ! -name "*.dylib" -exec chmod +x {} \;
+          cd install
+          tar -czvf ../MaaPTCGP-macos-${{ matrix.arch }}.tar.gz .
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: MaaPTCGP-macos-${{ matrix.arch }}-dmg
+          path: MaaPTCGP.dmg
+          retention-days: 1
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: MaaPTCGP-macos-${{ matrix.arch }}-tarball
+          path: MaaPTCGP-macos-${{ matrix.arch }}.tar.gz
+          retention-days: 1
 
   changelog:
+    continue-on-error: true
     name: Generate changelog
     needs: meta
     runs-on: ubuntu-latest
@@ -151,7 +417,7 @@ jobs:
       release_body: ${{ steps.git-cliff.outputs.content }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -170,25 +436,95 @@ jobs:
           GITHUB_REPO: ${{ github.repository }}
 
   release:
-    if: ${{ needs.meta.outputs.is_release == 'true' }}
-    needs: [meta, install, changelog]
+    if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'artifact' }}
+    needs: [meta, package_win_zip, package_linux_tarball, package_macos_dmg, changelog]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
-          path: assets
+          pattern: MaaPTCGP-*-zip
+          path: artifacts
 
-      - run: |
-          cd assets
-          for f in *; do
-            (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: MaaPTCGP-*-tarball
+          path: artifacts
+
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: MaaPTCGP-*-dmg
+          path: artifacts
+
+      - name: Prepare release artifacts
+        shell: bash
+        run: |
+          cd artifacts
+
+          for f in MaaPTCGP-win-*-zip/MaaPTCGP-win-*.zip; do
+            if [[ -f "$f" ]]; then
+              name=$(basename "$f" .zip)
+              mv "$f" "${name}-${{ needs.meta.outputs.tag }}.zip"
+            fi
           done
-          
+
+          for f in MaaPTCGP-linux-*-tarball/MaaPTCGP-linux-*.tar.gz; do
+            if [[ -f "$f" ]]; then
+              name=$(basename "$f" .tar.gz)
+              mv "$f" "${name}-${{ needs.meta.outputs.tag }}.tar.gz"
+            fi
+          done
+
+          for f in MaaPTCGP-macos-*-tarball/MaaPTCGP-macos-*.tar.gz; do
+            if [[ -f "$f" ]]; then
+              name=$(basename "$f" .tar.gz)
+              mv "$f" "${name}-${{ needs.meta.outputs.tag }}.tar.gz"
+            fi
+          done
+
+          for f in MaaPTCGP-*-dmg/MaaPTCGP.dmg; do
+            if [[ -f "$f" ]]; then
+              dir=$(dirname "$f")
+              arch=$(echo "$dir" | sed 's/MaaPTCGP-//' | sed 's/-dmg//')
+              mv "$f" "MaaPTCGP-${arch}-${{ needs.meta.outputs.tag }}.dmg"
+            fi
+          done
+
+          rm -rf MaaPTCGP-*/
+          ls -la
+
+      - name: Prepare release notes
+        id: release_notes
+        shell: bash
+        env:
+          RELEASE_BODY: ${{ needs.changelog.outputs.release_body }}
+          TAG: ${{ needs.meta.outputs.tag }}
+        run: |
+          {
+            echo "body<<END_RELEASE_BODY"
+            if [ -n "$RELEASE_BODY" ]; then
+              printf '%s\n' "$RELEASE_BODY"
+            else
+              printf '%s\n' \
+                "## ${TAG}" \
+                "" \
+                "## 新功能" \
+                "" \
+                "本版本包含 MaaPTCGP 的功能与稳定性更新。项目仍处于内测阶段，升级后建议先确认任务配置与设备连接状态。" \
+                "" \
+                "## 使用提示" \
+                "" \
+                "- 请在下方 Assets 中选择与你的系统匹配的 MaaPTCGP 安装包。" \
+                "- macOS 用户可下载 tar.gz 或 dmg；dmg 目前未公证，首次打开如被系统拦截，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”。" \
+                "- 如任务配置异常，建议在 MXU 中重新检查资源、控制器与任务选项。"
+            fi
+            echo "END_RELEASE_BODY"
+          } >> "$GITHUB_OUTPUT"
+
       - uses: softprops/action-gh-release@v2
         with:
-          files: assets/*
+          files: artifacts/*
           tag_name: ${{ needs.meta.outputs.tag }}
-          body: ${{ needs.changelog.outputs.release_body }}
+          body: ${{ steps.release_notes.outputs.body }}
           draft: false
           prerelease: ${{ needs.meta.outputs.is_prerelease == 'true' }}
 
@@ -197,7 +533,6 @@ jobs:
         # https://mirrorchyan.com/
       - name: Trigger MirrorChyanUploading
         if: false
-        # if: ${{ github.repository_owner == 'MaaXYZ' }}
         shell: bash
         run: |
           gh workflow run --repo $GITHUB_REPOSITORY mirrorchyan_release.yml -f tag=${{ needs.meta.outputs.tag }}

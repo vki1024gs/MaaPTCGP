@@ -1,0 +1,244 @@
+{
+    "PackOpening_AbortUnverifiedFinish": {
+        "action": {
+            "type": "StopTask"
+        }
+    },
+    "PackOpening_AddNewToCollection": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    229,
+                    133,
+                    89,
+                    59
+                ],
+                "expected": [
+                    "向上"
+                ]
+            }
+        },
+        "anchor": {
+            "Interaction_AddCollectionFinishTarget": "PackOpening_FinishFlow"
+        },
+        "rate_limit": 300,
+        "next": [
+            "PackOpening_FinishFlow",
+            "Interaction_AddCollSKIP"
+        ]
+    },
+    "PackOpening_AfterSkipFlow": {
+        "timeout": 5000,
+        "rate_limit": 300,
+        "next": [
+            "PackOpening_PackResults"
+        ],
+        "on_error": [
+            "PackOpening_RareAnimationWait"
+        ]
+    },
+    "PackOpening_EnterTearPack": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "Pack/skip.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "rate_limit": 400,
+        "next": [
+            "PackOpening_EnterTearPack",
+            "PackOpening_SwipePack"
+        ]
+    },
+    "PackOpening_FinishFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    33,
+                    1193,
+                    116,
+                    79
+                ],
+                "template": [
+                    "Navigation/home_selected.png"
+                ]
+            }
+        },
+        "timeout": 3000,
+        "rate_limit": 300,
+        "next": [
+            "PackOpening_FinishedWithPackRemain",
+            "PackOpening_FinishedWithNoPack"
+        ],
+        "on_error": [
+            "PackOpening_AbortUnverifiedFinish"
+        ]
+    },
+    "PackOpening_Finished": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "PackOpening_FinishedWithNoPack": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    439,
+                    932,
+                    189,
+                    124
+                ],
+                "expected": [
+                    "1包"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_ReturnClick",
+            "PackOpening_Finished",
+            "PackOpening_LevelUpOk"
+        ]
+    },
+    "PackOpening_FinishedWithPackRemain": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    247,
+                    949,
+                    231,
+                    113
+                ],
+                "expected": [
+                    "開封"
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_PackPageFlow"
+        ]
+    },
+    "PackOpening_LevelUpOk": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    239,
+                    1067,
+                    273,
+                    110
+                ],
+                "expected": [
+                    "OK"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 500
+    },
+    "PackOpening_LongPressSkipWhileVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    586,
+                    1149,
+                    124,
+                    121
+                ],
+                "template": "Pack/skip2.png",
+                "threshold": 0.85
+            }
+        },
+        "next": [
+            "[JumpBack]Common_ClickSkip",
+            "PackOpening_AfterSkipFlow"
+        ]
+    },
+    "PackOpening_PackResults": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    250,
+                    40,
+                    220,
+                    89
+                ],
+                "expected": [
+                    "開封結果"
+                ]
+            }
+        },
+        "pre_delay": 500,
+        "post_delay": 500,
+        "rate_limit": 0,
+        "next": [
+            "[JumpBack]Common_ContinueClick",
+            "PackOpening_AddNewToCollection",
+            "PackOpening_FinishFlow"
+        ]
+    },
+    "PackOpening_RareAnimationWait": {
+        "pre_delay": 15000,
+        "next": [
+            "PackOpening_AfterSkipFlow"
+        ]
+    },
+    "PackOpening_SwipePack": {
+        "max_hit": 3,
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    78,
+                    706,
+                    37,
+                    62
+                ],
+                "end": [
+                    [
+                        645,
+                        712,
+                        37,
+                        56
+                    ]
+                ],
+                "end_hold": [
+                    300
+                ],
+                "duration": [
+                    1000
+                ],
+                "pressure": 3
+            }
+        },
+        "timeout": 8500,
+        "next": [
+            "PackOpening_LongPressSkipWhileVisible"
+        ],
+        "on_error": [
+            "PackOpening_SwipePack"
+        ]
+    }
+}

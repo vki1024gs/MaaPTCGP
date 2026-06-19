@@ -1,0 +1,226 @@
+{
+    "Mail_ClickClaimAll": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    410,
+                    935,
+                    300,
+                    100
+                ],
+                "template": "Mail/gift_claim_all.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        }
+    },
+    "Mail_EntryFlow": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        },
+        "timeout": 2000,
+        "next": [
+            "Mail_OpenGiftBox"
+        ],
+        "on_error": [
+            "Mail_NoMailFinish"
+        ]
+    },
+    "Mail_GetCards": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    2,
+                    79,
+                    240,
+                    164
+                ],
+                "template": [
+                    "Mail/gift_getcard.png",
+                    "Common/GetCardsSwipeUP.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
+        "next": [
+            "[JumpBack]Common_ClickSkip",
+            "[JumpBack]Common_ContinueClick",
+            "Mail_GetCardsThx",
+            "Mail_NoGiftCloseGiftBox"
+        ]
+    },
+    "Mail_GetCardsThx": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    185,
+                    968,
+                    361,
+                    127
+                ],
+                "expected": [
+                    "謝謝"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "Mail_NoRedDotEnd"
+        ]
+    },
+    "Mail_GiftBoxCloseVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    300,
+                    1120,
+                    120,
+                    120
+                ],
+                "template": "Mail/gift_close.png",
+                "threshold": 0.85
+            }
+        }
+    },
+    "Mail_GiftBoxFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    280,
+                    50,
+                    160,
+                    70
+                ],
+                "template": "Mail/gift_box_title.png",
+                "threshold": 0.85
+            }
+        },
+        "rate_limit": 200,
+        "next": [
+            "Mail_NoGiftCloseGiftBox",
+            "[JumpBack]Mail_ClickClaimAll",
+            "[JumpBack]Common_ContinueClick",
+            "Mail_GetCards",
+            "[JumpBack]Common_ClickOkMID",
+            "[JumpBack]Common_SwipePack",
+            "[JumpBack]Common_ClickSkip"
+        ]
+    },
+    "Mail_NoGiftCloseGiftBox": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Mail_NoGiftTextVisible",
+                    "Mail_GiftBoxCloseVisible"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": "Mail_GiftBoxCloseVisible"
+            }
+        },
+        "rate_limit": 400,
+        "next": [
+            "Mail_NoGiftCloseGiftBox",
+            "Mail_NoRedDotEnd"
+        ]
+    },
+    "Mail_NoGiftTextVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    220,
+                    540,
+                    300,
+                    120
+                ],
+                "template": "Mail/gift_empty_text.png",
+                "threshold": 0.85
+            }
+        }
+    },
+    "Mail_NoMailFinish": {},
+    "Mail_NoRedDotEnd": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "Mail_OpenGiftBox": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    650,
+                    65,
+                    60,
+                    60
+                ],
+                "template": "Mail/gift_red_dot.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    645,
+                    125
+                ]
+            }
+        },
+        "timeout": 10000,
+        "next": [
+            "Mail_GiftBoxFlow"
+        ],
+        "on_error": [
+            "Mail_RecoverHomeThenRestart"
+        ]
+    },
+    "Mail_RecoverHomeThenRestart": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "Mail_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "Mail_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "Mail_Start"
+        },
+        "next": [
+            "Mail_EntryFlow",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    }
+}

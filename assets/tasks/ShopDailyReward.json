@@ -1,0 +1,20 @@
+{
+    "task": [
+        {
+            "name": "ClaimShopDailyReward",
+            "label": "$task.ClaimShopDailyReward.label",
+            "description": "$task.ClaimShopDailyReward.description",
+            "entry": "ShopDailyReward_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ]
+        }
+    ]
+}

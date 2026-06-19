@@ -1,0 +1,136 @@
+{
+    "ShopDailyReward_EnterShop": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    430,
+                    774,
+                    155,
+                    87
+                ],
+                "expected": [
+                    "每日"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    28,
+                    127,
+                    0,
+                    0
+                ]
+            }
+        },
+        "next": [
+            "ShopDailyReward_GetDailyReward",
+            "ShopDailyReward_NoDailyReward"
+        ],
+        "on_error": [
+            "ShopDailyReward_RecoverHomeThenRestart"
+        ]
+    },
+    "ShopDailyReward_EntryFlow": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        },
+        "next": [
+            "ShopDailyReward_EnterShop",
+            "ShopDailyReward_NoRewardEnd"
+        ]
+    },
+    "ShopDailyReward_Finished": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        }
+    },
+    "ShopDailyReward_GetDailyReward": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    650,
+                    362,
+                    65,
+                    62
+                ],
+                "template": [
+                    "Common/RedDot.png",
+                    "Common/RedDot1.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    -183,
+                    107,
+                    0,
+                    0
+                ]
+            }
+        },
+        "next": [
+            "ShopDailyReward_GetDailyRewardOK"
+        ]
+    },
+    "ShopDailyReward_GetDailyRewardOK": {
+        "next": [
+            "[JumpBack]Common_ClickOkMID",
+            "[JumpBack]Common_CloseClick",
+            "ShopDailyReward_Finished"
+        ]
+    },
+    "ShopDailyReward_NoDailyReward": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    292,
+                    674,
+                    144,
+                    79
+                ],
+                "expected": [
+                    "已兌"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "ShopDailyReward_Finished"
+        ]
+    },
+    "ShopDailyReward_NoRewardEnd": {},
+    "ShopDailyReward_RecoverHomeThenRestart": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "ShopDailyReward_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "ShopDailyReward_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "ShopDailyReward_Start"
+        },
+        "next": [
+            "ShopDailyReward_EntryFlow",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    }
+}

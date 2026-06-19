@@ -1,0 +1,256 @@
+{
+    "ShareFilter_ClickFourDiamond": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    535,
+                    1104,
+                    130,
+                    68
+                ],
+                "template": [
+                    "Share/4Diamonds.png"
+                ],
+                "threshold": [
+                    0.92
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "ShareFilter_CloseFilter": {
+        "next": [
+            "[JumpBack]Common_ClickOkMID",
+            "ShareFilter_SortDESC"
+        ]
+    },
+    "ShareFilter_CloseSavedFilter": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    524,
+                    337,
+                    118,
+                    93
+                ],
+                "expected": [
+                    "不顯示"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "ShareFilter_FullColl": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    103,
+                    670,
+                    82,
+                    73
+                ],
+                "expected": [
+                    "沒有"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    95,
+                    1115,
+                    82,
+                    73
+                ]
+            }
+        },
+        "timeout": 10000,
+        "next": [
+            "ShareFilter_SelectTopShareableCard"
+        ],
+        "on_error": [
+            "ShareFilter_NoShareableCardFinish"
+        ]
+    },
+    "ShareFilter_SelectCardFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    588,
+                    187,
+                    110,
+                    121
+                ],
+                "template": [
+                    "Share/FilterIcon.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "ShareFilter_SelectedRarity"
+        ]
+    },
+    "ShareFilter_SelectFourDiamondCards": {
+        "next": [
+            "[JumpBack]ShareFilter_CloseSavedFilter",
+            "[JumpBack]ShareFilter_ClickFourDiamond"
+        ],
+        "on_error": [
+            "ShareFilter_CloseFilter"
+        ]
+    },
+    "ShareFilter_SelectSortDESC": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    380,
+                    777,
+                    223,
+                    65
+                ],
+                "expected": [
+                    "按卡牌張數"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "ShareFilter_SortedCardsDesc"
+        ]
+    },
+    "ShareFilter_SelectTopShareableCard": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    309,
+                    1059,
+                    101,
+                    76
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "[JumpBack]Common_ClickOkRIGHT",
+            "Utils_SwipeUpToSend"
+        ]
+    },
+    "ShareFilter_SelectedRarity": {
+        "next": [
+            "ShareFilter_SelectFourDiamondCards"
+        ]
+    },
+    "ShareFilter_SortedCardsDesc": {
+        "next": [
+            "ShareFilter_FullColl"
+        ],
+        "on_error": [
+            "ShareFilter_OutColl"
+        ]
+    },
+    "ShareFilter_SortDESC": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    177,
+                    47,
+                    358,
+                    82
+                ],
+                "expected": [
+                    "分送"
+                ],
+                "threshold": 0.9
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    622,
+                    1186,
+                    39,
+                    39
+                ]
+            }
+        },
+        "post_delay": 500,
+        "next": [
+            "ShareFilter_SortButtonVisible",
+            "ShareFilter_SelectSortDESC"
+        ]
+    },
+    "ShareFilter_OutColl": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    92,
+                    678,
+                    93,
+                    79
+                ]
+            }
+        },
+        "timeout": 10000,
+        "next": [
+            "ShareFilter_SelectTopShareableCard"
+        ],
+        "on_error": [
+            "ShareFilter_NoShareableCardFinish"
+        ]
+    },
+    "ShareFilter_NoShareableCardFinish": {},
+    "ShareFilter_SortButtonVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    667,
+                    768,
+                    51,
+                    76
+                ],
+                "template": [
+                    "Share/Sort.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    340,
+                    1183,
+                    39,
+                    48
+                ]
+            }
+        },
+        "next": [
+            "ShareFilter_SortedCardsDesc"
+        ]
+    }
+}

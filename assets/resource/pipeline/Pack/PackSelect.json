@@ -1,0 +1,255 @@
+{
+    "PackSelect_ConfirmOpenButton": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "Pack/openpack.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "next": [
+            "PackOpening_EnterTearPack"
+        ]
+    },
+    "PackSelect_EntryFlow": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Navigation_NotStableWait",
+            "PackSelect_PackEnergyAvailable",
+            "PackSelect_NoEnergyEnd"
+        ]
+    },
+    "PackSelect_NoEnergyEnd": {},
+    "PackSelect_OnePackEnergyVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    242,
+                    684,
+                    141,
+                    107
+                ],
+                "template": [
+                    "Pack/onepack.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        }
+    },
+    "PackSelect_OpenPack": {
+        "next": [
+            "PackSelect_PackChoiceStrategy"
+        ],
+        "on_error": [
+            "PackSelect_RecoverHomeThenRestart"
+        ]
+    },
+    "PackSelect_PackChoiceStrategy": {
+        "next": [
+            "PackSelect_SelectCurrentPack"
+        ]
+    },
+    "PackSelect_PackEnergyAvailable": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "PackSelect_OnePackEnergyVisible",
+                    "PackSelect_TwoPackEnergyVisible"
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_PackChoiceStrategy"
+        ]
+    },
+    "PackSelect_PackPageFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    67,
+                    1076,
+                    147,
+                    85
+                ],
+                "template": "Pack/packpage_title.png",
+                "threshold": 0.85
+            }
+        },
+        "pre_delay": 3300,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    360,
+                    780
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_ConfirmOpenButton"
+        ],
+        "on_error": [
+            "PackSelect_RecoverHomeThenRestart"
+        ]
+    },
+    "PackSelect_RecoverHomeThenRestart": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "PackSelect_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "PackSelect_SelectCurrentPack": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    321,
+                    484,
+                    70,
+                    54
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_PackPageFlow"
+        ]
+    },
+    "PackSelect_SelectFavoritePack": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    659,
+                    467,
+                    56,
+                    99
+                ],
+                "template": [
+                    "Pack/nextFavoritePack.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 600,
+        "timeout": 2000,
+        "rate_limit": 200,
+        "next": [
+            "PackSelect_SelectFavoritePackMID"
+        ],
+        "on_error": [
+            "PackSelect_SelectFavoritePack"
+        ]
+    },
+    "PackSelect_SelectLast3Pack": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    123,
+                    500,
+                    59,
+                    65
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_PackPageFlow"
+        ]
+    },
+    "PackSelect_SelectLast2Pack": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    535,
+                    486,
+                    51,
+                    48
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_PackPageFlow"
+        ]
+    },
+    "PackSelect_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "PackSelect_Start"
+        },
+        "next": [
+            "PackSelect_EntryFlow",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    },
+    "PackSelect_TwoPackEnergyVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    284,
+                    674,
+                    155,
+                    127
+                ],
+                "template": [
+                    "Pack/twopack.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        }
+    },
+    "PackSelect_SelectFavoritePackMID": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    583,
+                    252,
+                    121,
+                    87
+                ],
+                "template": [
+                    "Pack/template_1781798631582.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    343,
+                    495,
+                    42,
+                    48
+                ]
+            }
+        },
+        "next": [
+            "PackSelect_PackPageFlow"
+        ]
+    }
+}

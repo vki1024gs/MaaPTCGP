@@ -1,0 +1,43 @@
+{
+    "BattleControl_AbortUnrecoverableStuck": {
+        "action": {
+            "type": "StopTask"
+        }
+    },
+    "BattleControl_StuckClickAuto": {
+        "enabled": false,
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 1000
+    },
+    "BattleControl_StuckInterventionFlow": {
+        "timeout": 30000,
+        "rate_limit": 1000,
+        "next": [
+            "[JumpBack]BattleControl_StuckClickAuto",
+            "BattleControl_StuckRecoverHome"
+        ],
+        "on_error": [
+            "BattleControl_AbortUnrecoverableStuck"
+        ]
+    },
+    "BattleControl_StuckRecoverHome": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "BattleControl_AbortUnrecoverableStuck"
+        }
+    },
+    "BattleControl_StuckStateVisible": {
+        "enabled": false,
+        "next": [
+            "BattleControl_StuckInterventionFlow"
+        ]
+    },
+    "BattleControl_StuckWatchFlow": {
+        "timeout": 60000,
+        "rate_limit": 2000,
+        "next": [
+            "BattleControl_StuckStateVisible"
+        ]
+    }
+}

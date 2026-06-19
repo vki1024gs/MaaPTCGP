@@ -1,4 +1,8 @@
-# docs
+# Local development docs
+docs/
+.venv/
+
+# docs build artifacts kept for compatibility if docs are unignored later
 docs/node_modules
 docs/.vuepress/.temp
 # Prerequisites
@@ -445,10 +449,52 @@ deps/*
 deps/tools/*
 !deps/tools/*.schema.json
 build
-install
+install/
+install-cli/
 
-# Tools
+# Project tools generated files
 tools/ImageCropper/**/*.png
+MXU/
 
-config
-debug
+config/
+debug/
+
+# Local development and debugging artifacts
+.DS_Store
+.archives/
+.debug/
+.debug_screencap.png
+dev-tools/
+dev-images/
+*.log
+*.bak
+
+# Public repository exclusions
+# Internal agent instructions, Codex/Claude skills, and local AI tooling state
+# may contain development workflow details or machine-specific context.
+AGENTS.md
+AGENT.md
+agent.md
+agents.md
+.agents/
+.agent/
+.codex/
+.claude/
+.cursor/
+.windsurf/
+.continue/
+.aider*
+.roo/
+.kilocode/
+CLAUDE.md
+GEMINI.md
+QWEN.md
+CODEX.md
+SKILL.md
+.github/release-guide.md
+skills/
+.skills/
+memory/
+memories/
+handoff/
+handoffs/

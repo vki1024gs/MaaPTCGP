@@ -1,0 +1,20 @@
+{
+    "task": [
+        {
+            "name": "MissionRedDotCleaner",
+            "label": "$task.MissionRedDotCleaner.label",
+            "description": "$task.MissionRedDotCleaner.description",
+            "entry": "Utils_MissionRedDotCleaner",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "utility"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+{
+    "BattleEntry_Enter": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Battle/DeckIcon.png"
+                ]
+            }
+        },
+        "next": [
+            "BattleEntry_EnterSoloMode"
+        ]
+    },
+    "BattleEntry_EnterSoloMode": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    467,
+                    939,
+                    130,
+                    79
+                ],
+                "expected": [
+                    "單人"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 200,
+        "rate_limit": 400,
+        "next": [
+            "BattleEntry_EnterSoloMode",
+            "BattleEntry_ModeFlow"
+        ]
+    },
+    "BattleEntry_EntryFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Battle/BattleIcon.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "BattleEntry_Enter"
+        ],
+        "on_error": [
+            "BattleEntry_RecoverHomeThenRestart"
+        ]
+    },
+    "BattleEntry_ModeFlow": {
+        "next": [
+            "EventBattle_Start"
+        ]
+    },
+    "BattleEntry_RecoverHomeThenRestart": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {
+                "roi": [
+                    442,
+                    1162,
+                    107,
+                    116
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "BattleEntry_Start"
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "BattleEntry_Start": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "BattleEntry_Start"
+        },
+        "next": [
+            "BattleEntry_EntryFlow",
+            "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    }
+}

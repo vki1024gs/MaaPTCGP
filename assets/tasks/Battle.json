@@ -1,0 +1,113 @@
+{
+    "task": [
+        {
+            "name": "Battle",
+            "label": "$task.Battle.label",
+            "description": "$task.Battle.description",
+            "entry": "BattleEntry_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ],
+            "option": [
+                "BattleMode",
+                "BattleContinue"
+            ]
+        }
+    ],
+    "option": {
+        "BattleContinue": {
+            "type": "switch",
+            "label": "$option.BattleContinue.label",
+            "description": "$option.BattleContinue.description",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.BattleContinue.No.label",
+                    "description": "$option.BattleContinue.No.description",
+                    "pipeline_override": {
+                        "Battle_FinishFlow": {
+                            "next": [
+                                "Battle_FinishReturnHomeFlow"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.BattleContinue.Yes.label",
+                    "description": "$option.BattleContinue.Yes.description",
+                    "pipeline_override": {
+                        "Battle_FinishFlow": {
+                            "next": [
+                                "[Anchor]Battle_ContinueTarget"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "BattleMode": {
+            "type": "select",
+            "label": "$option.BattleMode.label",
+            "description": "$option.BattleMode.description",
+            "default_case": "EventBattle",
+            "cases": [
+                {
+                    "name": "EventBattle",
+                    "label": "$option.BattleMode.EventBattle.label",
+                    "description": "$option.BattleMode.EventBattle.description",
+                    "option": [
+                        "BattleAutoRecovery"
+                    ],
+                    "pipeline_override": {
+                        "BattleEntry_ModeFlow": {
+                            "next": [
+                                "EventBattle_Start"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "BattleAutoRecovery": {
+            "type": "switch",
+            "label": "$option.BattleAutoRecovery.label",
+            "description": "$option.BattleAutoRecovery.description",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.BattleAutoRecovery.No.label",
+                    "description": "$option.BattleAutoRecovery.No.description",
+                    "pipeline_override": {
+                        "EventBattle_BattlePointPolicyFlow": {
+                            "next": [
+                                "EventBattle_BattlePointCheck"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.BattleAutoRecovery.Yes.label",
+                    "description": "$option.BattleAutoRecovery.Yes.description",
+                    "pipeline_override": {
+                        "EventBattle_BattlePointPolicyFlow": {
+                            "next": [
+                                "EventBattle_BattlePointRecoverFlow"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

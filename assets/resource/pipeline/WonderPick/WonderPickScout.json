@@ -1,0 +1,79 @@
+{
+    "WonderPickScout_AbortNoCandidate": {},
+    "WonderPickScout_SelectFirstPlayer": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    298,
+                    932,
+                    135,
+                    73
+                ],
+                "template": [
+                    "WonderPick/WPicon.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    0,
+                    -100,
+                    0,
+                    0
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_ConfirmPickTarget"
+        ],
+        "on_error": [
+            "WonderPickScout_AbortNoCandidate"
+        ]
+    },
+    "WonderPickScout_SelectHRareCard": {
+        "next": [
+            "WonderPickScout_AbortNoCandidate"
+        ]
+    },
+    "WonderPickScout_SelectNewCard": {
+        "next": [
+            "WonderPickScout_AbortNoCandidate"
+        ]
+    },
+    "WonderPickScout_SelectPlayerFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    298,
+                    932,
+                    135,
+                    73
+                ],
+                "template": [
+                    "WonderPick/WPicon.png"
+                ]
+            }
+        },
+        "timeout": 10000,
+        "next": [
+            "WonderPickScout_SelectedStrategy"
+        ],
+        "on_error": [
+            "WonderPick_RecoverHomeThenRestart"
+        ]
+    },
+    "WonderPickScout_SelectRareCard": {
+        "next": [
+            "WonderPickScout_AbortNoCandidate"
+        ]
+    },
+    "WonderPickScout_SelectedStrategy": {
+        "next": [
+            "WonderPickScout_SelectFirstPlayer"
+        ]
+    }
+}

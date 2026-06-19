@@ -1,0 +1,355 @@
+{
+    "EventBattle_Abort": {
+        "next": [
+            "Battle_FinishReturnHomeFlow"
+        ]
+    },
+    "EventBattle_BattlePointCheck": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.92
+                ]
+            }
+        },
+        "next": [
+            "EventBattle_SelectStageFlow"
+        ],
+        "on_error": [
+            "Battle_FinishReturnHomeFlow"
+        ]
+    },
+    "EventBattle_BattlePointPolicyFlow": {
+        "next": [
+            "EventBattle_BattlePointCheck"
+        ]
+    },
+    "EventBattle_BattlePointRecoverFlow": {
+        "timeout": 2000,
+        "rate_limit": 500,
+        "next": [
+            "EventBattle_NoBattlePointVisible"
+        ],
+        "on_error": [
+            "EventBattle_SelectStageFlow"
+        ]
+    },
+    "EventBattle_ClickStartBattle": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    1064,
+                    116,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Battle_Start"
+        ]
+    },
+    "EventBattle_EventClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    309,
+                    781,
+                    101,
+                    56
+                ],
+                "expected": [
+                    "活動"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "rate_limit": 400,
+        "next": [
+            "EventBattle_EventClick",
+            "EventBattle_BattlePointPolicyFlow"
+        ]
+    },
+    "EventBattle_NoBattlePointVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.98
+                ]
+            }
+        },
+        "inverse": true,
+        "next": [
+            "EventBattle_UseBattlePointItemFlow"
+        ]
+    },
+    "EventBattle_NoItem": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    321,
+                    562,
+                    133,
+                    56
+                ],
+                "expected": [
+                    "已恢復"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_ReturnClick",
+            "EventBattle_BattlePointCheck"
+        ]
+    },
+    "EventBattle_SelectAuto": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    519,
+                    1197,
+                    60,
+                    39
+                ],
+                "expected": [
+                    "OFF"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "EventBattle_SelectBonus": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    467,
+                    444,
+                    62,
+                    589
+                ],
+                "template": [
+                    "Battle/EventBattleBonus.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "EventBattle_SelectDeck": {
+        "recognition": {
+            "type": "Custom",
+            "param": {
+                "custom_recognition": ""
+            }
+        },
+        "next": [
+            "EventBattle_StartBattleFlow"
+        ]
+    },
+    "EventBattle_SelectLast": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    8,
+                    1011,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        13,
+                        484,
+                        11,
+                        11
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "repeat": 2,
+        "next": [
+            "EventBattle_Selected",
+            "[JumpBack]EventBattle_SelectLastClick"
+        ]
+    },
+    "EventBattle_SelectLastClick": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    566,
+                    830,
+                    118,
+                    121
+                ]
+            }
+        }
+    },
+    "EventBattle_SelectRedDot": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    653,
+                    460,
+                    48,
+                    595
+                ],
+                "template": [
+                    "Battle/BattleRedDot.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    -116,
+                    118,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 500
+    },
+    "EventBattle_SelectStageFlow": {
+        "timeout": 2500,
+        "rate_limit": 200,
+        "next": [
+            "EventBattle_Selected",
+            "[JumpBack]EventBattle_SelectBonus",
+            "[JumpBack]EventBattle_SelectRedDot"
+        ],
+        "on_error": [
+            "EventBattle_SelectLast"
+        ]
+    },
+    "EventBattle_Selected": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    1064,
+                    116,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]EventBattle_SelectAuto",
+            "EventBattle_StartBattleFlow"
+        ]
+    },
+    "EventBattle_Start": {
+        "anchor": {
+            "Battle_ContinueTarget": "EventBattle_BattlePointPolicyFlow"
+        },
+        "timeout": 2000,
+        "next": [
+            "EventBattle_EventClick"
+        ],
+        "on_error": [
+            "EventBattle_Abort"
+        ]
+    },
+    "EventBattle_StartBattleFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Battle/AutoON.png"
+                ]
+            }
+        },
+        "next": [
+            "EventBattle_ClickStartBattle"
+        ]
+    },
+    "EventBattle_UseBattlePointItemFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Battle/RecoveryBP.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "[JumpBack]EventBattle_UseItem",
+            "[JumpBack]Common_ClickOkRIGHT",
+            "[JumpBack]Common_ClickOkMID",
+            "EventBattle_NoItem",
+            "EventBattle_BattlePointCheck"
+        ]
+    },
+    "EventBattle_UseItem": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    194,
+                    515,
+                    406,
+                    110
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    }
+}

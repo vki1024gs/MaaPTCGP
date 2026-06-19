@@ -1,0 +1,77 @@
+{
+    "Interaction_AddCollSKIP": {
+        "post_delay": 100,
+        "rate_limit": 200,
+        "next": [
+            "[JumpBack]Common_ClickSkip",
+            "[JumpBack]Common_ContinueClick",
+            "Interaction_AddCollectionFinishHomeVisible",
+            "[JumpBack]Common_ClickOkMID",
+            "Interaction_AddCollectionFinishThxVisible"
+        ]
+    },
+    "Interaction_AddCollectionFinish": {
+        "next": [
+            "[Anchor]Interaction_AddCollectionFinishTarget"
+        ]
+    },
+    "Interaction_AddCollectionFinishHomeVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    13,
+                    1146,
+                    141,
+                    124
+                ],
+                "template": [
+                    "Navigation/home_selected.png"
+                ]
+            }
+        },
+        "next": [
+            "Interaction_AddCollectionFinish"
+        ]
+    },
+    "Interaction_AddCollectionFinishThxVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    281,
+                    887,
+                    147,
+                    85
+                ],
+                "expected": [
+                    "謝謝"
+                ]
+            }
+        },
+        "next": [
+            "Interaction_AddCollectionFinish"
+        ]
+    },
+    "Interaction_ReturnHomeInterruptionDone": {},
+    "Interaction_ReturnHomeInterruptionFlow": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "Common_CloseClick",
+                    "Common_ClickOkMID",
+                    "Common_ReturnClick"
+                ]
+            }
+        },
+        "rate_limit": 200,
+        "next": [
+            "Common_CloseClick",
+            "Common_ClickOkMID",
+            "Common_ReturnClick",
+            "Common_ClickSkip",
+            "Interaction_ReturnHomeInterruptionDone"
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "task": [
+        {
+            "name": "StartToHome",
+            "label": "$task.StartToHome.label",
+            "description": "$task.StartToHome.description",
+            "entry": "Startup_ToHome",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ]
+        }
+    ]
+}

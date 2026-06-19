@@ -1,0 +1,116 @@
+{
+    "task": [
+        {
+            "name": "WonderPick",
+            "label": "$task.WonderPick.label",
+            "description": "$task.WonderPick.description",
+            "entry": "WonderPick_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ],
+            "option": [
+                "WonderPickStrategy",
+                "WonderPickUseHourglass"
+            ]
+        }
+    ],
+    "option": {
+        "WonderPickUseHourglass": {
+            "type": "switch",
+            "label": "$option.WonderPickUseHourglass.label",
+            "description": "$option.WonderPickUseHourglass.description",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.WonderPickUseHourglass.No.label",
+                    "description": "$option.WonderPickUseHourglass.No.description",
+                    "pipeline_override": {
+                        "WonderPick_EnergyRecoverPolicy": {
+                            "next": [
+                                "WonderPick_NoEnergyExitFlow"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.WonderPickUseHourglass.Yes.label",
+                    "description": "$option.WonderPickUseHourglass.Yes.description",
+                    "pipeline_override": {
+                        "WonderPick_EnergyRecoverPolicy": {
+                            "next": [
+                                "WonderPick_RecoverEnergyFlow"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "WonderPickStrategy": {
+            "type": "select",
+            "label": "$option.WonderPickStrategy.label",
+            "description": "$option.WonderPickStrategy.description",
+            "default_case": "FirstPlayer",
+            "cases": [
+                {
+                    "name": "FirstPlayer",
+                    "label": "$option.WonderPickStrategy.FirstPlayer.label",
+                    "description": "$option.WonderPickStrategy.FirstPlayer.description",
+                    "pipeline_override": {
+                        "WonderPickScout_SelectedStrategy": {
+                            "next": [
+                                "WonderPickScout_SelectFirstPlayer"
+                            ]
+                        }
+                    }
+                }
+                // TODO: 这些策略节点仍是占位，完成识别与点击逻辑后再恢复到 MXU 选项中。
+                // ,
+                // {
+                //     "name": "NewCardOnly",
+                //     "label": "$option.WonderPickStrategy.NewCardOnly.label",
+                //     "description": "$option.WonderPickStrategy.NewCardOnly.description",
+                //     "pipeline_override": {
+                //         "WonderPickScout_SelectedStrategy": {
+                //             "next": [
+                //                 "WonderPickScout_SelectNewCard"
+                //             ]
+                //         }
+                //     }
+                // },
+                // {
+                //     "name": "HighRareCard",
+                //     "label": "$option.WonderPickStrategy.HighRareCard.label",
+                //     "description": "$option.WonderPickStrategy.HighRareCard.description",
+                //     "pipeline_override": {
+                //         "WonderPickScout_SelectedStrategy": {
+                //             "next": [
+                //                 "WonderPickScout_SelectHRareCard"
+                //             ]
+                //         }
+                //     }
+                // },
+                // {
+                //     "name": "RareCard",
+                //     "label": "$option.WonderPickStrategy.RareCard.label",
+                //     "description": "$option.WonderPickStrategy.RareCard.description",
+                //     "pipeline_override": {
+                //         "WonderPickScout_SelectedStrategy": {
+                //             "next": [
+                //                 "WonderPickScout_SelectRareCard"
+                //             ]
+                //         }
+                //     }
+                // }
+            ]
+        }
+    }
+}

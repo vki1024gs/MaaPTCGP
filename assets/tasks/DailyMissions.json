@@ -1,0 +1,20 @@
+{
+    "task": [
+        {
+            "name": "ClaimDailyMissions",
+            "label": "$task.ClaimDailyMissions.label",
+            "description": "$task.ClaimDailyMissions.description",
+            "entry": "DailyMissions_Start",
+            "controller": [
+                "ADB"
+            ],
+            "resource": [
+                "Default",
+                "Dev"
+            ],
+            "group": [
+                "DailyRoutine"
+            ]
+        }
+    ]
+}
