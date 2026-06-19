@@ -66,7 +66,7 @@ MaaPTCGP 的 MXU 界面支持中文、英文等多种语言，但脚本功能目
 
 开发调试时，可以在 MXU 中选择 `Dev` 资源，直接读取源码中的 `assets/resource`。
 
-macOS 版目前未进行 Apple 公证。首次打开 dmg 版本时，系统可能提示无法检查恶意软件；如果你确认来源为本项目 GitHub Release，可前往 `系统设置 -> 隐私与安全性`，在一小时内选择 `仍要打开`。
+macOS 版目前未进行 Apple 公证。无论下载 tar.gz 还是 dmg，首次打开时都可能提示无法检查恶意软件；如果你确认来源为本项目 GitHub Release，可前往 `系统设置 -> 隐私与安全性`，在一小时内选择 `仍要打开`，也可对解压后的目录执行 `xattr -dr com.apple.quarantine <MaaPTCGP目录>` 后再打开。
 
 ## 计划中的功能与方向
 

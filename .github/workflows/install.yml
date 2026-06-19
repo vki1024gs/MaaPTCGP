@@ -109,7 +109,7 @@ jobs:
                 "## 使用提示" \
                 "" \
                 "- 请在下方 Assets 中选择与你的系统匹配的 MaaPTCGP 安装包。" \
-                "- macOS 用户可下载 tar.gz 或 dmg；dmg 目前未公证，首次打开如被系统拦截，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”。" \
+                "- macOS 用户可下载 tar.gz 或 dmg；macOS 版目前未进行 Apple 公证，首次打开时可能被系统拦截。若确认来源可信，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”，或对解压后的目录执行 \`xattr -dr com.apple.quarantine <MaaPTCGP目录>\` 后再打开。" \
                 "- 如任务配置异常，建议在 MXU 中重新检查资源、控制器与任务选项。"
             fi
             echo "END_RELEASE_BODY"
@@ -514,7 +514,7 @@ jobs:
                 "## 使用提示" \
                 "" \
                 "- 请在下方 Assets 中选择与你的系统匹配的 MaaPTCGP 安装包。" \
-                "- macOS 用户可下载 tar.gz 或 dmg；dmg 目前未公证，首次打开如被系统拦截，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”。" \
+                "- macOS 用户可下载 tar.gz 或 dmg；macOS 版目前未进行 Apple 公证，首次打开时可能被系统拦截。若确认来源可信，可前往“系统设置 -> 隐私与安全性”并在一小时内选择“仍要打开”，或对解压后的目录执行 \`xattr -dr com.apple.quarantine <MaaPTCGP目录>\` 后再打开。" \
                 "- 如任务配置异常，建议在 MXU 中重新检查资源、控制器与任务选项。"
             fi
             echo "END_RELEASE_BODY"

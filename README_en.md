@@ -64,7 +64,7 @@ Battle, Share, and other in-development tasks in `Basic Daily Tasks` are disable
 
 For pipeline development, select the `Dev` resource in MXU to load `assets/resource` directly from source.
 
-The macOS build is not Apple-notarized yet. When opening the dmg version for the first time, macOS may say it cannot check the app for malware. If you trust the GitHub Release source, go to `System Settings -> Privacy & Security` and choose `Open Anyway` within one hour.
+The macOS build is not Apple-notarized yet. Whether you download tar.gz or dmg, macOS may say it cannot check the app for malware on first launch. If you trust the GitHub Release source, go to `System Settings -> Privacy & Security` and choose `Open Anyway` within one hour, or run `xattr -dr com.apple.quarantine <MaaPTCGP directory>` on the extracted directory before opening it again.
 
 ## Planned Features And Direction
 
