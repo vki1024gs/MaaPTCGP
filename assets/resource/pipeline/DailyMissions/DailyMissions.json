@@ -164,7 +164,7 @@
             "Navigation_ReturnHomeTarget": "DailyMissions_Start"
         },
         "next": [
-            "Navigation_ReturnHomeFlow"
+            "Navigation_AfterClickRecoveryFlow"
         ]
     },
     "DailyMissions_Start": {

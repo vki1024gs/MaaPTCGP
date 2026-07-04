@@ -211,7 +211,7 @@
             "Navigation_ReturnHomeTarget": "Mail_Start"
         },
         "next": [
-            "Navigation_ReturnHomeFlow"
+            "Navigation_AfterClickRecoveryFlow"
         ]
     },
     "Mail_Start": {

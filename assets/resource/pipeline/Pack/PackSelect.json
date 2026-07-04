@@ -52,14 +52,6 @@
             }
         }
     },
-    "PackSelect_OpenPack": {
-        "next": [
-            "PackSelect_PackChoiceStrategy"
-        ],
-        "on_error": [
-            "PackSelect_RecoverHomeThenRestart"
-        ]
-    },
     "PackSelect_PackChoiceStrategy": {
         "next": [
             "PackSelect_SelectCurrentPack"
@@ -77,6 +69,15 @@
         },
         "next": [
             "PackSelect_PackChoiceStrategy"
+        ]
+    },
+    "PackSelect_PackPageEnterGate": {
+        "timeout": 5000,
+        "next": [
+            "PackSelect_PackPageFlow"
+        ],
+        "on_error": [
+            "PackSelect_RecoverHomeThenRestart"
         ]
     },
     "PackSelect_PackPageFlow": {
@@ -115,7 +116,7 @@
             "Navigation_ReturnHomeTarget": "PackSelect_Start"
         },
         "next": [
-            "Navigation_ReturnHomeFlow"
+            "Navigation_AfterClickRecoveryFlow"
         ]
     },
     "PackSelect_SelectCurrentPack": {
@@ -130,8 +131,9 @@
                 ]
             }
         },
+        "post_delay": 3000,
         "next": [
-            "PackSelect_PackPageFlow"
+            "PackSelect_PackPageEnterGate"
         ]
     },
     "PackSelect_SelectFavoritePack": {
@@ -162,20 +164,35 @@
             "PackSelect_SelectFavoritePack"
         ]
     },
-    "PackSelect_SelectLast3Pack": {
+    "PackSelect_SelectFavoritePackMID": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    583,
+                    252,
+                    121,
+                    87
+                ],
+                "template": [
+                    "Pack/template_1781798631582.png"
+                ]
+            }
+        },
         "action": {
             "type": "Click",
             "param": {
                 "target": [
-                    123,
-                    500,
-                    59,
-                    65
+                    343,
+                    495,
+                    42,
+                    48
                 ]
             }
         },
+        "post_delay": 3000,
         "next": [
-            "PackSelect_PackPageFlow"
+            "PackSelect_PackPageEnterGate"
         ]
     },
     "PackSelect_SelectLast2Pack": {
@@ -190,8 +207,26 @@
                 ]
             }
         },
+        "post_delay": 3000,
         "next": [
-            "PackSelect_PackPageFlow"
+            "PackSelect_PackPageEnterGate"
+        ]
+    },
+    "PackSelect_SelectLast3Pack": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    123,
+                    500,
+                    59,
+                    65
+                ]
+            }
+        },
+        "post_delay": 3000,
+        "next": [
+            "PackSelect_PackPageEnterGate"
         ]
     },
     "PackSelect_Start": {
@@ -221,35 +256,5 @@
                 ]
             }
         }
-    },
-    "PackSelect_SelectFavoritePackMID": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    583,
-                    252,
-                    121,
-                    87
-                ],
-                "template": [
-                    "Pack/template_1781798631582.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    343,
-                    495,
-                    42,
-                    48
-                ]
-            }
-        },
-        "next": [
-            "PackSelect_PackPageFlow"
-        ]
     }
 }

@@ -87,6 +87,8 @@ jobs:
     needs: [meta, changelog]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+
       - name: Prepare release notes
         id: release_notes
         shell: bash
@@ -96,7 +98,9 @@ jobs:
         run: |
           {
             echo "body<<END_RELEASE_BODY"
-            if [ -n "$RELEASE_BODY" ]; then
+            if [ -f ".github/release-notes/${TAG}.md" ]; then
+              cat ".github/release-notes/${TAG}.md"
+            elif [ -n "$RELEASE_BODY" ]; then
               printf '%s\n' "$RELEASE_BODY"
             else
               printf '%s\n' \
@@ -440,6 +444,8 @@ jobs:
     needs: [meta, package_win_zip, package_linux_tarball, package_macos_dmg, changelog]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+
       - uses: actions/download-artifact@v7
         with:
           pattern: MaaPTCGP-*-zip
@@ -501,7 +507,9 @@ jobs:
         run: |
           {
             echo "body<<END_RELEASE_BODY"
-            if [ -n "$RELEASE_BODY" ]; then
+            if [ -f ".github/release-notes/${TAG}.md" ]; then
+              cat ".github/release-notes/${TAG}.md"
+            elif [ -n "$RELEASE_BODY" ]; then
               printf '%s\n' "$RELEASE_BODY"
             else
               printf '%s\n' \

@@ -1,0 +1,338 @@
+{
+    "StepUpBattle_Abort": {
+        "next": [
+            "Battle_FinishReturnHomeFlow"
+        ]
+    },
+    "StepUpBattle_ClickStartBattle": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    287,
+                    1061,
+                    138,
+                    65
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Battle_Start"
+        ]
+    },
+    "StepUpBattle_LevelPolicyFlow": {
+        "timeout": 2500,
+        "next": [
+            "StepUpBattle_SelectBeginner"
+        ]
+    },
+    "StepUpBattle_LevelSelectedFlow": {
+        "next": [
+            "StepUpBattle_SelectStageFlow"
+        ]
+    },
+    "StepUpBattle_ReEnter": {
+        "post_delay": 1000,
+        "next": [
+            "[JumpBack]Common_ClickOkMID",
+            "[JumpBack]Common_CloseClick",
+            "StepUpBattle_ReEnterStable"
+        ]
+    },
+    "StepUpBattle_ReEnterStable": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    165,
+                    1033,
+                    110,
+                    118
+                ],
+                "template": [
+                    "Battle/DeckIcon.png"
+                ]
+            }
+        },
+        "next": [
+            "StepUpBattle_SelectStageFlow"
+        ]
+    },
+    "StepUpBattle_SelectAdvanced": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    377,
+                    1016,
+                    90,
+                    231
+                ],
+                "expected": [
+                    "高級"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    118,
+                    -93,
+                    -1,
+                    -1
+                ]
+            }
+        },
+        "post_delay": 500,
+        "next": [
+            "StepUpBattle_LevelSelectedFlow"
+        ]
+    },
+    "StepUpBattle_SelectAuto": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    519,
+                    1197,
+                    60,
+                    39
+                ],
+                "expected": [
+                    "OFF"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "StepUpBattle_SelectBeginner": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    391,
+                    359,
+                    68,
+                    192
+                ],
+                "expected": [
+                    "初級"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
+        "next": [
+            "StepUpBattle_LevelSelectedFlow"
+        ]
+    },
+    "StepUpBattle_SelectBonus": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    535,
+                    464,
+                    138,
+                    716
+                ],
+                "template": [
+                    "Battle/EXPBattleBonus.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
+    },
+    "StepUpBattle_SelectDeck": {
+        "recognition": {
+            "type": "Custom",
+            "param": {
+                "custom_recognition": ""
+            }
+        },
+        "next": [
+            "StepUpBattle_StartBattleFlow"
+        ]
+    },
+    "StepUpBattle_SelectIntermediate": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    377,
+                    681,
+                    93,
+                    251
+                ],
+                "expected": [
+                    "中級"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
+        "next": [
+            "StepUpBattle_LevelSelectedFlow"
+        ]
+    },
+    "StepUpBattle_SelectRedDot": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    653,
+                    460,
+                    48,
+                    595
+                ],
+                "template": [
+                    "Battle/BattleRedDot.png"
+                ],
+                "threshold": [
+                    0.85
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    -116,
+                    118,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 500
+    },
+    "StepUpBattle_SelectStageFlow": {
+        "timeout": 2500,
+        "rate_limit": 200,
+        "next": [
+            "StepUpBattle_Selected",
+            "[JumpBack]StepUpBattle_SelectBonus",
+            "[JumpBack]StepUpBattle_SelectRedDot"
+        ],
+        "on_error": [
+            "StepUpBattle_SwipeToLast"
+        ]
+    },
+    "StepUpBattle_Selected": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    304,
+                    1061,
+                    104,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]StepUpBattle_SelectAuto",
+            "StepUpBattle_StartBattleFlow"
+        ]
+    },
+    "StepUpBattle_Start": {
+        "anchor": {
+            "Battle_ContinueTarget": "StepUpBattle_ReEnter"
+        },
+        "timeout": 2000,
+        "next": [
+            "StepUpBattle_StepUpClick"
+        ],
+        "on_error": [
+            "StepUpBattle_Abort"
+        ]
+    },
+    "StepUpBattle_StartBattleFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Battle/AutoON.png"
+                ]
+            }
+        },
+        "next": [
+            "StepUpBattle_ClickStartBattle"
+        ]
+    },
+    "StepUpBattle_StepUpClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    461,
+                    946,
+                    144,
+                    96
+                ],
+                "expected": [
+                    "分級"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "rate_limit": 400,
+        "next": [
+            "StepUpBattle_StepUpClick",
+            "StepUpBattle_LevelPolicyFlow"
+        ]
+    },
+    "StepUpBattle_SwipeToLast": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    8,
+                    1011,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        13,
+                        484,
+                        11,
+                        11
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "repeat": 2,
+        "next": [
+            "StepUpBattle_Selected",
+            "[JumpBack]StepUpBattle_SelectBonus"
+        ],
+        "on_error": [
+            "StepUpBattle_Abort"
+        ]
+    }
+}

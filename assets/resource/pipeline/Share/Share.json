@@ -103,7 +103,7 @@
             "Navigation_ReturnHomeTarget": "Share_Start"
         },
         "next": [
-            "Navigation_ReturnHomeFlow"
+            "Navigation_AfterClickRecoveryFlow"
         ]
     },
     "Share_RepeatAfterSendUntilNoTarget": {
@@ -140,6 +140,7 @@
                 ]
             }
         },
+        "timeout": 2000,
         "next": [
             "Share_SelectCard"
         ],

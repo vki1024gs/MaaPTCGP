@@ -80,7 +80,7 @@
             "Navigation_ReturnHomeTarget": "BattleEntry_Start"
         },
         "next": [
-            "Navigation_ReturnHomeFlow"
+            "Navigation_AfterClickRecoveryFlow"
         ]
     },
     "BattleEntry_Start": {

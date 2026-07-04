@@ -74,6 +74,77 @@
                             ]
                         }
                     }
+                },
+                {
+                    "name": "RandomBattle",
+                    "label": "$option.BattleMode.RandomBattle.label",
+                    "description": "$option.BattleMode.RandomBattle.description",
+                    "pipeline_override": {
+                        "BattleEntry_ModeFlow": {
+                            "next": [
+                                "RandomBattle_Start"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "StepUpBattle",
+                    "label": "$option.BattleMode.StepUpBattle.label",
+                    "description": "$option.BattleMode.StepUpBattle.description",
+                    "option": [
+                        "StepUpBattleLevel"
+                    ],
+                    "pipeline_override": {
+                        "BattleEntry_ModeFlow": {
+                            "next": [
+                                "StepUpBattle_Start"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "StepUpBattleLevel": {
+            "type": "select",
+            "label": "$option.StepUpBattleLevel.label",
+            "description": "$option.StepUpBattleLevel.description",
+            "default_case": "Beginner",
+            "cases": [
+                {
+                    "name": "Beginner",
+                    "label": "$option.StepUpBattleLevel.Beginner.label",
+                    "description": "$option.StepUpBattleLevel.Beginner.description",
+                    "pipeline_override": {
+                        "StepUpBattle_LevelPolicyFlow": {
+                            "next": [
+                                "StepUpBattle_SelectBeginner"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Intermediate",
+                    "label": "$option.StepUpBattleLevel.Intermediate.label",
+                    "description": "$option.StepUpBattleLevel.Intermediate.description",
+                    "pipeline_override": {
+                        "StepUpBattle_LevelPolicyFlow": {
+                            "next": [
+                                "StepUpBattle_SelectIntermediate"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Advanced",
+                    "label": "$option.StepUpBattleLevel.Advanced.label",
+                    "description": "$option.StepUpBattleLevel.Advanced.description",
+                    "pipeline_override": {
+                        "StepUpBattle_LevelPolicyFlow": {
+                            "next": [
+                                "StepUpBattle_SelectAdvanced"
+                            ]
+                        }
+                    }
                 }
             ]
         },

@@ -73,7 +73,6 @@
         },
         "repeat": 2,
         "repeat_delay": 100,
-        "post_delay": 120,
         "rate_limit": 100
     },
     "Common_CloseClick": {
@@ -98,7 +97,7 @@
         "action": {
             "type": "Click"
         },
-        "post_delay": 500
+        "post_delay": 600
     },
     "Common_ContinueClick": {
         "recognition": {
@@ -117,7 +116,8 @@
         },
         "action": {
             "type": "Click"
-        }
+        },
+        "post_delay": 500
     },
     "Common_HomeClick": {
         "recognition": {
@@ -157,7 +157,7 @@
         "action": {
             "type": "Click"
         },
-        "post_delay": 500
+        "post_delay": 600
     },
     "Common_ScrollDown": {
         "action": {

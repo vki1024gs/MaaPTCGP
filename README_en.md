@@ -28,7 +28,7 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 - 🎴 Open available daily packs
 - 🎟️ Claim the daily free shop ticket
 - 🔮 Run Wonder Pick reward flow
-- ⚔️ Run event battle flow
+- ⚔️ Run event, random, and step-up battle flows
 - 🎁 Share selected-rarity cards with starred friends
 - 📋 Claim daily mission rewards
 
@@ -60,7 +60,7 @@ If you use English, Japanese, or another in-game language, recognition errors, s
 5. Select the tasks you need, or run `Basic Daily Tasks`.
 6. For first-time use, run a small number of tasks first and confirm emulator resolution, game language, and recognition stability before combining more tasks.
 
-Battle, Share, and other in-development tasks in `Basic Daily Tasks` are disabled by default. Enable them manually only after testing them separately.
+Battle, Share, and other in-development tasks in `Basic Daily Tasks` are disabled by default. Enable them manually only after testing them separately. Battle mode currently supports event battles, random battles, and step-up battles; random and step-up battles do not use event battle point recovery.
 
 For pipeline development, select the `Dev` resource in MXU to load `assets/resource` directly from source.
 
@@ -70,7 +70,6 @@ The macOS build is not Apple-notarized yet. Whether you download tar.gz or dmg, 
 
 ### Near-Term Features
 
-- Solo ranked battles
 - More Wonder Pick selection strategies
 - More card-sharing rarity and recipient strategies
 - Continue expanding task-bar auto-claim state handling, gradually moving it from an experimental utility toward a stable feature
@@ -80,6 +79,7 @@ The macOS build is not Apple-notarized yet. Whether you download tar.gz or dmg, 
 - Reduce fixed waits and redundant delays while preserving stability.
 - Keep high-frequency daily flows stable first, then expand into more complex tasks that depend on heavier state checks.
 - Improve recovery and home-convergence logic to reduce the chance of tasks getting stuck on intermediate pages.
+- Improve post-click fallback checks for pack opening and battle flows, reducing interruptions caused by occasional missed taps or delayed page transitions.
 - Keep refining templates, ROI, and OCR checks so maintenance stays clear and more UI states can be supported over time.
 
 ## Feedback

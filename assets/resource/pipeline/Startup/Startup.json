@@ -117,12 +117,14 @@
             "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    180,
-                    1040,
-                    360,
-                    120
+                    191,
+                    644,
+                    352,
+                    127
                 ],
-                "template": "Startup/title_tap_start.png",
+                "template": [
+                    "Startup/title_tap_start.png"
+                ],
                 "threshold": 0.85
             }
         },
@@ -140,6 +142,7 @@
         },
         "post_delay": 1000,
         "next": [
+            "Startup_RecoveryEntry",
             "Navigation_ReturnHomeFlow"
         ]
     }

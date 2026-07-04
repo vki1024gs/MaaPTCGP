@@ -1,4 +1,28 @@
 {
+    "Navigation_AfterClickRecoveryFlow": {
+        "rate_limit": 200,
+        "next": [
+            "Navigation_AfterClickStableTransit",
+            "Startup_RecoveryEntry",
+            "[JumpBack]Interaction_ReturnHomeInterruptionFlow"
+        ],
+        "on_error": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
+    "Navigation_AfterClickStableTransit": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "Navigation_Stable"
+                ]
+            }
+        },
+        "next": [
+            "Navigation_ReturnHomeFlow"
+        ]
+    },
     "Navigation_ClickHomeButton": {
         "max_hit": 2,
         "recognition": {
@@ -26,6 +50,19 @@
         "repeat_delay": 200,
         "post_delay": 1000
     },
+    "Navigation_DateChangedRecoveryTransit": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "Startup_ConfirmDateChanged"
+                ]
+            }
+        },
+        "next": [
+            "Navigation_AfterClickRecoveryFlow"
+        ]
+    },
     "Navigation_NotStableWait": {
         "recognition": {
             "type": "TemplateMatch",
@@ -47,14 +84,17 @@
         "post_delay": 1000
     },
     "Navigation_ReturnHomeFlow": {
-        "timeout": 500000,
         "rate_limit": 200,
         "next": [
-            "Startup_RecoveryEntry",
-            "[JumpBack]Interaction_ReturnHomeInterruptionFlow",
+            "Navigation_DateChangedRecoveryTransit",
             "[JumpBack]Navigation_ClickHomeButton",
             "[JumpBack]Navigation_NotStableWait",
-            "Navigation_Stable"
+            "Navigation_Stable",
+            "[JumpBack]Common_ReturnClick",
+            "[JumpBack]Interaction_ReturnHomeInterruptionFlow"
+        ],
+        "on_error": [
+            "Navigation_AfterClickRecoveryFlow"
         ]
     },
     "Navigation_Stable": {
@@ -71,7 +111,7 @@
                     "Common/MailandGift.png"
                 ],
                 "threshold": [
-                    0.85
+                    0.9
                 ]
             }
         },

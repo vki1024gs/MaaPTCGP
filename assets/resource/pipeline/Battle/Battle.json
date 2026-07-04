@@ -80,7 +80,9 @@
         "next": [
             "[JumpBack]Common_HomeClick",
             "[JumpBack]Navigation_NotStableWait",
-            "Battle_Finished"
+            "Battle_Finished",
+            "[JumpBack]Common_CloseClick",
+            "[JumpBack]Common_ClickOkMID"
         ]
     },
     "Battle_Finished": {
@@ -130,8 +132,8 @@
                 "roi": [
                     30,
                     1045,
-                    121,
-                    82
+                    242,
+                    87
                 ],
                 "template": [
                     "Battle/DeckIcon2.png",

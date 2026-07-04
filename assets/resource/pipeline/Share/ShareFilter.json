@@ -152,8 +152,7 @@
             "type": "Click"
         },
         "next": [
-            "[JumpBack]Common_ClickOkRIGHT",
-            "Utils_SwipeUpToSend"
+            "ShareFilter_SharingFlow"
         ]
     },
     "ShareFilter_SelectedRarity": {
@@ -251,6 +250,32 @@
         },
         "next": [
             "ShareFilter_SortedCardsDesc"
+        ]
+    },
+    "ShareFilter_SharingFlow": {
+        "next": [
+            "[JumpBack]Utils_SwipeUpToSend",
+            "[JumpBack]Common_ClickOkRIGHT",
+            "ShareFilter_CardShared"
+        ]
+    },
+    "ShareFilter_CardShared": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    284,
+                    957,
+                    152,
+                    85
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "next": [
+            "Share_AfterSendPolicy"
         ]
     }
 }
