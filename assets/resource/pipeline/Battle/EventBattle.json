@@ -26,22 +26,17 @@
             "EventBattle_SelectStageFlow"
         ],
         "on_error": [
-            "Battle_FinishReturnHomeFlow"
+            "EventBattle_NoBattlePointVisible"
         ]
     },
     "EventBattle_BattlePointPolicyFlow": {
         "next": [
-            "EventBattle_BattlePointCheck"
+            "EventBattle_NoBattlePointStopFlow"
         ]
     },
     "EventBattle_BattlePointRecoverFlow": {
-        "timeout": 2000,
-        "rate_limit": 500,
         "next": [
-            "EventBattle_NoBattlePointVisible"
-        ],
-        "on_error": [
-            "EventBattle_SelectStageFlow"
+            "EventBattle_UseBattlePointItemFlow"
         ]
     },
     "EventBattle_ClickStartBattle": {
@@ -87,7 +82,52 @@
         "rate_limit": 400,
         "next": [
             "EventBattle_EventClick",
+            "EventBattle_BattlePointCheck"
+        ]
+    },
+    "EventBattle_NoBattlePointDialogReturnFlow": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    190,
+                    220,
+                    360,
+                    80
+                ],
+                "expected": [
+                    "恢復活動力"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "EventBattle_NoBattlePointReturned"
+        ]
+    },
+    "EventBattle_NoBattlePointReturned": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    1064,
+                    116,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "next": [
             "EventBattle_BattlePointPolicyFlow"
+        ]
+    },
+    "EventBattle_NoBattlePointStop": {},
+    "EventBattle_NoBattlePointStopFlow": {
+        "next": [
+            "EventBattle_NoBattlePointStop"
         ]
     },
     "EventBattle_NoBattlePointVisible": {
@@ -110,7 +150,10 @@
         },
         "inverse": true,
         "next": [
-            "EventBattle_UseBattlePointItemFlow"
+            "EventBattle_BattlePointPolicyFlow"
+        ],
+        "on_error": [
+            "EventBattle_SelectStageFlow"
         ]
     },
     "EventBattle_NoItem": {
@@ -260,6 +303,7 @@
         "timeout": 2500,
         "rate_limit": 200,
         "next": [
+            "EventBattle_NoBattlePointDialogReturnFlow",
             "EventBattle_Selected",
             "[JumpBack]EventBattle_SelectBonus",
             "[JumpBack]EventBattle_SelectRedDot"
@@ -290,7 +334,7 @@
     },
     "EventBattle_Start": {
         "anchor": {
-            "Battle_ContinueTarget": "EventBattle_BattlePointPolicyFlow"
+            "Battle_ContinueTarget": "EventBattle_BattlePointCheck"
         },
         "timeout": 2000,
         "next": [
@@ -317,6 +361,12 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
+                "roi": [
+                    608,
+                    30,
+                    110,
+                    93
+                ],
                 "template": [
                     "Battle/RecoveryBP.png"
                 ]
@@ -326,10 +376,10 @@
             "type": "Click"
         },
         "next": [
+            "EventBattle_NoItem",
             "[JumpBack]EventBattle_UseItem",
             "[JumpBack]Common_ClickOkRIGHT",
             "[JumpBack]Common_ClickOkMID",
-            "EventBattle_NoItem",
             "EventBattle_BattlePointCheck"
         ]
     },

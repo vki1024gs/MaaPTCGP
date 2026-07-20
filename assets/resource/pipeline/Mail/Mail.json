@@ -116,7 +116,7 @@
                 "threshold": 0.85
             }
         },
-        "rate_limit": 200,
+        "rate_limit": 100,
         "next": [
             "Mail_NoGiftCloseGiftBox",
             "[JumpBack]Mail_ClickClaimAll",

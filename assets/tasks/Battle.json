@@ -161,7 +161,7 @@
                     "pipeline_override": {
                         "EventBattle_BattlePointPolicyFlow": {
                             "next": [
-                                "EventBattle_BattlePointCheck"
+                                "EventBattle_NoBattlePointStopFlow"
                             ]
                         }
                     }
