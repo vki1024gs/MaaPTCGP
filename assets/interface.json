@@ -7,7 +7,7 @@
     "welcome": "$welcome.file",
     "icon": "locales/MaaPTCGP-Tiny.png",
     "github": "https://github.com/vki1024gs/MaaPTCGP",
-    "version": "v0.2.0",
+    "version": "v0.2.1",
     "controller": [
         {
             "name": "ADB",

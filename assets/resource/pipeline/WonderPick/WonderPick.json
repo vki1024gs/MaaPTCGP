@@ -1,4 +1,10 @@
 {
+    "WonderPick_AfterPickFlow": {
+        "next": [
+            "WonderPick_ThxVisible",
+            "WonderPick_ReturnedToListVisible"
+        ]
+    },
     "WonderPick_AutoRestore": {
         "recognition": {
             "type": "TemplateMatch",
@@ -76,11 +82,12 @@
     },
     "WonderPick_ClickUtlThx": {
         "anchor": {
-            "Interaction_AddCollectionFinishTarget": "WonderPick_ThxVisible"
+            "Interaction_AddCollectionFinishTarget": "WonderPick_AfterPickFlow"
         },
         "next": [
-            "Interaction_AddCollSKIP",
+            "WonderPick_ReturnedToListVisible",
             "WonderPick_ThxVisible",
+            "Interaction_AddCollSKIP",
             "[JumpBack]WonderPick_Click"
         ]
     },
@@ -202,6 +209,11 @@
             "WonderPick_FinishFlow"
         ]
     },
+    "WonderPick_NoStaminaOverflowFlow": {
+        "next": [
+            "WonderPick_FinishFlow"
+        ]
+    },
     "WonderPick_PickCard": {
         "recognition": {
             "type": "OCR",
@@ -238,6 +250,50 @@
         },
         "next": [
             "Navigation_AfterClickRecoveryFlow"
+        ]
+    },
+    "WonderPick_ReturnedToListFlow": {
+        "next": [
+            "WonderPick_StaminaFullVisible",
+            "WonderPick_NoStaminaOverflowFlow"
+        ]
+    },
+    "WonderPick_ReturnedToListVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    275,
+                    41,
+                    175,
+                    59
+                ],
+                "expected": [
+                    "得卡挑戰"
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_ReturnedToListFlow"
+        ]
+    },
+    "WonderPick_StaminaFullVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    398,
+                    116,
+                    40,
+                    38
+                ],
+                "template": [
+                    "WonderPick/WPPoint1.png"
+                ]
+            }
+        },
+        "next": [
+            "WonderPickScout_SelectPlayerFlow"
         ]
     },
     "WonderPick_Start": {

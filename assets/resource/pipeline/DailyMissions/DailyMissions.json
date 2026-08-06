@@ -58,12 +58,12 @@
         },
         "post_delay": 1000,
         "timeout": 3000,
-        "next": [
-            "DailyMissions_GetDailyRewardFlow"
-        ],
         "on_error": [
             "DailyMissions_DailyNotVisible",
             "DailyMissions_RecoverHomeThenRestart"
+        ],
+        "next": [
+            "DailyMissions_OpenTaskOverviewFlow"
         ]
     },
     "DailyMissions_EntryFlow": {
@@ -92,28 +92,6 @@
                 ]
             }
         }
-    },
-    "DailyMissions_GetDailyRewardFlow": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    13,
-                    1061,
-                    175,
-                    79
-                ],
-                "expected": [
-                    "每日"
-                ]
-            }
-        },
-        "next": [
-            "DailyMissions_GetDailyRewardOK",
-            "DailyMissions_Incomplete",
-            "[JumpBack]DailyMissions_ClickGetAllReward",
-            "[JumpBack]Common_ClickOkMID"
-        ]
     },
     "DailyMissions_GetDailyRewardOK": {
         "recognition": {
@@ -159,12 +137,56 @@
         ]
     },
     "DailyMissions_NoRewardFinish": {},
+    "DailyMissions_ClickTaskOverview": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    33,
+                    1160,
+                    107,
+                    101
+                ],
+                "template": [
+                    "DailyMissions/Overall.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
     "DailyMissions_RecoverHomeThenRestart": {
         "anchor": {
             "Navigation_ReturnHomeTarget": "DailyMissions_Start"
         },
         "next": [
             "Navigation_AfterClickRecoveryFlow"
+        ]
+    },
+    "DailyMissions_SelectDailyTab": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    374,
+                    1060,
+                    98,
+                    73
+                ],
+                "expected": [
+                    "每日"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "DailyMissions_GetDailyRewardOK",
+            "DailyMissions_Incomplete",
+            "[JumpBack]DailyMissions_ClickGetAllReward",
+            "[JumpBack]Common_ClickOkMID"
         ]
     },
     "DailyMissions_Start": {
@@ -174,6 +196,31 @@
         "next": [
             "DailyMissions_EntryFlow",
             "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    },
+    "DailyMissions_OpenTaskOverviewFlow": {
+        "next": [
+            "DailyMissions_TaskOverviewVisible",
+            "[JumpBack]DailyMissions_ClickTaskOverview"
+        ]
+    },
+    "DailyMissions_TaskOverviewVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    273,
+                    58,
+                    101,
+                    62
+                ],
+                "expected": [
+                    "任務"
+                ]
+            }
+        },
+        "next": [
+            "DailyMissions_SelectDailyTab"
         ]
     }
 }

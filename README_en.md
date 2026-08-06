@@ -25,7 +25,7 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 ### 📆 Daily
 
 - 📬 Claim gift box mail rewards
-- 🎴 Open available daily packs
+- 🎴 Open available daily packs with pack selection options
 - 🎟️ Claim the daily free shop ticket
 - 🔮 Run Wonder Pick reward flow
 - ⚔️ Run event, random, and step-up battle flows
@@ -51,6 +51,8 @@ MaaPTCGP's MXU interface supports multiple languages, including Chinese and Engl
 
 If you use English, Japanese, or another in-game language, recognition errors, stuck flows, or task failures may occur. If an error happens, switch the game to Chinese first and try again. If the issue still happens after switching, please report it.
 
+Game updates may change the UI layout and temporarily affect recognition. If a task fails after an update, stop that task and report it with logs and screenshots.
+
 ## Quick Start
 
 1. Download the package for your system from GitHub Releases. On macOS, use tar.gz or dmg.
@@ -68,19 +70,9 @@ The macOS build is not Apple-notarized yet. Whether you download tar.gz or dmg, 
 
 ## Planned Features And Direction
 
-### Near-Term Features
-
-- More Wonder Pick selection strategies
-- More card-sharing rarity and recipient strategies
-- Continue expanding task-bar auto-claim state handling, gradually moving it from an experimental utility toward a stable feature
-
-### Development Direction
-
-- Reduce fixed waits and redundant delays while preserving stability.
-- Keep high-frequency daily flows stable first, then expand into more complex tasks that depend on heavier state checks.
-- Improve recovery and home-convergence logic to reduce the chance of tasks getting stuck on intermediate pages.
-- Improve post-click fallback checks for pack opening and battle flows, reducing interruptions caused by occasional missed taps or delayed page transitions.
-- Keep refining templates, ROI, and OCR checks so maintenance stays clear and more UI states can be supported over time.
+- Expand Wonder Pick and card-sharing strategies
+- Continue improving battle and other automation flows
+- Track game UI updates and improve daily-task stability and recovery
 
 ## Feedback
 

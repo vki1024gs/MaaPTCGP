@@ -26,11 +26,45 @@
                 ]
             }
         },
+        "post_delay": 500,
         "next": [
-            "WonderPick_ConfirmPickTarget"
+            "WonderPickScout_SelectionAcceptedGate",
+            "[JumpBack]WonderPickScout_SelectFirstPlayer"
         ],
         "on_error": [
             "WonderPickScout_AbortNoCandidate"
+        ]
+    },
+    "WonderPickScout_SelectFreeChallenge": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    295,
+                    929,
+                    127,
+                    59
+                ],
+                "expected": [
+                    "Free"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    0,
+                    -100,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 500,
+        "next": [
+            "WonderPickScout_SelectionAcceptedGate",
+            "[JumpBack]WonderPickScout_SelectFreeChallenge"
         ]
     },
     "WonderPickScout_SelectHRareCard": {
@@ -45,21 +79,23 @@
     },
     "WonderPickScout_SelectPlayerFlow": {
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    298,
-                    932,
-                    135,
-                    73
+                    275,
+                    41,
+                    175,
+                    59
                 ],
-                "template": [
-                    "WonderPick/WPicon.png"
+                "expected": [
+                    "得卡挑戰"
                 ]
             }
         },
+        "pre_delay": 1000,
         "timeout": 10000,
         "next": [
+            "WonderPickScout_SelectFreeChallenge",
             "WonderPickScout_SelectedStrategy"
         ],
         "on_error": [
@@ -74,6 +110,25 @@
     "WonderPickScout_SelectedStrategy": {
         "next": [
             "WonderPickScout_SelectFirstPlayer"
+        ]
+    },
+    "WonderPickScout_SelectionAcceptedGate": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    298,
+                    895,
+                    133,
+                    42
+                ],
+                "expected": [
+                    "得卡挑戰"
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_ConfirmPickTarget"
         ]
     }
 }
