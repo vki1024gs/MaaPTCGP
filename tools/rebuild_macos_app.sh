@@ -1,9 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Local development usage:
+#   tools/rebuild_macos_app.sh install "$HOME/Applications/MaaPTCGP.app" v0.1.9
+#   tools/rebuild_macos_app.sh install "$HOME/Applications/MaaPTCGP.app" v0.1.9 MaaPTCGP io.github.vki1024gs.maaptcgp /path/to/assets/resource
+#
+# For versions below 1.0, the script automatically rewrites the generated app's
+# Dev resource path. An explicitly supplied sixth argument takes priority;
+# otherwise this checkout's assets/resource directory is used. This keeps the
+# source interface.json unchanged while allowing pipeline/image edits to take
+# effect without rebuilding the app. The generated development app contains a
+# local absolute path and must not be distributed.
+#
+# Versions 1.0 and above do not receive a local Dev path. Public release input
+# should already have Dev removed by tools/install.py.
+#
+# After a successful build, the output directory is opened in Finder with an
+# Applications shortcut beside the app, so the app can be installed by dragging
+# it onto Applications. Set MXU_OPEN_INSTALL_WINDOW=0 for CI or scripted builds.
+
 if [[ $# -lt 3 ]]; then
-  echo "Usage: tools/rebuild_macos_app.sh <install_dir> <output_app> <version> [app_name] [bundle_id]" >&2
+  echo "Usage: tools/rebuild_macos_app.sh <install_dir> <output_app> <version> [app_name] [bundle_id] [dev_resource_path]" >&2
   echo "Example: tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.1.9" >&2
+  echo "Custom Dev path: tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.1.9 MaaPTCGP io.github.vki1024gs.maaptcgp /path/to/assets/resource" >&2
   exit 1
 fi
 
@@ -12,6 +31,7 @@ OUTPUT_APP="$2"
 FULL_VERSION="$3"
 APP_NAME="${4:-MaaPTCGP}"
 BUNDLE_ID="${5:-io.github.vki1024gs.maaptcgp}"
+CUSTOM_DEV_RESOURCE_PATH="${6:-}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -49,19 +69,8 @@ mkdir -p "$APP_BUNDLE/Contents/Resources"
 ICON_PLIST_ENTRY=""
 
 if [[ -f "$ICON_SOURCE" ]]; then
-  ICONSET="$WORK_DIR/$APP_NAME.iconset"
-  mkdir "$ICONSET"
-  sips -z 16 16     "$ICON_SOURCE" --out "$ICONSET/icon_16x16.png" >/dev/null
-  sips -z 32 32     "$ICON_SOURCE" --out "$ICONSET/icon_16x16@2x.png" >/dev/null
-  sips -z 32 32     "$ICON_SOURCE" --out "$ICONSET/icon_32x32.png" >/dev/null
-  sips -z 64 64     "$ICON_SOURCE" --out "$ICONSET/icon_32x32@2x.png" >/dev/null
-  sips -z 128 128   "$ICON_SOURCE" --out "$ICONSET/icon_128x128.png" >/dev/null
-  sips -z 256 256   "$ICON_SOURCE" --out "$ICONSET/icon_128x128@2x.png" >/dev/null
-  sips -z 256 256   "$ICON_SOURCE" --out "$ICONSET/icon_256x256.png" >/dev/null
-  sips -z 512 512   "$ICON_SOURCE" --out "$ICONSET/icon_256x256@2x.png" >/dev/null
-  sips -z 512 512   "$ICON_SOURCE" --out "$ICONSET/icon_512x512.png" >/dev/null
-  sips -z 1024 1024 "$ICON_SOURCE" --out "$ICONSET/icon_512x512@2x.png" >/dev/null
-  if iconutil -c icns "$ICONSET" -o "$APP_BUNDLE/Contents/Resources/app.icns" 2>/dev/null; then
+  if sips -s format icns "$ICON_SOURCE" \
+    --out "$APP_BUNDLE/Contents/Resources/app.icns" >/dev/null 2>&1; then
     ICON_PLIST_ENTRY=$'    <key>CFBundleIconFile</key>\n    <string>app.icns</string>'
   else
     echo "Warning: failed to build app icon; continuing without CFBundleIconFile." >&2
@@ -73,7 +82,50 @@ fi
 # metadata from source files is not carried into the locally rebuilt app.
 ditto --noextattr --norsrc "$INSTALL_DIR" "$APP_BUNDLE/Contents/MacOS"
 
+# The multi-instance toggle keeps the official MXU beside the active binary so
+# it can restore without rebuilding. That runtime state must not be embedded in
+# an app bundle: codesign treats the backup executable as a nested component,
+# and distributing it would duplicate an installation-specific restore point.
+rm -rf "$APP_BUNDLE/Contents/MacOS/.mxu-multi-instance-state"
+
 SHORT_VERSION="$(echo "$FULL_VERSION" | sed -E 's/^v//' | sed -E 's/-.*//')"
+VERSION_MAJOR="${SHORT_VERSION%%.*}"
+
+if [[ "$VERSION_MAJOR" =~ ^[0-9]+$ ]] && (( VERSION_MAJOR < 1 )); then
+  APP_INTERFACE="$APP_BUNDLE/Contents/MacOS/interface.json"
+  DEV_RESOURCE_PATH="${CUSTOM_DEV_RESOURCE_PATH:-$PROJECT_ROOT/assets/resource}"
+
+  if [[ ! -f "$APP_INTERFACE" ]]; then
+    echo "Missing app interface for Dev path injection: $APP_INTERFACE" >&2
+    exit 1
+  fi
+  if [[ ! -d "$DEV_RESOURCE_PATH" ]]; then
+    echo "Missing source Dev resource directory: $DEV_RESOURCE_PATH" >&2
+    exit 1
+  fi
+
+  python3 - "$APP_INTERFACE" "$DEV_RESOURCE_PATH" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+interface_path = Path(sys.argv[1])
+dev_resource_path = str(Path(sys.argv[2]).resolve())
+interface = json.loads(interface_path.read_text(encoding="utf-8"))
+
+for resource in interface.get("resource", []):
+    if resource.get("name") == "Dev":
+        resource["path"] = [dev_resource_path]
+        interface_path.write_text(
+            json.dumps(interface, ensure_ascii=False, indent=4) + "\n",
+            encoding="utf-8",
+        )
+        print(f"Injected local Dev resource path: {dev_resource_path}")
+        break
+else:
+    raise SystemExit('Dev resource was not found in the generated app interface.json')
+PY
+fi
 
 cat > "$APP_BUNDLE/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -136,3 +188,17 @@ fi
 
 echo "Note: this app is rebuilt for local development/testing with ad-hoc signing."
 echo "Note: this does not provide Developer ID signing or Apple notarization."
+
+APPLICATIONS_LINK="$OUTPUT_PARENT/Applications"
+if [[ -L "$APPLICATIONS_LINK" ]]; then
+  ln -sfn /Applications "$APPLICATIONS_LINK"
+elif [[ -e "$APPLICATIONS_LINK" ]]; then
+  echo "Warning: $APPLICATIONS_LINK already exists and is not a symlink; leaving it unchanged." >&2
+else
+  ln -s /Applications "$APPLICATIONS_LINK"
+fi
+
+if [[ "${MXU_OPEN_INSTALL_WINDOW:-1}" != "0" ]]; then
+  open "$OUTPUT_PARENT"
+  echo "Opened install window: drag $OUTPUT_NAME onto Applications."
+fi

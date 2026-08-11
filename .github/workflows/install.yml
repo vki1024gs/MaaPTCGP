@@ -9,7 +9,7 @@ env:
   # - 设置 VERSION 为空字符串时，下载 latest 版本
   # - 设置 VERSION 为具体版本号时（如 v1.2.3），下载指定版本
   MAAFW_VERSION: ""
-  MXU_VERSION: ""
+  MXU_VERSION: "v2.3.1"
   # 发布产物上传模式：
   # - direct：各平台 job 直接上传到 GitHub Release Assets，不占 Actions artifact quota
   # - artifact：使用 Actions artifacts 在 job 间中转，最后统一发布

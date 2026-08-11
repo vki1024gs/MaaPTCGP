@@ -177,6 +177,7 @@ def install_resource():
     copytree(working_dir / "assets" / "locales", install_path / "locales")
 
     shutil.copy2(working_dir / "assets" / "interface.json", install_path)
+    install_macos_adb_pretask()
     normalize_release_interface()
     normalize_release_tasks()
 
@@ -265,6 +266,8 @@ def normalize_release_interface():
     interface = load_json(interface_path)
 
     interface["version"] = version
+    if os_name != "macos":
+        interface.pop("pretask", None)
     if is_dev_install_version():
         interface["resource"] = prefer_default_resource(interface.get("resource", []))
     else:
@@ -281,6 +284,22 @@ def normalize_release_interface():
     dump_json(interface_path, interface)
 
 
+def install_macos_adb_pretask():
+    if os_name != "macos":
+        return
+
+    source = working_dir / "tools" / "maa_adb_autoconnect_macos.sh"
+    target = install_path / "bin" / "maa-adb-autoconnect"
+    if not source.is_file():
+        print(f"Missing macOS ADB pretask helper: {source}")
+        sys.exit(1)
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
+    mode = target.stat().st_mode
+    target.chmod(mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+
 def normalize_release_tasks():
     for task_file in (install_path / "tasks").rglob("*.json"):
         data = load_json(task_file)
@@ -295,6 +314,7 @@ def normalize_cli_interface():
     interface_path = install_cli_path / "interface.json"
     interface = load_json(interface_path)
     interface["version"] = version
+    interface.pop("pretask", None)
     interface["resource"] = prefer_dev_resource(interface.get("resource", []))
     dump_json(interface_path, interface)
 
@@ -476,6 +496,19 @@ def verify_install():
         print('Install verification failed. Release interface must not include "Dev" resource.')
         sys.exit(1)
 
+    pretask = interface.get("pretask")
+    helper = install_path / "bin" / "maa-adb-autoconnect"
+    if os_name == "macos":
+        if not isinstance(pretask, dict) or pretask.get("exec") != "./bin/maa-adb-autoconnect":
+            print("Install verification failed. macOS ADB pretask is missing or invalid.")
+            sys.exit(1)
+        if not helper.is_file() or not (helper.stat().st_mode & stat.S_IXUSR):
+            print("Install verification failed. macOS ADB pretask helper is not executable.")
+            sys.exit(1)
+    elif pretask is not None or helper.exists():
+        print("Install verification failed. macOS ADB pretask leaked into a non-macOS package.")
+        sys.exit(1)
+
     if not is_dev_install_version():
         for task_file in (install_path / "tasks").rglob("*.json"):
             text = task_file.read_text(encoding="utf-8")
@@ -499,6 +532,11 @@ def verify_cli_install():
         print("CLI install verification failed. Missing:")
         for path in missing:
             print(f"  {path}")
+        sys.exit(1)
+
+    interface = load_json(install_cli_path / "interface.json")
+    if interface.get("pretask") is not None:
+        print("CLI install verification failed. MXU-only macOS pretask leaked into the CLI package.")
         sys.exit(1)
 
 

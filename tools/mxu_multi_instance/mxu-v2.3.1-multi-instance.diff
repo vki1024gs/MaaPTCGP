@@ -1,0 +1,65 @@
+diff --git a/src/components/TabBar.tsx b/src/components/TabBar.tsx
+index 5e506a8..82d8f6f 100644
+--- a/src/components/TabBar.tsx
++++ b/src/components/TabBar.tsx
+@@ -329,3 +329,3 @@ export function TabBar() {
+-  const handleMouseDown = useCallback((e: React.MouseEvent, index: number) => {
+-    // 只响应拖拽手柄的点击
+-    if (!(e.target as HTMLElement).closest('.drag-handle')) return;
++  const handleMouseDown = useCallback(
++    (e: React.MouseEvent, index: number) => {
++      if (topBarLocked) return;
+@@ -333,3 +333,8 @@ export function TabBar() {
+-    e.preventDefault();
+-    setDragState({ isDragging: true, draggedIndex: index, dragOverIndex: null });
+-  }, []);
++      // 只响应拖拽手柄的点击
++      if (!(e.target as HTMLElement).closest('.drag-handle')) return;
++
++      e.preventDefault();
++      setDragState({ isDragging: true, draggedIndex: index, dragOverIndex: null });
++    },
++    [topBarLocked],
++  );
+@@ -384,8 +389 @@ export function TabBar() {
+-      <div
+-        id="tab-bar-area"
+-        className={clsx(
+-          'flex-1 flex items-center h-full overflow-x-auto',
+-          topBarLocked && 'pointer-events-none',
+-        )}
+-        aria-disabled={topBarLocked}
+-      >
++      <div id="tab-bar-area" className="flex-1 flex items-center h-full overflow-x-auto">
+@@ -404,3 +402,7 @@ export function TabBar() {
+-              onClick={() => !topBarLocked && !isClosing && setActiveInstance(instance.id)}
+-              onDoubleClick={(e) => handleDoubleClick(e, instance.id, instance.name)}
+-              onContextMenu={(e) => handleTabContextMenu(e, instance.id, instance.name)}
++              onClick={() => !isClosing && setActiveInstance(instance.id)}
++              onDoubleClick={(e) =>
++                !topBarLocked && handleDoubleClick(e, instance.id, instance.name)
++              }
++              onContextMenu={(e) =>
++                !topBarLocked && handleTabContextMenu(e, instance.id, instance.name)
++              }
+@@ -414 +415,0 @@ export function TabBar() {
+-                topBarLocked && 'cursor-not-allowed opacity-70',
+@@ -434 +435 @@ export function TabBar() {
+-                    instances.length > 1
++                    instances.length > 1 && !topBarLocked
+@@ -438 +439,3 @@ export function TabBar() {
+-                  title={instances.length > 1 ? t('titleBar.dragToReorder') : undefined}
++                  title={
++                    instances.length > 1 && !topBarLocked ? t('titleBar.dragToReorder') : undefined
++                  }
+@@ -494 +497 @@ export function TabBar() {
+-                      disabled={instances.length <= 1}
++                      disabled={topBarLocked || instances.length <= 1}
+@@ -497 +500 @@ export function TabBar() {
+-                        instances.length > 1
++                        instances.length > 1 && !topBarLocked
+@@ -501 +504,3 @@ export function TabBar() {
+-                      title={instances.length > 1 ? t('titleBar.closeTab') : undefined}
++                      title={
++                        instances.length > 1 && !topBarLocked ? t('titleBar.closeTab') : undefined
++                      }

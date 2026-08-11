@@ -7,7 +7,7 @@
     "welcome": "$welcome.file",
     "icon": "locales/MaaPTCGP-Tiny.png",
     "github": "https://github.com/vki1024gs/MaaPTCGP",
-    "version": "v0.2.1",
+    "version": "v0.2.2",
     "controller": [
         {
             "name": "ADB",
@@ -45,6 +45,15 @@
         "zh_cn": "locales/interface/zh_cn.json",
         "zh_tw": "locales/interface/zh_tw.json",
         "en_us": "locales/interface/en_us.json"
+    },
+    "pretask": {
+        "name": "PrepareMacOSAdb",
+        "label": "$pretask.PrepareMacOSAdb.label",
+        "description": "$pretask.PrepareMacOSAdb.description",
+        "exec": "./bin/maa-adb-autoconnect",
+        "controller": [
+            "ADB"
+        ]
     },
     "task": [],
     "group": [

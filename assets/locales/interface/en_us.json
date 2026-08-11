@@ -1,4 +1,6 @@
 {
+    "pretask.PrepareMacOSAdb.label": "Prepare BlueStacks ADB",
+    "pretask.PrepareMacOSAdb.description": "Prepare the BlueStacks ADB connection before tasks start so MXU can find and connect to the emulator.",
     "task.StartToHome.label": "🚀Start Game",
     "task.StartToHome.description": "Launch the game and return to the home screen",
     "task.ClaimGiftBoxMail.label": "📬Gift Box Mail",

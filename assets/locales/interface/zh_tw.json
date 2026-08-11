@@ -1,4 +1,6 @@
 {
+    "pretask.PrepareMacOSAdb.label": "準備 BlueStacks ADB",
+    "pretask.PrepareMacOSAdb.description": "在任務啟動前準備 BlueStacks 的 ADB 連線，協助 MXU 正確找到並連接模擬器。",
     "task.StartToHome.label": "🚀啟動遊戲",
     "task.StartToHome.description": "啟動遊戲並回到首頁",
     "task.ClaimGiftBoxMail.label": "📬禮物盒郵件",
