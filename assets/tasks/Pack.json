@@ -67,6 +67,9 @@
                         "PackSelect_PackChoiceStrategy": {
                             "next": [
                                 "PackSelect_SelectFavoritePack"
+                            ],
+                            "on_error": [
+                                "PackSelect_NoFavoritePackEnd"
                             ]
                         }
                     }

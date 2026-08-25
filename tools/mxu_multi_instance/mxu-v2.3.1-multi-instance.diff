@@ -1,5 +1,5 @@
 diff --git a/src/components/TabBar.tsx b/src/components/TabBar.tsx
-index 5e506a8..82d8f6f 100644
+index 5e506a8..af2a0f7 100644
 --- a/src/components/TabBar.tsx
 +++ b/src/components/TabBar.tsx
 @@ -329,3 +329,3 @@ export function TabBar() {
@@ -63,3 +63,16 @@ index 5e506a8..82d8f6f 100644
 +                      title={
 +                        instances.length > 1 && !topBarLocked ? t('titleBar.closeTab') : undefined
 +                      }
+@@ -594,2 +599 @@ export function TabBar() {
+-          onClick={() => !topBarLocked && toggleDashboardView()}
+-          disabled={topBarLocked}
++          onClick={() => toggleDashboardView()}
+@@ -598,5 +602,3 @@ export function TabBar() {
+-            topBarLocked
+-              ? 'cursor-not-allowed opacity-50'
+-              : dashboardView
+-                ? 'bg-accent/10 text-accent'
+-                : 'hover:bg-bg-hover text-text-secondary',
++            dashboardView
++              ? 'bg-accent/10 text-accent'
++              : 'hover:bg-bg-hover text-text-secondary',

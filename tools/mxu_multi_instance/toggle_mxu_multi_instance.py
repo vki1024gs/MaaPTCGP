@@ -24,9 +24,12 @@ from pathlib import Path
 MXU_REPOSITORY = "https://github.com/MistEO/MXU.git"
 MXU_COMMIT = "4b0ea0b45a11b2695f410bc7d4a421b525c7c33c"
 MXU_VERSION = "2.3.1"
-MULTI_INSTANCE_VERSION = "2.3.1+maaptcgp.multi.1"
+MULTI_INSTANCE_VERSION = "2.3.1+maaptcgp.multi.2"
 # 编译进二进制的版本标记，同时用于判断当前运行模式。
 BUILD_MARKER = MULTI_INSTANCE_VERSION.encode()
+# 保留旧版本标记，确保更新工具后仍能识别、校验并还原已启用的多开版。
+LEGACY_BUILD_MARKERS = (b"2.3.1+maaptcgp.multi.1",)
+SUPPORTED_BUILD_MARKERS = (BUILD_MARKER, *LEGACY_BUILD_MARKERS)
 # 还原点清单格式版本；以后调整清单结构时必须递增。
 STATE_VERSION = 1
 
@@ -136,7 +139,7 @@ def inspect_target(path: Path) -> str:
         raise ToolError(f"目标目录缺少 interface.json，拒绝修改不明可执行文件：{path.parent}")
 
     binary = path.read_bytes()
-    if BUILD_MARKER in binary:
+    if any(marker in binary for marker in SUPPORTED_BUILD_MARKERS):
         return "enabled"
     if MXU_VERSION.encode() not in binary:
         raise ToolError(f"目标不是可确认的 MXU v{MXU_VERSION}，无法启用此版本的多开功能。")
@@ -181,7 +184,10 @@ def load_restore_point(target: Path) -> tuple[Path, dict[str, object]]:
         raise ToolError("还原点信息与当前工具或目标文件不匹配。")
     validate_binary_format(backup)
     backup_binary = backup.read_bytes()
-    if BUILD_MARKER in backup_binary or MXU_VERSION.encode() not in backup_binary:
+    if (
+        any(marker in backup_binary for marker in SUPPORTED_BUILD_MARKERS)
+        or MXU_VERSION.encode() not in backup_binary
+    ):
         raise ToolError("还原点不是可确认的官方 MXU v2.3.1。")
     if sha256(backup) != data.get("sha256"):
         raise ToolError("还原点哈希校验失败，拒绝还原。")

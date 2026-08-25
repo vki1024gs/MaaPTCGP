@@ -1,6 +1,6 @@
 {
-    "pretask.PrepareMacOSAdb.label": "準備 BlueStacks ADB",
-    "pretask.PrepareMacOSAdb.description": "在任務啟動前準備 BlueStacks 的 ADB 連線，協助 MXU 正確找到並連接模擬器。",
+    "pretask.PrepareMacOSAdb.label": "準備 macOS 模擬器 ADB",
+    "pretask.PrepareMacOSAdb.description": "啟動任務前檢查受支援的 macOS 模擬器 ADB；僅在異常時逐級連接動態端點並安全修復 ADB 服務。",
     "task.StartToHome.label": "🚀啟動遊戲",
     "task.StartToHome.description": "啟動遊戲並回到首頁",
     "task.ClaimGiftBoxMail.label": "📬禮物盒郵件",

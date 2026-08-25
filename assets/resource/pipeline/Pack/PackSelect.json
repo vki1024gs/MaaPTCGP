@@ -33,6 +33,7 @@
         ]
     },
     "PackSelect_NoEnergyEnd": {},
+    "PackSelect_NoFavoritePackEnd": {},
     "PackSelect_OnePackEnergyVisible": {
         "recognition": {
             "type": "TemplateMatch",

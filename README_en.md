@@ -36,7 +36,6 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 
 - 👆 Provide helper actions such as swipe-up sending
 - 📌 Provide auto-claim for task-bar red dots (in development and may be unstable)
-- 🛠️ Provide development resources for local pipeline validation
 
 ## Requirements
 
