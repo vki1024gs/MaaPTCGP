@@ -114,7 +114,7 @@
     },
     "Startup_TapTitle": {
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
                     191,
@@ -122,10 +122,9 @@
                     352,
                     127
                 ],
-                "template": [
-                    "Startup/title_tap_start.png"
-                ],
-                "threshold": 0.85
+                "expected": [
+                    "Pocket"
+                ]
             }
         },
         "action": {

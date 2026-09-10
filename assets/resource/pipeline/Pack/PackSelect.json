@@ -1,19 +1,24 @@
 {
     "PackSelect_ConfirmOpenButton": {
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
-                "template": "Pack/openpack.png",
-                "threshold": 0.85
+                "roi": [
+                    284,
+                    966,
+                    149,
+                    65
+                ],
+                "expected": [
+                    "開封"
+                ]
             }
         },
         "action": {
-            "type": "Click",
-            "param": {
-                "target": true
-            }
+            "type": "Click"
         },
         "next": [
+            "PackSelect_ConfirmOpenButton",
             "PackOpening_EnterTearPack"
         ]
     },
@@ -176,7 +181,7 @@
                     87
                 ],
                 "template": [
-                    "Pack/template_1781798631582.png"
+                    "Pack/FavoriteIcon.png"
                 ]
             }
         },

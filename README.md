@@ -20,7 +20,7 @@
 
 ### 🚀 启动
 
-- 🚀 启动游戏并收敛到稳定首页
+- 🚀 启动游戏并返回首页
 
 ### 📆 日常
 
@@ -63,11 +63,7 @@ MaaPTCGP 的 MXU 界面支持中文、英文等多种语言，但脚本功能目
 
 `基础日常任务` 中的对战、分送等开发中任务默认不勾选，需要时请手动开启并先单独测试。对战任务目前可选择活动对战、随机对战或分级对战；活动对战可按设置处理体力恢复，随机对战和分级对战不使用活动体力恢复。
 
-开发调试时，可以在 MXU 中选择 `Dev` 资源，直接读取源码中的 `assets/resource`。
-
 macOS 版目前未进行 Apple 公证。无论下载 tar.gz 还是 dmg，首次打开时都可能提示无法检查恶意软件；如果你确认来源为本项目 GitHub Release，可前往 `系统设置 -> 隐私与安全性`，在一小时内选择 `仍要打开`，也可对解压后的目录执行 `xattr -dr com.apple.quarantine <MaaPTCGP目录>` 后再打开。
-
-如果你需要在本地重新打包 macOS `.app`，可以使用 `tools/rebuild_macos_app.sh` 从 `install` 目录重建应用。该脚本仅用于本地开发和测试，会进行临时签名并移除 quarantine 标记，不等同于 Apple Developer ID 签名或正式公证。
 
 ## 计划中的功能与方向
 
@@ -79,7 +75,7 @@ macOS 版目前未进行 Apple 公证。无论下载 tar.gz 还是 dmg，首次�
 
 请通过 [GitHub Issues](https://github.com/vki1024gs/MaaPTCGP/issues) 反馈问题。
 
-反馈 pipeline 卡住或识别失败时，请尽量附上：
+反馈任务卡住或识别失败时，请尽量附上：
 
 - 任务名
 - 设备或模拟器
