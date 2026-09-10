@@ -13,7 +13,7 @@ set -euo pipefail
 # local absolute path and must not be distributed.
 #
 # Versions 1.0 and above do not receive a local Dev path. Public release input
-# should already have Dev removed by tools/install.py.
+# should already have Dev removed by tools/ci/install.py.
 #
 # After a successful build, the output directory is opened in Finder with an
 # Applications shortcut beside the app, so the app can be installed by dragging

@@ -181,10 +181,8 @@ jobs:
       - name: Install
         shell: bash
         run: |
-          cd tools/
-          python -m pip install -r ./requirements.txt
-          python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
-          cd ..
+          python -m pip install -r tools/ci/requirements.txt
+          python tools/ci/install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
 
       - name: Verify install contents
         shell: bash
@@ -262,7 +260,7 @@ jobs:
         shell: bash
         run: |
           brew install create-dmg
-          tools/package_macos_dmg.sh install MaaPTCGP-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.dmg "${{ needs.meta.outputs.tag }}"
+          tools/ci/package_macos_dmg.sh install MaaPTCGP-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}.dmg "${{ needs.meta.outputs.tag }}"
 
       - name: Upload release asset
         if: ${{ needs.meta.outputs.is_release == 'true' && needs.meta.outputs.upload_mode == 'direct' }}
@@ -388,7 +386,7 @@ jobs:
         shell: bash
         run: |
           brew install create-dmg
-          tools/package_macos_dmg.sh install MaaPTCGP.dmg "${{ needs.meta.outputs.tag }}"
+          tools/ci/package_macos_dmg.sh install MaaPTCGP.dmg "${{ needs.meta.outputs.tag }}"
 
       - name: Package tar.gz
         shell: bash

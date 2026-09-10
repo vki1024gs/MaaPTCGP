@@ -85,6 +85,8 @@ When reporting task failures, include:
 
 ## Development
 
+This project’s `tools/` directory contains scripts for local utilities, MXU management, development checks, and CI packaging. See the [Tools guide](tools/README_en.md) for their purposes and usage.
+
 For more documentation, see the [MaaFramework](https://github.com/MaaXYZ/MaaFramework) repository.
 
 ## Acknowledgements

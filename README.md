@@ -85,6 +85,8 @@ macOS 版目前未进行 Apple 公证。无论下载 tar.gz 还是 dmg，首次�
 
 ## 开发说明
 
+本项目 `tools/` 目录提供本地辅助、MXU 管理、开发检查及 CI 打包脚本，具体用途与使用方法请见 [工具说明](tools/README.md)。
+
 更多文档请前往 [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 主仓库查看。
 
 ## 鸣谢

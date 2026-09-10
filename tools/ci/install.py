@@ -7,7 +7,7 @@ import stat
 import sys
 
 
-working_dir = Path(__file__).parent.parent.resolve()
+working_dir = Path(__file__).resolve().parents[2]
 install_path = working_dir / "install"
 install_cli_path = working_dir / "install-cli"
 version = sys.argv[1] if len(sys.argv) > 1 else "v0.0.1"
@@ -69,10 +69,10 @@ def install_mxu_shell():
     mxu_dir = working_dir / "MXU"
     if not mxu_dir.exists():
         print('Missing MXU — please download it from https://github.com/MistEO/MXU/releases')
-        print('Then extract and place the contents into a "MXU" folder next to this script.')
+        print('Then extract and place the contents into the "MXU" folder at the repository root.')
         print()
         print('缺少 MXU — 请从 https://github.com/MistEO/MXU/releases 下载')
-        print('解压后将内容放到脚本同级目录下的 "MXU" 文件夹中。')
+        print('解压后将内容放到仓库根目录下的 "MXU" 文件夹中。')
         sys.exit(1)
 
     for item in mxu_dir.iterdir():
@@ -120,10 +120,10 @@ def install_maafw_for_mxu():
 
     if not deps_bin.exists():
         print('Missing MaaFramework — please download it from https://github.com/MaaXYZ/MaaFramework/releases')
-        print('Then extract and place the contents into a "deps" folder next to this script.')
+        print('Then extract and place the contents into the "deps" folder at the repository root.')
         print()
         print('缺少 MaaFramework — 请从 https://github.com/MaaXYZ/MaaFramework/releases 下载')
-        print('解压后将内容放到脚本同级目录下的 "deps" 文件夹中。')
+        print('解压后将内容放到仓库根目录下的 "deps" 文件夹中。')
         sys.exit(1)
 
     copytree(
@@ -149,7 +149,7 @@ def install_maafw_for_cli():
 
     if not deps_bin.exists():
         print('Missing MaaFramework — please download it from https://github.com/MaaXYZ/MaaFramework/releases')
-        print('Then extract and place the contents into a "deps" folder next to this script.')
+        print('Then extract and place the contents into the "deps" folder at the repository root.')
         sys.exit(1)
 
     copytree(
@@ -288,7 +288,7 @@ def install_macos_adb_pretask():
     if os_name != "macos":
         return
 
-    source = working_dir / "tools" / "maa_adb_autoconnect_macos.sh"
+    source = working_dir / "tools" / "ci" / "maa_adb_autoconnect_macos.sh"
     target = install_path / "bin" / "maa-adb-autoconnect"
     if not source.is_file():
         print(f"Missing macOS ADB pretask helper: {source}")

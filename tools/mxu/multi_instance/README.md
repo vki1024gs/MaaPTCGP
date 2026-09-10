@@ -1,5 +1,7 @@
 # MXU 多开切换工具
 
+**简体中文** | [English](README_en.md)
+
 这是一个可选开关工具。没有运行它时，MaaPTCGP 继续使用官方 MXU v2.3.1 的默认全局标签锁。
 
 启用后，一个标签正在运行任务时仍可切换到另一个标签，从而在另一个 ADB 设备上启动任务；任务运行中也可进入中控台视图，同时查看各实例状态和画面。运行期间仍禁止新建、关闭、重命名、右键操作和拖动标签。请勿让两个实例同时控制同一个 ADB 设备。
@@ -32,15 +34,15 @@
 先完全退出 MaaPTCGP，然后在 MaaPTCGP 仓库根目录执行：
 
 ```bash
-python3 tools/mxu_multi_instance/toggle_mxu_multi_instance.py --check
-python3 tools/mxu_multi_instance/toggle_mxu_multi_instance.py
+python3 tools/mxu/multi_instance/toggle_mxu_multi_instance.py --check
+python3 tools/mxu/multi_instance/toggle_mxu_multi_instance.py
 ```
 
 Windows 可以将 `python3` 替换为 `py`：
 
 ```powershell
-py tools\mxu_multi_instance\toggle_mxu_multi_instance.py --check
-py tools\mxu_multi_instance\toggle_mxu_multi_instance.py
+py tools\mxu\multi_instance\toggle_mxu_multi_instance.py --check
+py tools\mxu\multi_instance\toggle_mxu_multi_instance.py
 ```
 
 工具固定使用 MXU v2.3.1 对应提交，先校验源码差异与构建结果，再保存官方还原点并原子替换当前可执行文件。失败不会破坏当前程序；成功后自动清理源码、构建目录和替换过程中的临时文件。
@@ -50,3 +52,5 @@ py tools\mxu_multi_instance\toggle_mxu_multi_instance.py
 再次运行本工具即可恢复官方 MXU。必要时仍可通过重新解压同版本 MaaPTCGP 安装包手动恢复。MXU 用户配置位于系统应用数据目录，不会被本工具修改。
 
 MXU 源码采用 GPL-3.0 许可证。工具使用的上游仓库、固定提交和完整源码差异均在 `toggle_mxu_multi_instance.py` 与同目录 `.diff` 文件中公开。
+
+可用 `--target` 显式指定 MaaPTCGP 可执行文件；默认依次查找项目或安装包根目录、`install/`。`--yes` 跳过交互确认。`--check` 是只读检查，可在 MXU 运行时使用。配套 `.diff` 必须与脚本放在同一目录。

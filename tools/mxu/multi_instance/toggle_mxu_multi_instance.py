@@ -92,7 +92,7 @@ def default_target() -> Path:
     """同时支持从源码树和已发布安装包中直接运行。"""
 
     script_dir = Path(__file__).resolve().parent
-    project_or_package_root = script_dir.parent.parent
+    project_or_package_root = script_dir.parent.parent.parent
     name = "MaaPTCGP.exe" if platform.system() == "Windows" else "MaaPTCGP"
     candidates = [
         project_or_package_root / name,

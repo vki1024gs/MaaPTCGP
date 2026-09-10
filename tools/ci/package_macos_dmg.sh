@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [[ $# -lt 3 ]]; then
-  echo "Usage: tools/package_macos_dmg.sh <install_dir> <output_dmg> <version> [app_name] [bundle_id]" >&2
+  echo "Usage: tools/ci/package_macos_dmg.sh <install_dir> <output_dmg> <version> [app_name] [bundle_id]" >&2
   exit 1
 fi
 
@@ -13,7 +13,7 @@ APP_NAME="${4:-MaaPTCGP}"
 BUNDLE_ID="${5:-io.github.vki1024gs.maaptcgp}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ICON_SOURCE="$PROJECT_ROOT/assets/logo.png"
 
 if [[ ! -d "$INSTALL_DIR" ]]; then
