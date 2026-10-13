@@ -40,7 +40,7 @@
                     "name": "Share",
                     "enabled": false,
                     "option": {
-                        "ShareCardRarity": "FourDiamond",
+                        "ShareCardStrategy": "Shinedust",
                         "ShareRecipientStrategy": "FirstStarredFriend"
                     }
                 },

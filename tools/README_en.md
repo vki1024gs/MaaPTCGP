@@ -28,7 +28,7 @@ Replace the example port with your emulator's actual port. It runs once by defau
 For local development and testing on macOS only. Wraps an existing `install/` directory in an `.app` without compiling MXU. It adds an icon and version metadata, applies ad-hoc signing, removes quarantine attributes, and opens Finder with an Applications shortcut by default.
 
 ```bash
-bash tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.2.4
+bash tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.2.5
 ```
 
 An existing output `.app` is replaced. Versions below 1.0 require a `Dev` resource in the input interface and rewrite it to this checkout's absolute resource path; the sixth argument can specify another resource directory. Such apps are for local use only. Versions 1.0 and above do not receive this path. Set `MXU_OPEN_INSTALL_WINDOW=0` to disable opening Finder. Ad-hoc signing is not Apple notarization.
@@ -63,8 +63,8 @@ python3 tools/ci/validate_schema.py --schema-dir deps/tools --resource-dirs asse
 Release packaging example (prepare `MXU/`, `deps/`, and resources at the repository root first):
 
 ```bash
-python3 tools/ci/install.py v0.2.4 macos aarch64
-bash tools/ci/package_macos_dmg.sh install build/MaaPTCGP.dmg v0.2.4
+python3 tools/ci/install.py v0.2.5 macos aarch64
+bash tools/ci/package_macos_dmg.sh install build/MaaPTCGP.dmg v0.2.5
 ```
 
 `install.py` deletes and recreates existing `install/` and `install-cli/` directories. Do not use it for routine development resource syncing. Supported targets are Windows/macOS x86_64 and aarch64, and Linux x86_64. The DMG tool replaces an existing output file. Ad-hoc signing is not notarization.

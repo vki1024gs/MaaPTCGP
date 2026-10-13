@@ -74,6 +74,7 @@
             "type": "Click"
         },
         "next": [
+            "Share_EnterShare",
             "Share_ClickShare"
         ]
     },
@@ -93,6 +94,25 @@
             }
         }
     },
+    "Share_FirstStarredFriendAlreadySharedVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    222,
+                    241,
+                    276,
+                    118
+                ],
+                "expected": [
+                    "已分送"
+                ]
+            }
+        },
+        "next": [
+            "Share_NoReceivableFriendFinish"
+        ]
+    },
     "Share_NoReceivableFriendFinish": {
         "next": [
             "Share_FinishFlow"
@@ -109,6 +129,25 @@
     "Share_RepeatAfterSendUntilNoTarget": {
         "next": [
             "Share_FinishFlow"
+        ]
+    },
+    "Share_SelectCard": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    177,
+                    44,
+                    251,
+                    82
+                ],
+                "expected": [
+                    "要分送"
+                ]
+            }
+        },
+        "next": [
+            "ShareFilter_SelectedCardStrategy"
         ]
     },
     "Share_SelectFirstStarredFriend": {
@@ -142,6 +181,7 @@
         },
         "timeout": 2000,
         "next": [
+            "Share_FirstStarredFriendAlreadySharedVisible",
             "Share_SelectCard"
         ],
         "on_error": [
@@ -159,25 +199,6 @@
     "Share_SelectedRecipientStrategy": {
         "next": [
             "Share_SelectFirstStarredFriend"
-        ]
-    },
-    "Share_SelectCard": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    177,
-                    44,
-                    251,
-                    82
-                ],
-                "expected": [
-                    "選擇"
-                ]
-            }
-        },
-        "next": [
-            "ShareFilter_SelectCardFlow"
         ]
     },
     "Share_Start": {

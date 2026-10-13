@@ -148,7 +148,8 @@
                     716
                 ],
                 "template": [
-                    "Battle/EXPBattleBonus.png"
+                    "Battle/EXPBattleBonus.png",
+                    "Battle/TicketBattleBonus.png"
                 ]
             }
         },

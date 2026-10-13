@@ -28,7 +28,7 @@ python3 tools/adb_autoconnect.py --help
 仅用于 macOS 本地开发测试，将已有 `install/` 封装为 `.app`，不编译 MXU。生成图标、版本信息并临时签名，移除隔离标记；完成后默认打开 Finder 并建立 Applications 快捷方式。
 
 ```bash
-bash tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.2.4
+bash tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.2.5
 ```
 
 输出 `.app` 已存在时会被替换。低于 1.0 的版本要求输入接口中有 `Dev` 资源，并将它改为本仓库的绝对资源路径；第六个参数可指定其他资源目录。此类应用仅供本地使用。1.0 及以上不注入该路径。可设置 `MXU_OPEN_INSTALL_WINDOW=0` 关闭自动打开 Finder；临时签名不等于 Apple 公证。
@@ -63,8 +63,8 @@ python3 tools/ci/validate_schema.py --schema-dir deps/tools --resource-dirs asse
 发布打包示例（需事先准备仓库根目录的 `MXU/`、`deps/` 和资源）：
 
 ```bash
-python3 tools/ci/install.py v0.2.4 macos aarch64
-bash tools/ci/package_macos_dmg.sh install build/MaaPTCGP.dmg v0.2.4
+python3 tools/ci/install.py v0.2.5 macos aarch64
+bash tools/ci/package_macos_dmg.sh install build/MaaPTCGP.dmg v0.2.5
 ```
 
 `install.py` 会删除并重建现有 `install/` 和 `install-cli/`，不要用于日常开发资源同步。支持 Windows/macOS 的 x86_64、aarch64，以及 Linux x86_64。DMG 工具会替换同名输出文件；临时签名不等于公证。

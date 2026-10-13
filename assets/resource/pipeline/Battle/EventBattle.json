@@ -9,13 +9,13 @@
             "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    439,
-                    51,
-                    45,
-                    42
+                    629,
+                    41,
+                    70,
+                    56
                 ],
                 "template": [
-                    "Battle/BattlePoint.png"
+                    "Battle/RecoveryBP.png"
                 ],
                 "threshold": [
                     0.92
@@ -23,10 +23,8 @@
             }
         },
         "next": [
-            "EventBattle_SelectStageFlow"
-        ],
-        "on_error": [
-            "EventBattle_NoBattlePointVisible"
+            "EventBattle_NoBattlePointVisible",
+            "EventBattle_BattlePointVisible"
         ]
     },
     "EventBattle_BattlePointPolicyFlow": {
@@ -151,9 +149,6 @@
         "inverse": true,
         "next": [
             "EventBattle_BattlePointPolicyFlow"
-        ],
-        "on_error": [
-            "EventBattle_SelectStageFlow"
         ]
     },
     "EventBattle_NoItem": {
@@ -173,6 +168,7 @@
         },
         "next": [
             "[JumpBack]Common_ReturnClick",
+            "[JumpBack]Common_CloseClick",
             "EventBattle_BattlePointCheck"
         ]
     },
@@ -362,10 +358,10 @@
             "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    608,
-                    30,
-                    110,
-                    93
+                    629,
+                    41,
+                    70,
+                    56
                 ],
                 "template": [
                     "Battle/RecoveryBP.png"
@@ -375,6 +371,7 @@
         "action": {
             "type": "Click"
         },
+        "post_delay": 660,
         "next": [
             "EventBattle_NoItem",
             "[JumpBack]EventBattle_UseItem",
@@ -401,5 +398,27 @@
         "action": {
             "type": "Click"
         }
+    },
+    "EventBattle_BattlePointVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.95
+                ]
+            }
+        },
+        "next": [
+            "EventBattle_SelectStageFlow"
+        ]
     }
 }

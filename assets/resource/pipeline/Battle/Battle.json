@@ -144,7 +144,9 @@
                 ]
             }
         },
+        "post_delay": 600,
         "next": [
+            "[JumpBack]Common_ClickOkMID",
             "Battle_FinishFlow"
         ]
     },

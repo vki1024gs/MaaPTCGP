@@ -16,26 +16,38 @@
                 "DailyRoutine"
             ],
             "option": [
-                "ShareCardRarity",
+                "ShareCardStrategy",
                 "ShareRecipientStrategy"
             ]
         }
     ],
     "option": {
-        "ShareCardRarity": {
+        "ShareCardStrategy": {
             "type": "select",
-            "label": "$option.ShareCardRarity.label",
-            "description": "$option.ShareCardRarity.description",
-            "default_case": "FourDiamond",
+            "label": "$option.ShareCardStrategy.label",
+            "description": "$option.ShareCardStrategy.description",
+            "default_case": "Shinedust",
             "cases": [
                 {
-                    "name": "FourDiamond",
-                    "label": "$option.ShareCardRarity.FourDiamond.label",
-                    "description": "$option.ShareCardRarity.FourDiamond.description",
+                    "name": "Shinedust",
+                    "label": "$option.ShareCardStrategy.Shinedust.label",
+                    "description": "$option.ShareCardStrategy.Shinedust.description",
                     "pipeline_override": {
-                        "ShareFilter_SelectedRarity": {
+                        "ShareFilter_SelectedCardStrategy": {
                             "next": [
-                                "ShareFilter_SelectFourDiamondCards"
+                                "ShareFilter_ShinedustStrategy"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "LatestCardDexCompletion",
+                    "label": "$option.ShareCardStrategy.LatestCardDexCompletion.label",
+                    "description": "$option.ShareCardStrategy.LatestCardDexCompletion.description",
+                    "pipeline_override": {
+                        "ShareFilter_SelectedCardStrategy": {
+                            "next": [
+                                "ShareFilter_LatestCardDexCompletionStrategy"
                             ]
                         }
                     }

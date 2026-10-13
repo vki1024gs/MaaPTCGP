@@ -1,4 +1,23 @@
 {
+    "ShareFilter_CardShared": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    284,
+                    957,
+                    152,
+                    85
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "next": [
+            "Share_AfterSendPolicy"
+        ]
+    },
     "ShareFilter_ClickFourDiamond": {
         "recognition": {
             "type": "TemplateMatch",
@@ -58,7 +77,8 @@
                 ],
                 "expected": [
                     "沒有"
-                ]
+                ],
+                "threshold": 0.9
             }
         },
         "action": {
@@ -80,26 +100,31 @@
             "ShareFilter_NoShareableCardFinish"
         ]
     },
-    "ShareFilter_SelectCardFlow": {
-        "recognition": {
-            "type": "TemplateMatch",
+    "ShareFilter_LatestCardDexCompletionStrategy": {
+        "pre_delay": 500,
+        "next": [
+            "ShareFilter_LatestCardDexCompleted",
+            "ShareFilter_SortDESC"
+        ]
+    },
+    "ShareFilter_NoShareableCardFinish": {},
+    "ShareFilter_OutColl": {
+        "action": {
+            "type": "Click",
             "param": {
-                "roi": [
-                    588,
-                    187,
-                    110,
-                    121
-                ],
-                "template": [
-                    "Share/FilterIcon.png"
+                "target": [
+                    92,
+                    678,
+                    93,
+                    79
                 ]
             }
         },
-        "action": {
-            "type": "Click"
-        },
         "next": [
-            "ShareFilter_SelectedRarity"
+            "ShareFilter_SelectTopShareableCard"
+        ],
+        "on_error": [
+            "ShareFilter_NoShareableCardFinish"
         ]
     },
     "ShareFilter_SelectFourDiamondCards": {
@@ -155,17 +180,68 @@
             "ShareFilter_SharingFlow"
         ]
     },
-    "ShareFilter_SelectedRarity": {
+    "ShareFilter_SelectedCardStrategy": {
+        "next": [
+            "ShareFilter_ShinedustStrategy"
+        ]
+    },
+    "ShareFilter_SharingFlow": {
+        "next": [
+            "[JumpBack]Utils_SwipeUpToSend",
+            "[JumpBack]Common_ClickOkRIGHT",
+            "ShareFilter_CardShared"
+        ]
+    },
+    "ShareFilter_ShinedustStrategy": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    588,
+                    187,
+                    110,
+                    121
+                ],
+                "template": [
+                    "Share/FilterIcon.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
         "next": [
             "ShareFilter_SelectFourDiamondCards"
         ]
     },
-    "ShareFilter_SortedCardsDesc": {
+    "ShareFilter_SortButtonVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    667,
+                    768,
+                    51,
+                    76
+                ],
+                "template": [
+                    "Share/Sort.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    340,
+                    1183,
+                    39,
+                    48
+                ]
+            }
+        },
         "next": [
-            "ShareFilter_FullColl"
-        ],
-        "on_error": [
-            "ShareFilter_OutColl"
+            "ShareFilter_SortedCardsDesc"
         ]
     },
     "ShareFilter_SortDESC": {
@@ -201,81 +277,30 @@
             "ShareFilter_SelectSortDESC"
         ]
     },
-    "ShareFilter_OutColl": {
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    92,
-                    678,
-                    93,
-                    79
-                ]
-            }
-        },
-        "timeout": 10000,
+    "ShareFilter_SortedCardsDesc": {
+        "pre_delay": 500,
         "next": [
-            "ShareFilter_SelectTopShareableCard"
-        ],
-        "on_error": [
-            "ShareFilter_NoShareableCardFinish"
+            "ShareFilter_FullColl",
+            "ShareFilter_OutColl"
         ]
     },
-    "ShareFilter_NoShareableCardFinish": {},
-    "ShareFilter_SortButtonVisible": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    667,
-                    768,
-                    51,
-                    76
-                ],
-                "template": [
-                    "Share/Sort.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    340,
-                    1183,
-                    39,
-                    48
-                ]
-            }
-        },
-        "next": [
-            "ShareFilter_SortedCardsDesc"
-        ]
-    },
-    "ShareFilter_SharingFlow": {
-        "next": [
-            "[JumpBack]Utils_SwipeUpToSend",
-            "[JumpBack]Common_ClickOkRIGHT",
-            "ShareFilter_CardShared"
-        ]
-    },
-    "ShareFilter_CardShared": {
+    "ShareFilter_LatestCardDexCompleted": {
         "recognition": {
             "type": "OCR",
             "param": {
                 "roi": [
-                    284,
-                    957,
-                    152,
-                    85
+                    352,
+                    667,
+                    242,
+                    82
                 ],
                 "expected": [
-                    "分送"
+                    "已完整收藏"
                 ]
             }
         },
         "next": [
-            "Share_AfterSendPolicy"
+            "ShareFilter_NoShareableCardFinish"
         ]
     }
 }

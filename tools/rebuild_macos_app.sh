@@ -5,12 +5,13 @@ set -euo pipefail
 #   tools/rebuild_macos_app.sh install "$HOME/Applications/MaaPTCGP.app" v0.1.9
 #   tools/rebuild_macos_app.sh install "$HOME/Applications/MaaPTCGP.app" v0.1.9 MaaPTCGP io.github.vki1024gs.maaptcgp /path/to/assets/resource
 #
-# For versions below 1.0, the script automatically rewrites the generated app's
-# Dev resource path. An explicitly supplied sixth argument takes priority;
-# otherwise this checkout's assets/resource directory is used. This keeps the
-# source interface.json unchanged while allowing pipeline/image edits to take
-# effect without rebuilding the app. The generated development app contains a
-# local absolute path and must not be distributed.
+# For versions below 1.0, the script points the generated app's Dev resource to
+# the source tree. An explicitly supplied sixth argument takes priority;
+# otherwise this checkout's assets/resource directory is used. MXU resolves PI
+# resource paths relative to the app root even when given an absolute string,
+# so interface.json must use a relative path calculated for OUTPUT_APP's final
+# location. Moving the app later requires rebuilding it. This keeps source
+# interface.json unchanged while pipeline/image edits take effect immediately.
 #
 # Versions 1.0 and above do not receive a local Dev path. Public release input
 # should already have Dev removed by tools/ci/install.py.
@@ -104,23 +105,28 @@ if [[ "$VERSION_MAJOR" =~ ^[0-9]+$ ]] && (( VERSION_MAJOR < 1 )); then
     exit 1
   fi
 
-  python3 - "$APP_INTERFACE" "$DEV_RESOURCE_PATH" <<'PY'
+  DEV_RESOURCE_PATH="$(cd "$DEV_RESOURCE_PATH" && pwd -P)"
+
+  python3 - "$APP_INTERFACE" "$DEV_RESOURCE_PATH" "$OUTPUT_APP" <<'PY'
 import json
+import os
 import sys
 from pathlib import Path
 
 interface_path = Path(sys.argv[1])
-dev_resource_path = str(Path(sys.argv[2]).resolve())
+dev_resource_path = Path(sys.argv[2]).resolve()
+app_mac_path = Path(sys.argv[3]) / "Contents" / "MacOS"
+relative_path = os.path.relpath(dev_resource_path, app_mac_path)
 interface = json.loads(interface_path.read_text(encoding="utf-8"))
 
 for resource in interface.get("resource", []):
     if resource.get("name") == "Dev":
-        resource["path"] = [dev_resource_path]
+        resource["path"] = [relative_path]
         interface_path.write_text(
             json.dumps(interface, ensure_ascii=False, indent=4) + "\n",
             encoding="utf-8",
         )
-        print(f"Injected local Dev resource path: {dev_resource_path}")
+        print(f"Configured local Dev resource: {relative_path} -> {dev_resource_path}")
         break
 else:
     raise SystemExit('Dev resource was not found in the generated app interface.json')
@@ -174,6 +180,24 @@ else
 fi
 
 codesign --verify --deep --strict "$OUTPUT_APP"
+if [[ "$VERSION_MAJOR" =~ ^[0-9]+$ ]] && (( VERSION_MAJOR < 1 )); then
+  python3 - "$OUTPUT_APP/Contents/MacOS/interface.json" "$DEV_RESOURCE_PATH" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+interface_path = Path(sys.argv[1])
+expected = Path(sys.argv[2]).resolve()
+interface = json.loads(interface_path.read_text(encoding="utf-8"))
+dev = next((item for item in interface.get("resource", []) if item.get("name") == "Dev"), None)
+if not dev or len(dev.get("path", [])) != 1:
+    raise SystemExit("Missing single Dev resource path in packaged interface")
+actual = (interface_path.parent / dev["path"][0]).resolve()
+if actual != expected or not actual.is_dir():
+    raise SystemExit(f"Packaged Dev resource path is invalid: {actual}")
+print(f"Verified packaged Dev resource path: {actual}")
+PY
+fi
 codesign -dv "$OUTPUT_APP" 2>&1 | sed -n '/Authority=/p;/Signature=/p'
 
 if command -v stapler >/dev/null 2>&1; then
@@ -189,13 +213,15 @@ fi
 echo "Note: this app is rebuilt for local development/testing with ad-hoc signing."
 echo "Note: this does not provide Developer ID signing or Apple notarization."
 
-APPLICATIONS_LINK="$OUTPUT_PARENT/Applications"
-if [[ -L "$APPLICATIONS_LINK" ]]; then
-  ln -sfn /Applications "$APPLICATIONS_LINK"
-elif [[ -e "$APPLICATIONS_LINK" ]]; then
-  echo "Warning: $APPLICATIONS_LINK already exists and is not a symlink; leaving it unchanged." >&2
-else
-  ln -s /Applications "$APPLICATIONS_LINK"
+if [[ "${MXU_CREATE_APPLICATIONS_LINK:-1}" != "0" ]]; then
+  APPLICATIONS_LINK="$OUTPUT_PARENT/Applications"
+  if [[ -L "$APPLICATIONS_LINK" ]]; then
+    ln -sfn /Applications "$APPLICATIONS_LINK"
+  elif [[ -e "$APPLICATIONS_LINK" ]]; then
+    echo "Warning: $APPLICATIONS_LINK already exists and is not a symlink; leaving it unchanged." >&2
+  else
+    ln -s /Applications "$APPLICATIONS_LINK"
+  fi
 fi
 
 if [[ "${MXU_OPEN_INSTALL_WINDOW:-1}" != "0" ]]; then
