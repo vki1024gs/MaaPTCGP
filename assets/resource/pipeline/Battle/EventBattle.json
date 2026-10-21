@@ -37,6 +37,28 @@
             "EventBattle_UseBattlePointItemFlow"
         ]
     },
+    "EventBattle_BattlePointVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.98
+                ]
+            }
+        },
+        "next": [
+            "EventBattle_SelectStageFlow"
+        ]
+    },
     "EventBattle_ClickStartBattle": {
         "recognition": {
             "type": "OCR",
@@ -169,6 +191,7 @@
         "next": [
             "[JumpBack]Common_ReturnClick",
             "[JumpBack]Common_CloseClick",
+            "[JumpBack]Common_ClickOkMID",
             "EventBattle_BattlePointCheck"
         ]
     },
@@ -398,27 +421,5 @@
         "action": {
             "type": "Click"
         }
-    },
-    "EventBattle_BattlePointVisible": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    439,
-                    51,
-                    45,
-                    42
-                ],
-                "template": [
-                    "Battle/BattlePoint.png"
-                ],
-                "threshold": [
-                    0.95
-                ]
-            }
-        },
-        "next": [
-            "EventBattle_SelectStageFlow"
-        ]
     }
 }
