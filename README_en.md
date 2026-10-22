@@ -28,7 +28,7 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 - 🎴 Open available daily packs with pack selection options
 - 🎟️ Claim the daily free shop ticket
 - 🔮 Run Wonder Pick reward flow
-- ⚔️ Run event, random, and step-up battle flows
+- ⚔️ Run event, random, and step-up battles, with event battle point recovery, Elite difficulty, and recommended deck selection for step-up battles
 - 🎁 Share cards with starred friends using the Shinedust or latest Card Dex completion strategy
 - 📋 Claim daily mission rewards
 
@@ -62,6 +62,8 @@ Game updates may change the UI layout and temporarily affect recognition. If a t
 6. For first-time use, run a small number of tasks first and confirm emulator resolution, game language, and recognition stability before combining more tasks.
 
 Battle, Share, and other in-development tasks in `Basic Daily Tasks` are disabled by default. Enable them manually only after testing them separately. Battle mode currently supports event battles, random battles, and step-up battles; random and step-up battles do not use event battle point recovery.
+
+Step-up battles support Beginner, Intermediate, Advanced, and Elite difficulties. Enable `Auto-Select Recommended Deck` to choose a recommended deck before battle; the current deck is kept if none is found.
 
 The macOS build is not Apple-notarized yet. Whether you download tar.gz or dmg, macOS may say it cannot check the app for malware on first launch. If you trust the GitHub Release source, go to `System Settings -> Privacy & Security` and choose `Open Anyway` within one hour, or run `xattr -dr com.apple.quarantine <MaaPTCGP directory>` on the extracted directory before opening it again.
 

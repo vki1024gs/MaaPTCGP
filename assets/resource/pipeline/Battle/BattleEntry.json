@@ -1,4 +1,84 @@
 {
+    "BattleEntry_CancelRecommendedDeck": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    30,
+                    1135,
+                    315,
+                    120
+                ],
+                "expected": [
+                    "取消"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 3000,
+        "next": [
+            "BattleEntry_RecommendedDeckReturned"
+        ]
+    },
+    "BattleEntry_ClickRecommendedDeck": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    19,
+                    233,
+                    471,
+                    739
+                ],
+                "template": [
+                    "Battle/Recommended1.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    56,
+                    39,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 300,
+        "timeout": 3000,
+        "next": [
+            "BattleEntry_ConfirmRecommendedDeck"
+        ]
+    },
+    "BattleEntry_ConfirmRecommendedDeck": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    385,
+                    1135,
+                    300,
+                    120
+                ],
+                "template": [
+                    "Common/OKButton.png",
+                    "Common/OKButton1.png",
+                    "Common/OKButton2.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 3000,
+        "next": [
+            "BattleEntry_RecommendedDeckReturned"
+        ]
+    },
     "BattleEntry_Enter": {
         "recognition": {
             "type": "TemplateMatch",
@@ -56,9 +136,88 @@
             "BattleEntry_RecoverHomeThenRestart"
         ]
     },
+    "BattleEntry_IsRecommendedDeck": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    230,
+                    619,
+                    85,
+                    70
+                ],
+                "template": [
+                    "Battle/Recommended.png"
+                ]
+            }
+        },
+        "next": [
+            "BattleEntry_RecommendedDeckReturned"
+        ]
+    },
     "BattleEntry_ModeFlow": {
         "next": [
             "EventBattle_Start"
+        ]
+    },
+    "BattleEntry_OpenDeckList": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    377,
+                    687,
+                    65,
+                    39
+                ]
+            }
+        },
+        "next": [
+            "BattleEntry_RecommendedDeckListFlow"
+        ]
+    },
+    "BattleEntry_RecommendedDeckListFlow": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    220,
+                    130,
+                    280,
+                    110
+                ],
+                "expected": [
+                    "選擇牌組"
+                ]
+            }
+        },
+        "timeout": 1000,
+        "rate_limit": 200,
+        "next": [
+            "BattleEntry_ClickRecommendedDeck"
+        ],
+        "on_error": [
+            "BattleEntry_SwipeRecommendedDeckFirst"
+        ]
+    },
+    "BattleEntry_RecommendedDeckReturned": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    287,
+                    1061,
+                    138,
+                    65
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "timeout": 5000,
+        "next": [
+            "[Anchor]BattleEntry_RecommendedDeckReturnTarget"
         ]
     },
     "BattleEntry_RecoverHomeThenRestart": {
@@ -83,6 +242,12 @@
             "Navigation_AfterClickRecoveryFlow"
         ]
     },
+    "BattleEntry_SelectRecommendedDeck": {
+        "next": [
+            "BattleEntry_IsRecommendedDeck",
+            "BattleEntry_OpenDeckList"
+        ]
+    },
     "BattleEntry_Start": {
         "anchor": {
             "Navigation_ReturnHomeTarget": "BattleEntry_Start"
@@ -90,6 +255,130 @@
         "next": [
             "BattleEntry_EntryFlow",
             "[JumpBack]Navigation_ReturnHomeFlow"
+        ]
+    },
+    "BattleEntry_SwipeRecommendedDeckFirst": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    360,
+                    950,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        360,
+                        490,
+                        8,
+                        8
+                    ]
+                ],
+                "duration": 450
+            }
+        },
+        "post_delay": 300,
+        "timeout": 1000,
+        "rate_limit": 200,
+        "next": [
+            "BattleEntry_ClickRecommendedDeck"
+        ],
+        "on_error": [
+            "BattleEntry_SwipeRecommendedDeckSecond"
+        ]
+    },
+    "BattleEntry_SwipeRecommendedDeckFourth": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    360,
+                    950,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        360,
+                        490,
+                        8,
+                        8
+                    ]
+                ],
+                "duration": 450
+            }
+        },
+        "post_delay": 300,
+        "timeout": 1000,
+        "rate_limit": 200,
+        "next": [
+            "BattleEntry_ClickRecommendedDeck"
+        ],
+        "on_error": [
+            "BattleEntry_CancelRecommendedDeck"
+        ]
+    },
+    "BattleEntry_SwipeRecommendedDeckSecond": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    360,
+                    950,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        360,
+                        490,
+                        8,
+                        8
+                    ]
+                ],
+                "duration": 450
+            }
+        },
+        "post_delay": 300,
+        "timeout": 1000,
+        "rate_limit": 200,
+        "next": [
+            "BattleEntry_ClickRecommendedDeck"
+        ],
+        "on_error": [
+            "BattleEntry_SwipeRecommendedDeckThird"
+        ]
+    },
+    "BattleEntry_SwipeRecommendedDeckThird": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    360,
+                    950,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        360,
+                        490,
+                        8,
+                        8
+                    ]
+                ],
+                "duration": 450
+            }
+        },
+        "post_delay": 300,
+        "timeout": 1000,
+        "rate_limit": 200,
+        "next": [
+            "BattleEntry_ClickRecommendedDeck"
+        ],
+        "on_error": [
+            "BattleEntry_SwipeRecommendedDeckFourth"
         ]
     }
 }

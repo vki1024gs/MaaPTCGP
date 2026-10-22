@@ -92,7 +92,8 @@
                     "label": "$option.BattleMode.StepUpBattle.label",
                     "description": "$option.BattleMode.StepUpBattle.description",
                     "option": [
-                        "StepUpBattleLevel"
+                        "StepUpBattleLevel",
+                        "BattleRecommendedDeck"
                     ],
                     "pipeline_override": {
                         "BattleEntry_ModeFlow": {
@@ -142,6 +143,48 @@
                         "StepUpBattle_LevelPolicyFlow": {
                             "next": [
                                 "StepUpBattle_SelectAdvanced"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Elite",
+                    "label": "$option.StepUpBattleLevel.Elite.label",
+                    "description": "$option.StepUpBattleLevel.Elite.description",
+                    "pipeline_override": {
+                        "StepUpBattle_LevelPolicyFlow": {
+                            "next": [
+                                "StepUpBattle_SelectElite"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "BattleRecommendedDeck": {
+            "type": "switch",
+            "label": "$option.BattleRecommendedDeck.label",
+            "description": "$option.BattleRecommendedDeck.description",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.BattleRecommendedDeck.No.label",
+                    "pipeline_override": {
+                        "StepUpBattle_DeckPolicyFlow": {
+                            "next": [
+                                "StepUpBattle_ClickStartBattle"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.BattleRecommendedDeck.Yes.label",
+                    "pipeline_override": {
+                        "StepUpBattle_DeckPolicyFlow": {
+                            "next": [
+                                "BattleEntry_SelectRecommendedDeck"
                             ]
                         }
                     }

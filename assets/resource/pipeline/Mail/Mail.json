@@ -84,7 +84,8 @@
         },
         "next": [
             "[JumpBack]Common_CloseClick",
-            "Mail_NoRedDotEnd"
+            "Mail_NoRedDotEnd",
+            "Mail_NoGiftCloseGiftBox"
         ]
     },
     "Mail_GiftBoxCloseVisible": {
@@ -98,7 +99,9 @@
                     120
                 ],
                 "template": "Mail/gift_close.png",
-                "threshold": 0.85
+                "threshold": [
+                    0.92
+                ]
             }
         }
     },
@@ -118,6 +121,7 @@
         },
         "rate_limit": 100,
         "next": [
+            "Mail_GetCardsThx",
             "Mail_NoGiftCloseGiftBox",
             "[JumpBack]Mail_ClickClaimAll",
             "[JumpBack]Common_ContinueClick",
@@ -137,13 +141,13 @@
                 ]
             }
         },
+        "pre_delay": 500,
         "action": {
             "type": "Click",
             "param": {
                 "target": "Mail_GiftBoxCloseVisible"
             }
         },
-        "rate_limit": 400,
         "next": [
             "Mail_NoGiftCloseGiftBox",
             "Mail_NoRedDotEnd"

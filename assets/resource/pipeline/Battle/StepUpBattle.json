@@ -26,6 +26,14 @@
             "Battle_Start"
         ]
     },
+    "StepUpBattle_DeckPolicyFlow": {
+        "anchor": {
+            "BattleEntry_RecommendedDeckReturnTarget": "StepUpBattle_ClickStartBattle"
+        },
+        "next": [
+            "StepUpBattle_ClickStartBattle"
+        ]
+    },
     "StepUpBattle_LevelPolicyFlow": {
         "timeout": 2500,
         "next": [
@@ -169,6 +177,48 @@
             "StepUpBattle_StartBattleFlow"
         ]
     },
+    "StepUpBattle_SelectElite": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    180,
+                    1053,
+                    73,
+                    96
+                ],
+                "template": [
+                    "Battle/DeckIcon2.png"
+                ]
+            }
+        },
+        "next": [
+            "StepUpBattle_SwipeToLast_Elite"
+        ]
+    },
+    "StepUpBattle_SelectEliteEntry": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    278,
+                    873,
+                    101,
+                    65
+                ],
+                "expected": [
+                    "精英"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
+        "next": [
+            "StepUpBattle_LevelSelectedFlow"
+        ]
+    },
     "StepUpBattle_SelectIntermediate": {
         "recognition": {
             "type": "OCR",
@@ -277,7 +327,7 @@
             }
         },
         "next": [
-            "StepUpBattle_ClickStartBattle"
+            "StepUpBattle_DeckPolicyFlow"
         ]
     },
     "StepUpBattle_StepUpClick": {
@@ -334,6 +384,34 @@
         ],
         "on_error": [
             "StepUpBattle_Abort"
+        ]
+    },
+    "StepUpBattle_SwipeToLast_Elite": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    8,
+                    1011,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        13,
+                        484,
+                        11,
+                        11
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "repeat": 2,
+        "next": [
+            "StepUpBattle_SelectEliteEntry"
         ]
     }
 }
