@@ -73,9 +73,11 @@
                 ]
             }
         },
-        "timeout": 3000,
+        "post_delay": 2000,
+        "timeout": 5000,
         "rate_limit": 300,
         "next": [
+            "[JumpBack]Common_CancelClick",
             "PackOpening_FinishedWithPackRemain",
             "PackOpening_FinishedWithNoPack"
         ],

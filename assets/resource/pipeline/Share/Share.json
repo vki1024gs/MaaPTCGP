@@ -118,6 +118,25 @@
             "Share_FinishFlow"
         ]
     },
+    "Share_ReceiveLimitVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    191,
+                    235,
+                    367,
+                    107
+                ],
+                "expected": [
+                    "上限"
+                ]
+            }
+        },
+        "next": [
+            "Share_NoReceivableFriendFinish"
+        ]
+    },
     "Share_RecoverHomeThenRestart": {
         "anchor": {
             "Navigation_ReturnHomeTarget": "Share_Start"
@@ -181,6 +200,7 @@
         },
         "timeout": 2000,
         "next": [
+            "Share_ReceiveLimitVisible",
             "Share_FirstStarredFriendAlreadySharedVisible",
             "Share_SelectCard"
         ],

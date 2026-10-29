@@ -162,7 +162,7 @@
             }
         },
         "next": [
-            "WonderPickScout_SelectPlayerFlow"
+            "WonderPickScout_PrepareSelectionFlow"
         ],
         "on_error": [
             "WonderPick_RecoverHomeThenRestart"

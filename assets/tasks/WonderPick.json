@@ -16,12 +16,74 @@
                 "DailyRoutine"
             ],
             "option": [
+                "WonderPickHighRareSearch",
+                "WonderPickWantIt",
                 "WonderPickStrategy",
                 "WonderPickUseHourglass"
             ]
         }
     ],
     "option": {
+    "WonderPickHighRareSearch": {
+        "type": "switch",
+        "label": "$option.WonderPickHighRareSearch.label",
+        "description": "$option.WonderPickHighRareSearch.description",
+        "default_case": "No",
+        "cases": [
+            {
+                "name": "No",
+                "label": "$option.WonderPickHighRareSearch.No.label",
+                "pipeline_override": {
+                    "WonderPickScout_PrepareSelectionFlow": {
+                        "next": [
+                            "WonderPickScout_WantItPolicyFlow"
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "Yes",
+                "label": "$option.WonderPickHighRareSearch.Yes.label",
+                "pipeline_override": {
+                    "WonderPickScout_PrepareSelectionFlow": {
+                        "next": [
+                            "WonderPickScout_HighRareSearch"
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    "WonderPickWantIt": {
+        "type": "switch",
+        "label": "$option.WonderPickWantIt.label",
+        "description": "$option.WonderPickWantIt.description",
+        "default_case": "No",
+        "cases": [
+            {
+                "name": "No",
+                "label": "$option.WonderPickWantIt.No.label",
+                "pipeline_override": {
+                    "WonderPickScout_WantItPolicyFlow": {
+                        "next": [
+                            "WonderPickScout_SelectPlayerFlow"
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "Yes",
+                "label": "$option.WonderPickWantIt.Yes.label",
+                "pipeline_override": {
+                    "WonderPickScout_WantItPolicyFlow": {
+                        "next": [
+                            "WonderPickScout_WantIt"
+                        ]
+                    }
+                }
+            }
+        ]
+    },
         "WonderPickUseHourglass": {
             "type": "switch",
             "label": "$option.WonderPickUseHourglass.label",

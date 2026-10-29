@@ -215,5 +215,25 @@
                 "pressure": 3
             }
         }
+    },
+    "Common_CancelClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    81,
+                    574,
+                    575,
+                    290
+                ],
+                "expected": [
+                    "取消"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500
     }
 }

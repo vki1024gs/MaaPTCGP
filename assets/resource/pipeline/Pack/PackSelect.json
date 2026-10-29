@@ -44,9 +44,9 @@
             "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    242,
+                    267,
                     684,
-                    228,
+                    251,
                     104
                 ],
                 "template": [
@@ -250,9 +250,9 @@
             "param": {
                 "roi": [
                     284,
-                    674,
-                    155,
-                    127
+                    675,
+                    251,
+                    124
                 ],
                 "template": [
                     "Pack/twopack.png"

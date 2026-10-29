@@ -100,6 +100,25 @@
             "ShareFilter_NoShareableCardFinish"
         ]
     },
+    "ShareFilter_LatestCardDexCompleted": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    352,
+                    667,
+                    242,
+                    82
+                ],
+                "expected": [
+                    "已完整收藏"
+                ]
+            }
+        },
+        "next": [
+            "ShareFilter_NoShareableCardFinish"
+        ]
+    },
     "ShareFilter_LatestCardDexCompletionStrategy": {
         "pre_delay": 500,
         "next": [
@@ -128,6 +147,7 @@
         ]
     },
     "ShareFilter_SelectFourDiamondCards": {
+        "timeout": 6000,
         "next": [
             "[JumpBack]ShareFilter_CloseSavedFilter",
             "[JumpBack]ShareFilter_ClickFourDiamond"
@@ -282,25 +302,6 @@
         "next": [
             "ShareFilter_FullColl",
             "ShareFilter_OutColl"
-        ]
-    },
-    "ShareFilter_LatestCardDexCompleted": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    352,
-                    667,
-                    242,
-                    82
-                ],
-                "expected": [
-                    "已完整收藏"
-                ]
-            }
-        },
-        "next": [
-            "ShareFilter_NoShareableCardFinish"
         ]
     }
 }

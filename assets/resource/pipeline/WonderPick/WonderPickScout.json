@@ -77,6 +77,40 @@
             "WonderPickScout_AbortNoCandidate"
         ]
     },
+    "WonderPickScout_PrepareSelectionFlow": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "WonderPickScout_SelectPlayerFlow"
+                ]
+            }
+        },
+        "next": [
+            "WonderPickScout_WantItPolicyFlow"
+        ]
+    },
+    "WonderPickScout_HighRareSearch": {
+        "recognition": {
+            "type": "DirectHit"
+        },
+        "next": [
+            "WonderPickScout_WantItPolicyFlow"
+        ]
+    },
+    "WonderPickScout_WantItPolicyFlow": {
+        "next": [
+            "WonderPickScout_SelectPlayerFlow"
+        ]
+    },
+    "WonderPickScout_WantIt": {
+        "recognition": {
+            "type": "DirectHit"
+        },
+        "next": [
+            "WonderPickScout_SelectPlayerFlow"
+        ]
+    },
     "WonderPickScout_SelectPlayerFlow": {
         "recognition": {
             "type": "OCR",
