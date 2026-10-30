@@ -8,7 +8,7 @@
 | --- | --- |
 | [ci/](ci/) | CI 校验、发布打包及安装包依赖 |
 | [checks/](checks/) | 开发者提交前检查与 public 净化 |
-| [mxu/](mxu/README.md) | MXU 启停和多开工具 |
+| [mxu/](mxu/README.md) | MXU 启动与重启工具 |
 
 ## 根目录脚本
 
@@ -25,13 +25,29 @@ python3 tools/adb_autoconnect.py --help
 
 ### rebuild_macos_app.sh
 
-仅用于 macOS 本地开发测试，将已有 `install/` 封装为 `.app`，不编译 MXU。生成图标、版本信息并临时签名，移除隔离标记；完成后默认打开 Finder 并建立 Applications 快捷方式。
+仅用于 macOS 本地开发测试，将已有 `install/` 封装为 `.app`，不编译 MXU。低于 1.0 的开发安装将开发资源的绝对位置编码为可移动的根定位相对路径；生成后可在构建目录、桌面和 Applications 之间移动，不会因位置变化产生重复路径。完成后默认打开 Finder 并建立 Applications 快捷方式。
 
 ```bash
 bash tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.2.5
 ```
 
-输出 `.app` 已存在时会被替换。低于 1.0 的版本要求输入接口中有 `Dev` 资源，并将它改为本仓库的绝对资源路径；第六个参数可指定其他资源目录。此类应用仅供本地使用。1.0 及以上不注入该路径。可设置 `MXU_OPEN_INSTALL_WINDOW=0` 关闭自动打开 Finder；临时签名不等于 Apple 公证。
+输出 `.app` 已存在时会被替换。低于 1.0 的版本保留 `Dev` 入口，并默认连接本仓库的 `assets/resource`；第六个参数可指定其他资源目录。移动 `.app` 不受影响。可设置 `MXU_OPEN_INSTALL_WINDOW=0` 关闭自动打开 Finder；临时签名不等于 Apple 公证。正式 DMG 由 CI 的独立工具生成。
+
+#### 自定义开发资源
+
+Release 默认使用应用内置的 `Default` 资源。需要修改 Pipeline、图片或模型时，可复制同版本 Release 中的 `resource` 目录作为独立开发资源，再通过第六个参数重新构建：
+
+```bash
+bash tools/rebuild_macos_app.sh \
+  "<Release 解压目录>" \
+  "<输出 App 路径>" \
+  "<版本号>" \
+  MaaPTCGP \
+  io.github.vki1024gs.maaptcgp.dev \
+  "<自定义 resource 目录>"
+```
+
+构建后在 MXU 中选择 `Dev` 资源即可加载该目录。请勿删除或移动该目录；如路径发生变化，需要重新构建应用。自定义资源应与所用 Release 版本保持一致。
 
 ### setup_ocr_model.py
 

@@ -28,7 +28,7 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 - 🎴 Open available daily packs with pack selection options
 - 🎟️ Claim the daily free shop ticket
 - 🔮 Run Wonder Pick reward flow
-- ⚔️ Run event, random, and step-up battles, with event battle point recovery and recommended deck selection for step-up battles
+- ⚔️ Run event, random, and step-up battles, with target deck selection for rerun PROMO drop events, event battle point recovery, and recommended deck selection
 - 🎁 Share cards with starred friends using the Shinedust or latest Card Dex completion strategy
 - 📋 Claim daily mission rewards
 

@@ -8,7 +8,6 @@ Run from the repository root. Launch and restart scripts are macOS-only and targ
 | --- | --- |
 | `open-mxu.sh` | Open MXU using the system `open` command |
 | `restart-mxu.sh` | Terminate processes whose command line matches that executable path, wait 1 second, then reopen; this interrupts running tasks |
-| [multi_instance/](multi_instance/README_en.md) | Experimental multi-instance toggle for supported Windows, macOS, and Linux architectures |
 
 ```bash
 bash tools/mxu/open-mxu.sh

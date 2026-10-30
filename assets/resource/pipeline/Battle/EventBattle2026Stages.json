@@ -1,0 +1,520 @@
+{
+    "EventBattle2026Stages_CurrentTarget": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "EventBattle2026_Selected",
+                    "EventBattle2026Stages_TargetText"
+                ]
+            }
+        },
+        "next": [
+            "EventBattle2026_Selected"
+        ]
+    },
+    "EventBattle2026Stages_SelectFlow": {
+        "timeout": 8000,
+        "rate_limit": 200,
+        "next": [
+            "EventBattle2026_NoBattlePointDialogReturnFlow",
+            "EventBattle2026Stages_CurrentTarget",
+            "EventBattle2026Stages_SelectTarget",
+            "[JumpBack]EventBattle2026Stages_SwipeForward"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026Stages_SelectTarget": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "EventBattle2026Stages_TargetText"
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026Stages_Start": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.98
+                ]
+            }
+        },
+        "pre_wait_freezes": 300,
+        "next": [
+            "EventBattle2026Stages_SelectFlow"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026Stages_SwipeForward": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    8,
+                    801,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        13,
+                        604,
+                        11,
+                        11
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "post_delay": 600
+    },
+    "EventBattle2026Stages_TargetText": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "EventBattle2026_SelectStage1"
+                ]
+            }
+        }
+    },
+    "EventBattle2026_SelectStage1": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "烈空坐"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage10": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "蒼炎刃鬼"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage11": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "索羅亞克"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage12": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "黑魯加"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage13": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "拉普拉斯"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage14": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "烈咬陸鯊"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage2": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "大比鳥"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage3": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "電龍"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage4": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "拉帝歐斯"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage5": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "恰雷姆"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage6": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "紅蓮鎧騎"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage7": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "呆殼獸"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage8": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "基格爾德"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_SelectStage9": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    444,
+                    400,
+                    589
+                ],
+                "expected": [
+                    "赫拉克羅斯"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "EventBattle2026_Selected"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    }
+}

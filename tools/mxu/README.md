@@ -8,7 +8,6 @@
 | --- | --- |
 | `open-mxu.sh` | 使用系统 `open` 打开 MXU |
 | `restart-mxu.sh` | 终止命令行匹配该程序路径的进程，等待 1 秒后重新打开；会中断正在运行的任务 |
-| [multi_instance/](multi_instance/README.md) | 实验性多开切换，支持指定的 Windows、macOS 和 Linux 架构 |
 
 ```bash
 bash tools/mxu/open-mxu.sh

@@ -76,6 +76,35 @@
                     }
                 },
                 {
+                    "name": "EventBattle2026Rerun",
+                    "label": "$option.BattleMode.EventBattle2026Rerun.label",
+                    "description": "$option.BattleMode.EventBattle2026Rerun.description",
+                    "option": [
+                        "EventBattle2026Deck",
+                        "BattleRecommendedDeck",
+                        "BattleAutoRecovery"
+                    ],
+                    "pipeline_override": {
+                        "BattleEntry_ModeFlow": {
+                            "next": [
+                                "EventBattle2026_Start"
+                            ]
+                        },
+                        "BattleEntry_RecommendedDeckReturned": {
+                            "recognition": {
+                                "param": {
+                                    "roi": [
+                                        447,
+                                        1064,
+                                        116,
+                                        59
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
                     "name": "RandomBattle",
                     "label": "$option.BattleMode.RandomBattle.label",
                     "description": "$option.BattleMode.RandomBattle.description",
@@ -104,6 +133,224 @@
                 }
             ]
         },
+        "EventBattle2026Deck": {
+            "type": "select",
+            "label": "$option.EventBattle2026Deck.label",
+            "description": "$option.EventBattle2026Deck.description",
+            "default_case": "Stage1",
+            "cases": [
+                {
+                    "name": "Stage1",
+                    "label": "$option.EventBattle2026Deck.Stage1.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage1"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage2",
+                    "label": "$option.EventBattle2026Deck.Stage2.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage3",
+                    "label": "$option.EventBattle2026Deck.Stage3.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage3"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage4",
+                    "label": "$option.EventBattle2026Deck.Stage4.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage4"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage5",
+                    "label": "$option.EventBattle2026Deck.Stage5.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage5"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage6",
+                    "label": "$option.EventBattle2026Deck.Stage6.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage6"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage7",
+                    "label": "$option.EventBattle2026Deck.Stage7.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage7"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage8",
+                    "label": "$option.EventBattle2026Deck.Stage8.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage8"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage9",
+                    "label": "$option.EventBattle2026Deck.Stage9.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage9"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage10",
+                    "label": "$option.EventBattle2026Deck.Stage10.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage10"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage11",
+                    "label": "$option.EventBattle2026Deck.Stage11.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage11"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage12",
+                    "label": "$option.EventBattle2026Deck.Stage12.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage12"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage13",
+                    "label": "$option.EventBattle2026Deck.Stage13.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage13"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Stage14",
+                    "label": "$option.EventBattle2026Deck.Stage14.label",
+                    "pipeline_override": {
+                        "EventBattle2026Stages_TargetText": {
+                            "recognition": {
+                                "param": {
+                                    "all_of": [
+                                        "EventBattle2026_SelectStage14"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
         "BattleRecommendedDeck": {
             "type": "switch",
             "label": "$option.BattleRecommendedDeck.label",
@@ -118,6 +365,11 @@
                             "next": [
                                 "StepUpBattle_ClickStartBattle"
                             ]
+                        },
+                        "EventBattle2026_DeckPolicyFlow": {
+                            "next": [
+                                "EventBattle2026_ClickStartBattle"
+                            ]
                         }
                     }
                 },
@@ -126,6 +378,11 @@
                     "label": "$option.BattleRecommendedDeck.Yes.label",
                     "pipeline_override": {
                         "StepUpBattle_DeckPolicyFlow": {
+                            "next": [
+                                "BattleEntry_SelectRecommendedDeck"
+                            ]
+                        },
+                        "EventBattle2026_DeckPolicyFlow": {
                             "next": [
                                 "BattleEntry_SelectRecommendedDeck"
                             ]
@@ -149,6 +406,11 @@
                             "next": [
                                 "EventBattle_NoBattlePointStopFlow"
                             ]
+                        },
+                        "EventBattle2026_BattlePointPolicyFlow": {
+                            "next": [
+                                "EventBattle2026_NoBattlePointStopFlow"
+                            ]
                         }
                     }
                 },
@@ -160,6 +422,11 @@
                         "EventBattle_BattlePointPolicyFlow": {
                             "next": [
                                 "EventBattle_BattlePointRecoverFlow"
+                            ]
+                        },
+                        "EventBattle2026_BattlePointPolicyFlow": {
+                            "next": [
+                                "EventBattle2026_BattlePointRecoverFlow"
                             ]
                         }
                     }

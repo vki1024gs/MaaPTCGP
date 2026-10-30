@@ -8,7 +8,7 @@ Run all commands below from the repository root. Python tools require Python 3.
 | --- | --- |
 | [ci/](ci/) | CI validation, release packaging, and package dependencies |
 | [checks/](checks/) | Developer checks before pushing and public sanitization |
-| [mxu/](mxu/README_en.md) | MXU launch, restart, and multi-instance tools |
+| [mxu/](mxu/README_en.md) | MXU launch and restart tools |
 
 ## Scripts in this directory
 
@@ -25,13 +25,29 @@ Replace the example port with your emulator's actual port. It runs once by defau
 
 ### rebuild_macos_app.sh
 
-For local development and testing on macOS only. Wraps an existing `install/` directory in an `.app` without compiling MXU. It adds an icon and version metadata, applies ad-hoc signing, removes quarantine attributes, and opens Finder with an Applications shortcut by default.
+For local development and testing on macOS only. Wraps an existing `install/` directory in an `.app` without compiling MXU. For development installs below 1.0, it encodes the development resource's absolute location as a movable root-anchored relative path. The resulting app can move between the build directory, Desktop, and Applications without producing a duplicated path. Finder opens with an Applications shortcut by default.
 
 ```bash
 bash tools/rebuild_macos_app.sh install build/MaaPTCGP.app v0.2.5
 ```
 
-An existing output `.app` is replaced. Versions below 1.0 require a `Dev` resource in the input interface and rewrite it to this checkout's absolute resource path; the sixth argument can specify another resource directory. Such apps are for local use only. Versions 1.0 and above do not receive this path. Set `MXU_OPEN_INSTALL_WINDOW=0` to disable opening Finder. Ad-hoc signing is not Apple notarization.
+An existing output `.app` is replaced. Versions below 1.0 retain the `Dev` entry and use this checkout's `assets/resource` by default; the sixth argument can select another resource directory. Moving the `.app` is safe. Set `MXU_OPEN_INSTALL_WINDOW=0` to disable opening Finder. Public DMGs use a separate CI packager. Ad-hoc signing is not Apple notarization.
+
+#### Custom development resources
+
+Releases use the bundled `Default` resource by default. To modify pipelines, images, or models, copy the `resource` directory from the same Release version to a separate location, then rebuild with that directory as the sixth argument:
+
+```bash
+bash tools/rebuild_macos_app.sh \
+  "<extracted Release directory>" \
+  "<output App path>" \
+  "<version>" \
+  MaaPTCGP \
+  io.github.vki1024gs.maaptcgp.dev \
+  "<custom resource directory>"
+```
+
+Select the `Dev` resource in MXU to load this directory. Do not delete or move it; rebuild the app if its path changes. Keep the custom resource aligned with the Release version in use.
 
 ### setup_ocr_model.py
 

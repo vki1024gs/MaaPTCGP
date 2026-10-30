@@ -5,16 +5,13 @@ set -euo pipefail
 #   tools/rebuild_macos_app.sh install "$HOME/Applications/MaaPTCGP.app" v0.1.9
 #   tools/rebuild_macos_app.sh install "$HOME/Applications/MaaPTCGP.app" v0.1.9 MaaPTCGP io.github.vki1024gs.maaptcgp /path/to/assets/resource
 #
-# For versions below 1.0, the script points the generated app's Dev resource to
-# the source tree. An explicitly supplied sixth argument takes priority;
-# otherwise this checkout's assets/resource directory is used. MXU resolves PI
-# resource paths relative to the app root even when given an absolute string,
-# so interface.json must use a relative path calculated for OUTPUT_APP's final
-# location. Moving the app later requires rebuilding it. This keeps source
-# interface.json unchanged while pipeline/image edits take effect immediately.
-#
-# Versions 1.0 and above do not receive a local Dev path. Public release input
-# should already have Dev removed by tools/ci/install.py.
+# For versions below 1.0, this development wrapper points the copied interface's
+# Dev resource at the source tree. An explicitly supplied sixth argument takes
+# priority; otherwise assets/resource in this checkout is used. MXU 2.8 always
+# prefixes resource paths with the app directory, so the tool encodes the
+# absolute source location as a root-anchored relative path with enough parent
+# segments to remain valid after the finished app is moved.
+# Public DMGs are built by tools/ci/package_macos_dmg.sh instead.
 #
 # After a successful build, the output directory is opened in Finder with an
 # Applications shortcut beside the app, so the app can be installed by dragging
@@ -83,10 +80,9 @@ fi
 # metadata from source files is not carried into the locally rebuilt app.
 ditto --noextattr --norsrc "$INSTALL_DIR" "$APP_BUNDLE/Contents/MacOS"
 
-# The multi-instance toggle keeps the official MXU beside the active binary so
-# it can restore without rebuilding. That runtime state must not be embedded in
-# an app bundle: codesign treats the backup executable as a nested component,
-# and distributing it would duplicate an installation-specific restore point.
+# Do not embed legacy local restore state. codesign treats its backup executable
+# as a nested component, and distributing it would duplicate an
+# installation-specific restore point.
 rm -rf "$APP_BUNDLE/Contents/MacOS/.mxu-multi-instance-state"
 
 SHORT_VERSION="$(echo "$FULL_VERSION" | sed -E 's/^v//' | sed -E 's/-.*//')"
@@ -107,26 +103,32 @@ if [[ "$VERSION_MAJOR" =~ ^[0-9]+$ ]] && (( VERSION_MAJOR < 1 )); then
 
   DEV_RESOURCE_PATH="$(cd "$DEV_RESOURCE_PATH" && pwd -P)"
 
-  python3 - "$APP_INTERFACE" "$DEV_RESOURCE_PATH" "$OUTPUT_APP" <<'PY'
+  python3 - "$APP_INTERFACE" "$DEV_RESOURCE_PATH" <<'PY'
 import json
-import os
 import sys
 from pathlib import Path
 
 interface_path = Path(sys.argv[1])
 dev_resource_path = Path(sys.argv[2]).resolve()
-app_mac_path = Path(sys.argv[3]) / "Contents" / "MacOS"
-relative_path = os.path.relpath(dev_resource_path, app_mac_path)
+if not dev_resource_path.is_absolute():
+    raise SystemExit(f"Dev resource path is not absolute: {dev_resource_path}")
+
+# MXU 2.8 concatenates every resource path with the directory containing
+# interface.json, including strings that begin with '/'. Climb beyond any
+# realistic app nesting depth; extra '..' components at the POSIX root are
+# harmless, then append the absolute target without its leading slash.
+root_relative = dev_resource_path.relative_to(dev_resource_path.anchor)
+portable_path = Path(*([".."] * 64), root_relative).as_posix()
 interface = json.loads(interface_path.read_text(encoding="utf-8"))
 
 for resource in interface.get("resource", []):
     if resource.get("name") == "Dev":
-        resource["path"] = [relative_path]
+        resource["path"] = [portable_path]
         interface_path.write_text(
             json.dumps(interface, ensure_ascii=False, indent=4) + "\n",
             encoding="utf-8",
         )
-        print(f"Configured local Dev resource: {relative_path} -> {dev_resource_path}")
+        print(f"Configured movable Dev resource: {portable_path} -> {dev_resource_path}")
         break
 else:
     raise SystemExit('Dev resource was not found in the generated app interface.json')

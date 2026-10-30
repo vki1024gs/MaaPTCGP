@@ -1,0 +1,316 @@
+{
+    "EventBattle2026_Abort": {
+        "next": [
+            "Battle_FinishReturnHomeFlow"
+        ]
+    },
+    "EventBattle2026_BattlePointCheck": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    629,
+                    41,
+                    70,
+                    56
+                ],
+                "template": [
+                    "Battle/RecoveryBP.png"
+                ],
+                "threshold": [
+                    0.92
+                ]
+            }
+        },
+        "next": [
+            "EventBattle2026_NoBattlePointVisible",
+            "EventBattle2026_BattlePointVisible"
+        ]
+    },
+    "EventBattle2026_BattlePointPolicyFlow": {
+        "next": [
+            "EventBattle2026_NoBattlePointStopFlow"
+        ]
+    },
+    "EventBattle2026_BattlePointRecoverFlow": {
+        "next": [
+            "EventBattle2026_UseBattlePointItemFlow"
+        ]
+    },
+    "EventBattle2026_BattlePointVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.98
+                ]
+            }
+        },
+        "next": [
+            "EventBattle2026Stages_Start"
+        ]
+    },
+    "EventBattle2026_ClickStartBattle": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    1064,
+                    116,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Battle_Start"
+        ]
+    },
+    "EventBattle2026_EventClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    309,
+                    781,
+                    101,
+                    56
+                ],
+                "expected": [
+                    "活動"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "rate_limit": 400,
+        "next": [
+            "EventBattle2026_EventClick",
+            "EventBattle2026_BattlePointCheck"
+        ]
+    },
+    "EventBattle2026_NoBattlePointDialogReturnFlow": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    190,
+                    220,
+                    360,
+                    80
+                ],
+                "expected": [
+                    "恢復活動力"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_CloseClick",
+            "EventBattle2026_NoBattlePointReturned"
+        ]
+    },
+    "EventBattle2026_NoBattlePointReturned": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    1064,
+                    116,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "next": [
+            "EventBattle2026_BattlePointPolicyFlow"
+        ]
+    },
+    "EventBattle2026_NoBattlePointStop": {},
+    "EventBattle2026_NoBattlePointStopFlow": {
+        "next": [
+            "EventBattle2026_NoBattlePointStop"
+        ]
+    },
+    "EventBattle2026_NoBattlePointVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    439,
+                    51,
+                    45,
+                    42
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ],
+                "threshold": [
+                    0.98
+                ]
+            }
+        },
+        "inverse": true,
+        "next": [
+            "EventBattle2026_BattlePointPolicyFlow"
+        ]
+    },
+    "EventBattle2026_NoItem": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    321,
+                    562,
+                    133,
+                    56
+                ],
+                "expected": [
+                    "已恢復"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Common_ReturnClick",
+            "[JumpBack]Common_CloseClick",
+            "[JumpBack]Common_ClickOkMID",
+            "EventBattle2026_BattlePointCheck"
+        ]
+    },
+    "EventBattle2026_SelectAuto": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    519,
+                    1197,
+                    60,
+                    39
+                ],
+                "expected": [
+                    "OFF"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    },
+    "EventBattle2026_DeckPolicyFlow": {
+        "anchor": {
+            "BattleEntry_RecommendedDeckReturnTarget": "EventBattle2026_ClickStartBattle"
+        },
+        "next": [
+            "EventBattle2026_ClickStartBattle"
+        ]
+    },
+    "EventBattle2026_Selected": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    1064,
+                    116,
+                    59
+                ],
+                "expected": [
+                    "對戰"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]EventBattle2026_SelectAuto",
+            "EventBattle2026_StartBattleFlow"
+        ]
+    },
+    "EventBattle2026_Start": {
+        "anchor": {
+            "Battle_ContinueTarget": "EventBattle2026_BattlePointCheck"
+        },
+        "timeout": 2000,
+        "next": [
+            "EventBattle2026_EventClick"
+        ],
+        "on_error": [
+            "EventBattle2026_Abort"
+        ]
+    },
+    "EventBattle2026_StartBattleFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "Battle/AutoON.png"
+                ]
+            }
+        },
+        "next": [
+            "EventBattle2026_DeckPolicyFlow"
+        ]
+    },
+    "EventBattle2026_UseBattlePointItemFlow": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    629,
+                    41,
+                    70,
+                    56
+                ],
+                "template": [
+                    "Battle/RecoveryBP.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 660,
+        "next": [
+            "EventBattle2026_NoItem",
+            "[JumpBack]EventBattle2026_UseItem",
+            "[JumpBack]Common_ClickOkRIGHT",
+            "[JumpBack]Common_ClickOkMID",
+            "EventBattle2026_BattlePointCheck"
+        ]
+    },
+    "EventBattle2026_UseItem": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    194,
+                    515,
+                    406,
+                    110
+                ],
+                "template": [
+                    "Battle/BattlePoint.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        }
+    }
+}
