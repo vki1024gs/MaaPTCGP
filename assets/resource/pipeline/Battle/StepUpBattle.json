@@ -4,6 +4,29 @@
             "Battle_FinishReturnHomeFlow"
         ]
     },
+    "StepUpBattle_BattleListStable": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    24,
+                    1039,
+                    124,
+                    124
+                ],
+                "template": [
+                    "Battle/DeckIcon.png"
+                ]
+            }
+        },
+        "pre_wait_freezes": 300,
+        "next": [
+            "StepUpBattle_SelectBattleFlow"
+        ],
+        "on_error": [
+            "StepUpBattle_Abort"
+        ]
+    },
     "StepUpBattle_ClickStartBattle": {
         "recognition": {
             "type": "OCR",
@@ -34,17 +57,50 @@
             "StepUpBattle_ClickStartBattle"
         ]
     },
-    "StepUpBattle_EnterFlow": {
-        "next": [
-            "StepUpBattle_StepUpClick"
-        ]
+    "StepUpBattle_LockBacktrack": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    273,
+                    467,
+                    195,
+                    369
+                ],
+                "template": [
+                    "Battle/LockupIcon.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    13,
+                    604,
+                    11,
+                    11
+                ],
+                "end": [
+                    [
+                        8,
+                        801,
+                        8,
+                        8
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        }
     },
     "StepUpBattle_ReEnter": {
         "post_delay": 1000,
         "next": [
             "[JumpBack]Common_ClickOkMID",
             "[JumpBack]Common_CloseClick",
-            "StepUpBattle_SelectBattleFlow"
+            "StepUpBattle_BattleListStable"
         ]
     },
     "StepUpBattle_SelectAuto": {
@@ -68,11 +124,10 @@
     },
     "StepUpBattle_SelectBattleFlow": {
         "timeout": 3000,
-        "rate_limit": 200,
         "next": [
-            "StepUpBattle_Selected",
-            "[JumpBack]StepUpBattle_SelectBonus",
-            "[JumpBack]StepUpBattle_SelectRedDot"
+            "[JumpBack]StepUpBattle_LockBacktrack",
+            "StepUpBattle_SelectBonus",
+            "[JumpBack]StepUpBattle_SwipeForward"
         ],
         "on_error": [
             "StepUpBattle_Abort"
@@ -89,46 +144,23 @@
                     716
                 ],
                 "template": [
-                    "Battle/EXPBattleBonus.png",
-                    "Battle/TicketBattleBonus.png"
+                    "Battle/EXPBattleBonus.png"
+                ],
+                "threshold": [
+                    0.9
                 ]
             }
         },
         "action": {
             "type": "Click"
         },
-        "post_delay": 500
-    },
-    "StepUpBattle_SelectRedDot": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    653,
-                    460,
-                    48,
-                    595
-                ],
-                "template": [
-                    "Battle/BattleRedDot.png"
-                ],
-                "threshold": [
-                    0.85
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target_offset": [
-                    -116,
-                    118,
-                    0,
-                    0
-                ]
-            }
-        },
-        "post_delay": 500
+        "post_delay": 500,
+        "next": [
+            "StepUpBattle_Selected"
+        ],
+        "on_error": [
+            "StepUpBattle_Abort"
+        ]
     },
     "StepUpBattle_Selected": {
         "recognition": {
@@ -156,7 +188,7 @@
         },
         "timeout": 2500,
         "next": [
-            "StepUpBattle_EnterFlow"
+            "StepUpBattle_EnterClick"
         ],
         "on_error": [
             "StepUpBattle_Abort"
@@ -181,7 +213,7 @@
             "StepUpBattle_DeckPolicyFlow"
         ]
     },
-    "StepUpBattle_StepUpClick": {
+    "StepUpBattle_EnterClick": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -201,7 +233,32 @@
         },
         "post_delay": 700,
         "next": [
-            "StepUpBattle_SelectBattleFlow"
+            "StepUpBattle_BattleListStable"
         ]
+    },
+    "StepUpBattle_SwipeForward": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    8,
+                    911,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        13,
+                        584,
+                        11,
+                        11
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "post_delay": 300
     }
 }
