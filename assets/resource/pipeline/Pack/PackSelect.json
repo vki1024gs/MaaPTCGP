@@ -78,8 +78,10 @@
         ]
     },
     "PackSelect_PackPageEnterGate": {
+        "post_delay": 1000,
         "timeout": 5000,
         "next": [
+            "[JumpBack]Common_CancelClick",
             "PackSelect_PackPageFlow"
         ],
         "on_error": [

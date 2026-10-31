@@ -57,6 +57,29 @@
             "StepUpBattle_ClickStartBattle"
         ]
     },
+    "StepUpBattle_EnterClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    461,
+                    946,
+                    144,
+                    96
+                ],
+                "expected": [
+                    "分級"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 700,
+        "next": [
+            "StepUpBattle_BattleListStable"
+        ]
+    },
     "StepUpBattle_LockBacktrack": {
         "recognition": {
             "type": "TemplateMatch",
@@ -124,9 +147,11 @@
     },
     "StepUpBattle_SelectBattleFlow": {
         "timeout": 3000,
+        "rate_limit": 1500,
         "next": [
+            "StepUpBattle_Selected",
             "[JumpBack]StepUpBattle_LockBacktrack",
-            "StepUpBattle_SelectBonus",
+            "[JumpBack]StepUpBattle_SelectBonus",
             "[JumpBack]StepUpBattle_SwipeForward"
         ],
         "on_error": [
@@ -154,10 +179,7 @@
         "action": {
             "type": "Click"
         },
-        "post_delay": 500,
-        "next": [
-            "StepUpBattle_Selected"
-        ],
+        "post_delay": 1000,
         "on_error": [
             "StepUpBattle_Abort"
         ]
@@ -211,29 +233,6 @@
         },
         "next": [
             "StepUpBattle_DeckPolicyFlow"
-        ]
-    },
-    "StepUpBattle_EnterClick": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    461,
-                    946,
-                    144,
-                    96
-                ],
-                "expected": [
-                    "分級"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 700,
-        "next": [
-            "StepUpBattle_BattleListStable"
         ]
     },
     "StepUpBattle_SwipeForward": {
