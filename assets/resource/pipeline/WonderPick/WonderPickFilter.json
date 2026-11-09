@@ -17,28 +17,39 @@
             }
         },
         "next": [
-            "[Anchor]WonderPickFilter_ExitTarget"
+            "WonderPickFilter_ReturnHomeForNormal"
+        ]
+    },
+    "WonderPickFilter_EnterNormal": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "WonderPick_Enter"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    200,
+                    954,
+                    20,
+                    20
+                ]
+            }
+        },
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "WonderPick_Start"
+        },
+        "next": [
+            "WonderPickScout_PrepareSelectionFlow"
         ]
     },
     "WonderPickFilter_EntryPolicyFlow": {
         "next": [
             "WonderPickScout_PrepareSelectionFlow"
-        ]
-    },
-    "WonderPickFilter_ExitAfterHit": {
-        "anchor": {
-            "WonderPick_ReturnedToListReentryTarget": "WonderPick_ReturnedToListSkipReentry"
-        },
-        "next": [
-            "WonderPick_FinishFlow"
-        ]
-    },
-    "WonderPickFilter_ExitWithoutHit": {
-        "anchor": {
-            "WonderPick_ReturnedToListReentryTarget": "WonderPick_ReturnedToListSkipReentry"
-        },
-        "next": [
-            "WonderPickFilter_ResetToTopForNormal"
         ]
     },
     "WonderPickFilter_FourCostText": {
@@ -61,39 +72,17 @@
         }
     },
     "WonderPickFilter_HighRareEnabledGate": {},
-    "WonderPickFilter_ResetToTopForNormal": {
-        "action": {
-            "type": "Swipe",
-            "param": {
-                "begin": [
-                    20,
-                    600,
-                    10,
-                    10
-                ],
-                "end": [
-                    [
-                        20,
-                        900,
-                        10,
-                        10
-                    ]
-                ],
-                "duration": [
-                    400
-                ]
-            }
+    "WonderPickFilter_ReturnHomeForNormal": {
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "WonderPickFilter_EnterNormal",
+            "WonderPick_ReturnedToListReentryTarget": "WonderPick_ReturnedToListSkipReentry"
         },
-        "repeat": 4,
-        "repeat_wait_freezes": 300,
-        "post_wait_freezes": 300,
         "next": [
-            "WonderPickScout_PrepareSelectionFlow"
+            "Navigation_ReturnHomeFlow"
         ]
     },
     "WonderPickFilter_ReturnedToList": {
         "anchor": {
-            "WonderPickFilter_ExitTarget": "WonderPickFilter_ExitAfterHit",
             "WonderPick_ReturnedToListReentryTarget": "WonderPickFilter_ReturnedToList"
         },
         "next": [
@@ -198,7 +187,6 @@
         },
         "pre_delay": 1000,
         "anchor": {
-            "WonderPickFilter_ExitTarget": "WonderPickFilter_ExitWithoutHit",
             "WonderPick_ReturnedToListReentryTarget": "WonderPickFilter_ReturnedToList"
         },
         "timeout": 10000,
@@ -246,7 +234,7 @@
                     863
                 ],
                 "template": [
-                    "Share/WantedIcon.png"
+                    "WonderPick/WPWantedIcon.png"
                 ],
                 "order_by": "Vertical",
                 "index": 0
