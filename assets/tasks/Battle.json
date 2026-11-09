@@ -35,7 +35,7 @@
                     "pipeline_override": {
                         "Battle_FinishFlow": {
                             "next": [
-                                "Battle_FinishReturnHomeFlow"
+                                "Battle_LoopFinishedFlow"
                             ]
                         }
                     }
@@ -108,6 +108,9 @@
                     "name": "RandomBattle",
                     "label": "$option.BattleMode.RandomBattle.label",
                     "description": "$option.BattleMode.RandomBattle.description",
+                    "option": [
+                        "RandomBattleTaskReward"
+                    ],
                     "pipeline_override": {
                         "BattleEntry_ModeFlow": {
                             "next": [
@@ -127,6 +130,29 @@
                         "BattleEntry_ModeFlow": {
                             "next": [
                                 "StepUpBattle_Start"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "RandomBattleTaskReward": {
+            "type": "switch",
+            "label": "$option.RandomBattleTaskReward.label",
+            "description": "$option.RandomBattleTaskReward.description",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.RandomBattleTaskReward.No.label"
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.RandomBattleTaskReward.Yes.label",
+                    "pipeline_override": {
+                        "Battle_LoopFinishedFlow": {
+                            "next": [
+                                "RandomBattleEx_Start"
                             ]
                         }
                     }

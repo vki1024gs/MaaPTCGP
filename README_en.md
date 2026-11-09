@@ -27,14 +27,14 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 - 📬 Claim gift box mail rewards
 - 🎴 Open available daily packs with pack selection options
 - 🎟️ Claim the daily free shop ticket
-- 🔮 Run Wonder Pick reward flow
-- ⚔️ Run event, random, and step-up battles, with target deck selection for rerun PROMO drop events, event battle point recovery, and recommended deck selection
-- 🎁 Share cards with starred friends using the Shinedust or latest Card Dex completion strategy
+- 🔮 Run Wonder Picks with high-rarity and Want It target searches
+- ⚔️ Run event, random, and step-up battles, with rerun PROMO drop events, Random Battle mission rewards, event battle point recovery, and recommended deck selection
+- 🎁 Prioritize wanted cards and latest Card Dex completion, with a 4-diamond fallback and an option to keep at least 2 copies
 - 📋 Claim daily mission rewards
 
 ### 🛠️ Utility
 
-- 👆 Provide helper actions such as swipe-up sending
+- Skip pack-opening animations and register cards, stopping at the pack screen
 - 📌 Provide auto-claim for task-bar red dots (in development and may be unstable)
 
 ## Requirements
@@ -67,6 +67,7 @@ The macOS build is not Apple-notarized yet. Whether you download tar.gz or dmg, 
 
 - Continue adapting to the game UI changes released on October 29, 2026
 - Continue improving battle and other automation flows
+- Add owned-card count checks for Want It targets to reduce duplicate picks
 - Improve daily-task stability and recovery
 
 ## Feedback

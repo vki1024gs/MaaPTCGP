@@ -34,10 +34,21 @@
                 "name": "No",
                 "label": "$option.WonderPickHighRareSearch.No.label",
                 "pipeline_override": {
-                    "WonderPickScout_PrepareSelectionFlow": {
-                        "next": [
-                            "WonderPickScout_WantItPolicyFlow"
-                        ]
+                    "WonderPickFilter_HighRareEnabledGate": {
+                        "recognition": {
+                            "type": "OCR",
+                            "param": {
+                                "roi": [
+                                    0,
+                                    0,
+                                    1,
+                                    1
+                                ],
+                                "expected": [
+                                    "__WONDER_PICK_FILTER_HIGH_RARE_DISABLED__"
+                                ]
+                            }
+                        }
                     }
                 }
             },
@@ -45,9 +56,9 @@
                 "name": "Yes",
                 "label": "$option.WonderPickHighRareSearch.Yes.label",
                 "pipeline_override": {
-                    "WonderPickScout_PrepareSelectionFlow": {
+                    "WonderPickFilter_EntryPolicyFlow": {
                         "next": [
-                            "WonderPickScout_HighRareSearch"
+                            "WonderPickFilter_Start"
                         ]
                     }
                 }
@@ -64,10 +75,21 @@
                 "name": "No",
                 "label": "$option.WonderPickWantIt.No.label",
                 "pipeline_override": {
-                    "WonderPickScout_WantItPolicyFlow": {
-                        "next": [
-                            "WonderPickScout_SelectPlayerFlow"
-                        ]
+                    "WonderPickFilter_WantItEnabledGate": {
+                        "recognition": {
+                            "type": "OCR",
+                            "param": {
+                                "roi": [
+                                    0,
+                                    0,
+                                    1,
+                                    1
+                                ],
+                                "expected": [
+                                    "__WONDER_PICK_FILTER_WANT_IT_DISABLED__"
+                                ]
+                            }
+                        }
                     }
                 }
             },
@@ -75,9 +97,9 @@
                 "name": "Yes",
                 "label": "$option.WonderPickWantIt.Yes.label",
                 "pipeline_override": {
-                    "WonderPickScout_WantItPolicyFlow": {
+                    "WonderPickFilter_EntryPolicyFlow": {
                         "next": [
-                            "WonderPickScout_WantIt"
+                            "WonderPickFilter_Start"
                         ]
                     }
                 }

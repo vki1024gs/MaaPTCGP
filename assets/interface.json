@@ -7,7 +7,7 @@
     "welcome": "$welcome.file",
     "icon": "locales/MaaPTCGP-Tiny.png",
     "github": "https://github.com/vki1024gs/MaaPTCGP",
-    "version": "v0.3.1",
+    "version": "v0.3.2",
     "controller": [
         {
             "name": "ADB",
@@ -79,7 +79,7 @@
         "tasks/Battle.json",
         "tasks/DailyMissions.json",
         "tasks/preset/Utility.json",
-        "tasks/SwipeUp.json",
+        "tasks/SkipPackOpening.json",
         "tasks/MissionRedDotCleaner.json"
     ]
 }

@@ -1,0 +1,340 @@
+{
+    "RandomBattleEx_BottomSelectFlow": {
+        "next": [
+            "RandomBattle_Selected",
+            "[JumpBack]RandomBattleEx_SelectUpperIncompleteCandidate",
+            "[JumpBack]RandomBattleEx_SelectLowerIncompleteCandidate",
+            "RandomBattleEx_BottomVisiblePairComplete"
+        ]
+    },
+    "RandomBattleEx_BottomVisiblePairComplete": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattleEx_UpperTaskFlagCandidate",
+                    "RandomBattleEx_UpperCandidateCompleteText",
+                    "RandomBattleEx_LowerTaskFlagCandidate",
+                    "RandomBattleEx_LowerCandidateCompleteText"
+                ]
+            }
+        },
+        "next": [
+            "Battle_FinishReturnHomeFlow"
+        ]
+    },
+    "RandomBattleEx_CurrentDetailHourglassVisible": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    600,
+                    453,
+                    73,
+                    722
+                ],
+                "template": [
+                    "Battle/EventBattleBonus.png"
+                ]
+            }
+        }
+    },
+    "RandomBattleEx_CurrentDetailRewardAvailable": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattle_Selected",
+                    "RandomBattleEx_CurrentDetailHourglassVisible"
+                ]
+            }
+        },
+        "next": [
+            "RandomBattle_Selected"
+        ]
+    },
+    "RandomBattleEx_ListStable": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    39,
+                    1036,
+                    99,
+                    104
+                ],
+                "template": [
+                    "Battle/DeckIcon.png"
+                ]
+            }
+        },
+        "pre_wait_freezes": 300,
+        "next": [
+            "RandomBattleEx_ResetToTop"
+        ]
+    },
+    "RandomBattleEx_LowerCandidateCompleteText": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": "RandomBattleEx_LowerTaskFlagCandidate",
+                "roi_offset": [
+                    49,
+                    -9,
+                    38,
+                    22
+                ],
+                "expected": [
+                    "^\\s*(?:1\\s*/\\s*1|2\\s*/\\s*2|4\\s*/\\s*4|5\\s*/\\s*5)\\s*$"
+                ],
+                "order_by": "Vertical"
+            }
+        }
+    },
+    "RandomBattleEx_LowerCandidateProgressText": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": "RandomBattleEx_LowerTaskFlagCandidate",
+                "roi_offset": [
+                    49,
+                    -9,
+                    38,
+                    22
+                ],
+                "expected": [
+                    "^\\s*(?:0\\s*/\\s*[1245]|1\\s*/\\s*[245]|2\\s*/\\s*[45]|3\\s*/\\s*[45]|4\\s*/\\s*5)\\s*$"
+                ],
+                "order_by": "Vertical"
+            }
+        }
+    },
+    "RandomBattleEx_LowerTaskFlagCandidate": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    250,
+                    430,
+                    300,
+                    650
+                ],
+                "template": [
+                    "Battle/RandomBattleTaskFlag.png"
+                ],
+                "threshold": [
+                    0.8
+                ],
+                "order_by": "Vertical",
+                "index": 1
+            }
+        }
+    },
+    "RandomBattleEx_ResetToTop": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    13,
+                    484,
+                    11,
+                    11
+                ],
+                "end": [
+                    [
+                        8,
+                        1011,
+                        8,
+                        8
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "repeat": 2,
+        "repeat_wait_freezes": 300,
+        "post_wait_freezes": 300,
+        "next": [
+            "RandomBattleEx_TopSelectFlow"
+        ]
+    },
+    "RandomBattleEx_ReturnToListFlow": {
+        "next": [
+            "RandomBattleEx_CurrentDetailRewardAvailable",
+            "[JumpBack]Common_CloseClick",
+            "RandomBattleEx_ListStable"
+        ]
+    },
+    "RandomBattleEx_SelectLowerIncompleteCandidate": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattleEx_LowerTaskFlagCandidate",
+                    "RandomBattleEx_LowerCandidateProgressText"
+                ],
+                "box_index": 1
+            }
+        },
+        "pre_wait_freezes": 300,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true,
+                "target_offset": [
+                    0,
+                    -120,
+                    0,
+                    0
+                ]
+            }
+        }
+    },
+    "RandomBattleEx_SelectUpperIncompleteCandidate": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattleEx_UpperTaskFlagCandidate",
+                    "RandomBattleEx_UpperCandidateProgressText"
+                ],
+                "box_index": 1
+            }
+        },
+        "pre_wait_freezes": 300,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true,
+                "target_offset": [
+                    0,
+                    -120,
+                    0,
+                    0
+                ]
+            }
+        }
+    },
+    "RandomBattleEx_Start": {
+        "anchor": {
+            "Battle_ContinueTarget": "RandomBattleEx_Start"
+        },
+        "next": [
+            "RandomBattleEx_ReturnToListFlow"
+        ]
+    },
+    "RandomBattleEx_SwipeToBottom": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    8,
+                    1011,
+                    8,
+                    8
+                ],
+                "end": [
+                    [
+                        13,
+                        484,
+                        11,
+                        11
+                    ]
+                ],
+                "duration": [
+                    500
+                ]
+            }
+        },
+        "repeat": 2,
+        "repeat_wait_freezes": 300,
+        "post_wait_freezes": 300,
+        "post_delay": 1000,
+        "next": [
+            "RandomBattleEx_BottomSelectFlow"
+        ]
+    },
+    "RandomBattleEx_TopSelectFlow": {
+        "next": [
+            "RandomBattle_Selected",
+            "[JumpBack]RandomBattleEx_SelectUpperIncompleteCandidate",
+            "[JumpBack]RandomBattleEx_SelectLowerIncompleteCandidate",
+            "RandomBattleEx_TopVisiblePairComplete"
+        ]
+    },
+    "RandomBattleEx_TopVisiblePairComplete": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattleEx_UpperTaskFlagCandidate",
+                    "RandomBattleEx_UpperCandidateCompleteText",
+                    "RandomBattleEx_LowerTaskFlagCandidate",
+                    "RandomBattleEx_LowerCandidateCompleteText"
+                ]
+            }
+        },
+        "next": [
+            "RandomBattleEx_SwipeToBottom"
+        ]
+    },
+    "RandomBattleEx_UpperCandidateCompleteText": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": "RandomBattleEx_UpperTaskFlagCandidate",
+                "roi_offset": [
+                    49,
+                    -9,
+                    38,
+                    22
+                ],
+                "expected": [
+                    "^\\s*(?:1\\s*/\\s*1|2\\s*/\\s*2|4\\s*/\\s*4|5\\s*/\\s*5)\\s*$"
+                ],
+                "order_by": "Vertical"
+            }
+        }
+    },
+    "RandomBattleEx_UpperCandidateProgressText": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": "RandomBattleEx_UpperTaskFlagCandidate",
+                "roi_offset": [
+                    49,
+                    -9,
+                    38,
+                    22
+                ],
+                "expected": [
+                    "^\\s*(?:0\\s*/\\s*[1245]|1\\s*/\\s*[245]|2\\s*/\\s*[45]|3\\s*/\\s*[45]|4\\s*/\\s*5)\\s*$"
+                ],
+                "order_by": "Vertical"
+            }
+        }
+    },
+    "RandomBattleEx_UpperTaskFlagCandidate": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    250,
+                    430,
+                    300,
+                    650
+                ],
+                "template": [
+                    "Battle/RandomBattleTaskFlag.png"
+                ],
+                "threshold": [
+                    0.8
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        }
+    }
+}

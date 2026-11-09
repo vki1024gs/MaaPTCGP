@@ -1,10 +1,10 @@
 {
     "task": [
         {
-            "name": "SwipeUpToSend",
-            "label": "$task.SwipeUpToSend.label",
-            "description": "$task.SwipeUpToSend.description",
-            "entry": "Utils_SwipeUpToSend",
+            "name": "SkipPackOpening",
+            "label": "$task.SkipPackOpening.label",
+            "description": "$task.SkipPackOpening.description",
+            "entry": "Utils_SkipPackOpeningFlow",
             "controller": [
                 "ADB"
             ],

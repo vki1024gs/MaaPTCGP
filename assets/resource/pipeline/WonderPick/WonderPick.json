@@ -1,7 +1,7 @@
 {
     "WonderPick_AfterPickFlow": {
         "next": [
-            "WonderPick_ThxVisible",
+            "[JumpBack]WonderPick_ThxVisible",
             "WonderPick_ReturnedToListVisible"
         ]
     },
@@ -24,10 +24,10 @@
             "type": "Click",
             "param": {
                 "target_offset": [
-                    -133,
-                    59,
-                    0,
-                    0
+                    -56,
+                    20,
+                    31,
+                    17
                 ]
             }
         },
@@ -86,7 +86,7 @@
         },
         "next": [
             "WonderPick_ReturnedToListVisible",
-            "WonderPick_ThxVisible",
+            "[JumpBack]WonderPick_ThxVisible",
             "Interaction_AddCollSKIP",
             "[JumpBack]WonderPick_Click"
         ]
@@ -162,7 +162,7 @@
             }
         },
         "next": [
-            "WonderPickScout_PrepareSelectionFlow"
+            "WonderPickFilter_EntryPolicyFlow"
         ],
         "on_error": [
             "WonderPick_RecoverHomeThenRestart"
@@ -254,6 +254,11 @@
     },
     "WonderPick_ReturnedToListFlow": {
         "next": [
+            "[Anchor]WonderPick_ReturnedToListReentryTarget"
+        ]
+    },
+    "WonderPick_ReturnedToListSkipReentry": {
+        "next": [
             "WonderPick_StaminaFullVisible",
             "WonderPick_NoStaminaOverflowFlow"
         ]
@@ -298,7 +303,8 @@
     },
     "WonderPick_Start": {
         "anchor": {
-            "Navigation_ReturnHomeTarget": "WonderPick_Start"
+            "Navigation_ReturnHomeTarget": "WonderPick_Start",
+            "WonderPick_ReturnedToListReentryTarget": "WonderPick_ReturnedToListSkipReentry"
         },
         "next": [
             "WonderPick_Enter",
@@ -330,9 +336,6 @@
                     28
                 ]
             }
-        },
-        "next": [
-            "WonderPick_FinishFlow"
-        ]
+        }
     }
 }

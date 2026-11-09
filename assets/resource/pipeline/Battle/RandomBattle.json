@@ -1,7 +1,7 @@
 {
     "RandomBattle_Abort": {
         "next": [
-            "Battle_FinishReturnHomeFlow"
+            "Battle_LoopFinishedFlow"
         ]
     },
     "RandomBattle_ClickStartBattle": {

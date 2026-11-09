@@ -25,7 +25,8 @@
         "rate_limit": 300,
         "next": [
             "PackOpening_FinishFlow",
-            "Interaction_AddCollSKIP"
+            "Interaction_AddCollSKIP",
+            "[JumpBack]Common_CancelClick"
         ]
     },
     "PackOpening_AfterSkipFlow": {
@@ -113,7 +114,8 @@
         "next": [
             "[JumpBack]Common_ReturnClick",
             "PackOpening_Finished",
-            "PackOpening_LevelUpOk"
+            "PackOpening_LevelUpOk",
+            "[JumpBack]Common_CancelClick"
         ]
     },
     "PackOpening_FinishedWithPackRemain": {

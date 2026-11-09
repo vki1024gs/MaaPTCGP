@@ -40,8 +40,8 @@
                     "name": "Share",
                     "enabled": false,
                     "option": {
-                        "ShareCardStrategy": "Shinedust",
-                        "ShareRecipientStrategy": "FirstStarredFriend"
+                        "ShareRecipientStrategy": "FirstStarredFriend",
+                        "ShareKeepTwoCards": "Yes"
                     }
                 },
                 {

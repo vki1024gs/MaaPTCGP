@@ -1,8 +1,43 @@
 {
-    "Share_AfterSendPolicy": {
+    "Share_CardShared": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    160,
+                    40,
+                    400,
+                    110
+                ],
+                "expected": [
+                    "請選擇朋友"
+                ]
+            }
+        },
         "next": [
             "Share_FinishFlow"
         ]
+    },
+    "Share_ClickCardSelectionReturn": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    260,
+                    1100,
+                    200,
+                    180
+                ],
+                "template": [
+                    "Common/ReturnButton.png"
+                ],
+                "threshold": 0.9
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 400
     },
     "Share_ClickShare": {
         "recognition": {
@@ -22,8 +57,35 @@
         "action": {
             "type": "Click"
         },
+        "timeout": 2000,
         "next": [
-            "Share_SelectedRecipientStrategy"
+            "Share_SelectFirstStarredFriend"
+        ],
+        "on_error": [
+            "Share_NoReceivableFriendFinish"
+        ]
+    },
+    "Share_ConfirmSelectedCard": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    250,
+                    1000,
+                    220,
+                    150
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "pre_delay": 1000,
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Share_SharingFlow"
         ]
     },
     "Share_EnterCommu": {
@@ -37,6 +99,7 @@
                     96
                 ],
                 "template": [
+                    "Share/CommuIconB.png",
                     "Share/CommuIcon.png"
                 ],
                 "threshold": [
@@ -47,7 +110,7 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 3000,
+        "timeout": 5000,
         "next": [
             "Share_EnterShare"
         ],
@@ -79,62 +142,22 @@
         ]
     },
     "Share_FinishFlow": {
-        "next": [
-            "Share_Finished",
-            "[JumpBack]Navigation_ClickHomeButton"
-        ]
-    },
-    "Share_Finished": {
-        "recognition": {
-            "type": "And",
-            "param": {
-                "all_of": [
-                    "Navigation_Stable"
-                ]
-            }
-        }
-    },
-    "Share_FirstStarredFriendAlreadySharedVisible": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    222,
-                    241,
-                    276,
-                    118
-                ],
-                "expected": [
-                    "已分送"
-                ]
-            }
+        "anchor": {
+            "Navigation_ReturnHomeTarget": "Share_Finished"
         },
+        "timeout": 5000,
         "next": [
-            "Share_NoReceivableFriendFinish"
+            "[JumpBack]Share_ReturnFromCardSelection",
+            "Navigation_ReturnHomeFlow"
+        ],
+        "on_error": [
+            "Navigation_ReturnHomeFlow"
         ]
     },
+    "Share_Finished": {},
     "Share_NoReceivableFriendFinish": {
         "next": [
             "Share_FinishFlow"
-        ]
-    },
-    "Share_ReceiveLimitVisible": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    191,
-                    235,
-                    367,
-                    107
-                ],
-                "expected": [
-                    "上限"
-                ]
-            }
-        },
-        "next": [
-            "Share_NoReceivableFriendFinish"
         ]
     },
     "Share_RecoverHomeThenRestart": {
@@ -145,9 +168,28 @@
             "Navigation_AfterClickRecoveryFlow"
         ]
     },
-    "Share_RepeatAfterSendUntilNoTarget": {
+    "Share_ReturnFromCardSelection": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    160,
+                    40,
+                    400,
+                    145
+                ],
+                "expected": [
+                    "分送"
+                ]
+            }
+        },
+        "timeout": 1500,
+        "on_error": [
+            "Navigation_ReturnHomeFlow"
+        ],
         "next": [
-            "Share_FinishFlow"
+            "[JumpBack]Share_ClickCardSelectionReturn",
+            "[JumpBack]Common_CloseClick"
         ]
     },
     "Share_SelectCard": {
@@ -155,18 +197,18 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    177,
-                    44,
-                    251,
-                    82
+                    160,
+                    40,
+                    400,
+                    145
                 ],
                 "expected": [
-                    "要分送"
+                    "分送"
                 ]
             }
         },
         "next": [
-            "ShareFilter_SelectedCardStrategy"
+            "ShareFilter_WantedCardsFlow"
         ]
     },
     "Share_SelectFirstStarredFriend": {
@@ -200,25 +242,18 @@
         },
         "timeout": 2000,
         "next": [
-            "Share_ReceiveLimitVisible",
-            "Share_FirstStarredFriendAlreadySharedVisible",
             "Share_SelectCard"
-        ],
-        "on_error": [
-            "Share_NoReceivableFriendFinish"
         ]
     },
-    "Share_SelectFirstUnstarredFriend": {
+    "Share_SharingFlow": {
+        "timeout": 10000,
         "next": [
-            "Share_SelectCard"
+            "[JumpBack]Utils_SwipeUpToSend",
+            "[JumpBack]Common_ClickOkRIGHT",
+            "Share_CardShared"
         ],
         "on_error": [
-            "Share_NoReceivableFriendFinish"
-        ]
-    },
-    "Share_SelectedRecipientStrategy": {
-        "next": [
-            "Share_SelectFirstStarredFriend"
+            "Share_FinishFlow"
         ]
     },
     "Share_Start": {

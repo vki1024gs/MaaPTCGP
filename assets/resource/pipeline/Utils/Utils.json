@@ -124,6 +124,52 @@
         ]
     },
     "Utils_NoMissionIconFinish": {},
+    "Utils_SkipPackOpeningFlow": {
+        "anchor": {
+            "Interaction_AddCollectionFinishTarget": "Utils_SkipPackOpeningFlow"
+        },
+        "timeout": 120000,
+        "rate_limit": 300,
+        "next": [
+            "Utils_PackOpeningFinished",
+            "[JumpBack]Common_ClickSkip",
+            "[JumpBack]Common_ContinueClick",
+            "Utils_AddNewPackCardsToCollection",
+            "[JumpBack]PackOpening_LevelUpOk",
+            "[JumpBack]Common_CancelClick"
+        ]
+    },
+    "Utils_AddNewPackCardsToCollection": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    229,
+                    133,
+                    89,
+                    59
+                ],
+                "expected": [
+                    "向上"
+                ]
+            }
+        },
+        "next": [
+            "Interaction_AddCollSKIP"
+        ]
+    },
+    "Utils_PackOpeningFinished": {
+        "recognition": {
+            "type": "Or",
+            "param": {
+                "any_of": [
+                    "PackSelect_PackPageFlow",
+                    "PackOpening_FinishedWithPackRemain",
+                    "PackOpening_FinishedWithNoPack"
+                ]
+            }
+        }
+    },
     "Utils_SwipeUpFinish": {},
     "Utils_SwipeUpToSend": {
         "recognition": {

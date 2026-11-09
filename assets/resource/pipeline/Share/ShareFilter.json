@@ -1,32 +1,63 @@
 {
-    "ShareFilter_CardShared": {
+    "ShareFilter_CardCount": {
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    284,
-                    957,
-                    152,
-                    85
+                "roi": "ShareFilter_CardCountLabelColor",
+                "roi_offset": [
+                    0,
+                    0,
+                    0,
+                    0
                 ],
                 "expected": [
-                    "分送"
-                ]
+                    "^([3-9]|[1-9][0-9]+)$"
+                ],
+                "only_rec": true,
+                "order_by": "Vertical"
             }
-        },
-        "next": [
-            "Share_AfterSendPolicy"
-        ]
+        }
+    },
+    "ShareFilter_CardCountLabelColor": {
+        "recognition": {
+            "type": "ColorMatch",
+            "param": {
+                "roi": [
+                    20,
+                    300,
+                    680,
+                    930
+                ],
+                "method": 4,
+                "lower": [
+                    [
+                        72,
+                        88,
+                        112
+                    ]
+                ],
+                "upper": [
+                    [
+                        80,
+                        96,
+                        120
+                    ]
+                ],
+                "connected": true,
+                "count": 1000,
+                "order_by": "Vertical"
+            }
+        }
     },
     "ShareFilter_ClickFourDiamond": {
         "recognition": {
             "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    535,
-                    1104,
-                    130,
-                    68
+                    524,
+                    737,
+                    161,
+                    392
                 ],
                 "template": [
                     "Share/4Diamonds.png"
@@ -38,12 +69,35 @@
         },
         "action": {
             "type": "Click"
-        }
+        },
+        "next": [
+            "ShareFilter_CloseFilter"
+        ]
     },
     "ShareFilter_CloseFilter": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    194,
+                    763,
+                    333,
+                    361
+                ],
+                "template": [
+                    "Common/OKButton.png",
+                    "Common/OKButton1.png",
+                    "Common/OKButton2.png"
+                ],
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 500,
         "next": [
-            "[JumpBack]Common_ClickOkMID",
-            "ShareFilter_SortDESC"
+            "ShareFilter_SortedCardSelectionFlow"
         ]
     },
     "ShareFilter_CloseSavedFilter": {
@@ -65,95 +119,54 @@
             "type": "Click"
         }
     },
-    "ShareFilter_FullColl": {
+    "ShareFilter_OpenFourDiamondFilter": {
         "recognition": {
-            "type": "OCR",
+            "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    103,
-                    670,
-                    82,
-                    73
+                    588,
+                    187,
+                    110,
+                    121
                 ],
-                "expected": [
-                    "沒有"
-                ],
-                "threshold": 0.9
+                "template": [
+                    "Share/FilterIcon.png"
+                ]
             }
         },
         "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    95,
-                    1115,
-                    82,
-                    73
-                ]
-            }
-        },
-        "timeout": 10000,
-        "next": [
-            "ShareFilter_SelectTopShareableCard"
-        ],
-        "on_error": [
-            "ShareFilter_NoShareableCardFinish"
-        ]
-    },
-    "ShareFilter_LatestCardDexCompleted": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    352,
-                    667,
-                    242,
-                    82
-                ],
-                "expected": [
-                    "已完整收藏"
-                ]
-            }
+            "type": "Click"
         },
         "next": [
-            "ShareFilter_NoShareableCardFinish"
+            "ShareFilter_SelectFourDiamondCards"
         ]
     },
-    "ShareFilter_LatestCardDexCompletionStrategy": {
-        "pre_delay": 500,
-        "next": [
-            "ShareFilter_LatestCardDexCompleted",
-            "ShareFilter_SortDESC"
-        ]
-    },
-    "ShareFilter_NoShareableCardFinish": {},
-    "ShareFilter_OutColl": {
+    "ShareFilter_RevealFourDiamond": {
         "action": {
-            "type": "Click",
+            "type": "Swipe",
             "param": {
-                "target": [
-                    92,
-                    678,
-                    93,
-                    79
-                ]
+                "begin": [
+                    360,
+                    900
+                ],
+                "end": [
+                    [
+                        360,
+                        800
+                    ]
+                ],
+                "duration": 180
             }
         },
+        "post_delay": 800,
         "next": [
-            "ShareFilter_SelectTopShareableCard"
-        ],
-        "on_error": [
-            "ShareFilter_NoShareableCardFinish"
+            "ShareFilter_ClickFourDiamond"
         ]
     },
     "ShareFilter_SelectFourDiamondCards": {
-        "timeout": 6000,
         "next": [
             "[JumpBack]ShareFilter_CloseSavedFilter",
-            "[JumpBack]ShareFilter_ClickFourDiamond"
-        ],
-        "on_error": [
-            "ShareFilter_CloseFilter"
+            "ShareFilter_RevealFourDiamond"
         ]
     },
     "ShareFilter_SelectSortDESC": {
@@ -174,64 +187,72 @@
         "action": {
             "type": "Click"
         },
+        "post_delay": 300,
         "next": [
-            "ShareFilter_SortedCardsDesc"
+            "ShareFilter_SortButtonVisible",
+            "ShareFilter_SelectSortDESC"
         ]
     },
     "ShareFilter_SelectTopShareableCard": {
         "recognition": {
-            "type": "OCR",
+            "type": "And",
             "param": {
-                "roi": [
-                    309,
-                    1059,
-                    101,
-                    76
+                "all_of": [
+                    "ShareFilter_CardCountLabelColor",
+                    "ShareFilter_CardCount"
                 ],
-                "expected": [
-                    "分送"
-                ]
+                "box_index": 1
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Click",
+            "param": {
+                "target": true,
+                "target_offset": [
+                    0,
+                    -80,
+                    0,
+                    0
+                ]
+            }
         },
+        "timeout": 3000,
         "next": [
-            "ShareFilter_SharingFlow"
+            "Share_ConfirmSelectedCard"
+        ],
+        "on_error": [
+            "Share_FinishFlow"
         ]
     },
-    "ShareFilter_SelectedCardStrategy": {
-        "next": [
-            "ShareFilter_ShinedustStrategy"
-        ]
-    },
-    "ShareFilter_SharingFlow": {
-        "next": [
-            "[JumpBack]Utils_SwipeUpToSend",
-            "[JumpBack]Common_ClickOkRIGHT",
-            "ShareFilter_CardShared"
-        ]
-    },
-    "ShareFilter_ShinedustStrategy": {
+    "ShareFilter_SelectWantedCard": {
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "And",
             "param": {
-                "roi": [
-                    588,
-                    187,
-                    110,
-                    121
+                "all_of": [
+                    "ShareFilter_WantedCardHeart",
+                    "ShareFilter_WantedCardCount"
                 ],
-                "template": [
-                    "Share/FilterIcon.png"
-                ]
+                "box_index": 1
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Click",
+            "param": {
+                "target": true,
+                "target_offset": [
+                    62,
+                    -104,
+                    0,
+                    0
+                ]
+            }
         },
+        "timeout": 9000,
         "next": [
-            "ShareFilter_SelectFourDiamondCards"
+            "Share_ConfirmSelectedCard"
+        ],
+        "on_error": [
+            "ShareFilter_SwipeToCardDex"
         ]
     },
     "ShareFilter_SortButtonVisible": {
@@ -261,7 +282,7 @@
             }
         },
         "next": [
-            "ShareFilter_SortedCardsDesc"
+            "ShareFilter_SelectTopShareableCard"
         ]
     },
     "ShareFilter_SortDESC": {
@@ -293,15 +314,157 @@
         },
         "post_delay": 500,
         "next": [
-            "ShareFilter_SortButtonVisible",
             "ShareFilter_SelectSortDESC"
         ]
     },
-    "ShareFilter_SortedCardsDesc": {
-        "pre_delay": 500,
+    "ShareFilter_SortedCardSelectionFlow": {
         "next": [
-            "ShareFilter_FullColl",
-            "ShareFilter_OutColl"
+            "ShareFilter_SortDESC"
+        ]
+    },
+    "ShareFilter_SwipePastCardDexEmpty": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    44,
+                    289,
+                    637,
+                    868
+                ],
+                "expected": [
+                    "未持有對方"
+                ]
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    360,
+                    720
+                ],
+                "end": [
+                    [
+                        360,
+                        500
+                    ]
+                ],
+                "duration": 400
+            }
+        },
+        "post_delay": 900,
+        "next": [
+            "ShareFilter_OpenFourDiamondFilter"
+        ]
+    },
+    "ShareFilter_SwipeToCardDex": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    360,
+                    720
+                ],
+                "end": [
+                    [
+                        360,
+                        500
+                    ]
+                ],
+                "duration": 400
+            }
+        },
+        "post_delay": 900,
+        "next": [
+            "ShareFilter_SwipePastCardDexEmpty",
+            "ShareFilter_SortedCardSelectionFlow"
+        ]
+    },
+    "ShareFilter_WantedCardCount": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": "ShareFilter_WantedCardHeart",
+                "roi_offset": [
+                    -152,
+                    256,
+                    33,
+                    9
+                ],
+                "expected": [
+                    "^([3-9]|[1-9][0-9]+)$"
+                ],
+                "order_by": "Vertical"
+            }
+        }
+    },
+    "ShareFilter_WantedCardHeart": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    15,
+                    330,
+                    690,
+                    790
+                ],
+                "template": [
+                    "Share/WantedIcon.png"
+                ],
+                "threshold": 0.9,
+                "order_by": "Vertical"
+            }
+        }
+    },
+    "ShareFilter_WantedCardsEmpty": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    247,
+                    421,
+                    214,
+                    79
+                ],
+                "roi_offset": [
+                    -120,
+                    50,
+                    240,
+                    120
+                ],
+                "expected": [
+                    "沒有對象"
+                ]
+            }
+        },
+        "next": [
+            "ShareFilter_SwipeToCardDex"
+        ]
+    },
+    "ShareFilter_WantedCardsFlow": {
+        "next": [
+            "ShareFilter_WantedCardsTitle"
+        ]
+    },
+    "ShareFilter_WantedCardsTitle": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    194,
+                    281,
+                    330,
+                    101
+                ],
+                "expected": [
+                    "對方想要"
+                ]
+            }
+        },
+        "next": [
+            "ShareFilter_WantedCardsEmpty",
+            "ShareFilter_SelectWantedCard"
         ]
     }
 }

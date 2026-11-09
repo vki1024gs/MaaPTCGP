@@ -16,44 +16,12 @@
                 "DailyRoutine"
             ],
             "option": [
-                "ShareCardStrategy",
-                "ShareRecipientStrategy"
+                "ShareRecipientStrategy",
+                "ShareKeepTwoCards"
             ]
         }
     ],
     "option": {
-        "ShareCardStrategy": {
-            "type": "select",
-            "label": "$option.ShareCardStrategy.label",
-            "description": "$option.ShareCardStrategy.description",
-            "default_case": "Shinedust",
-            "cases": [
-                {
-                    "name": "Shinedust",
-                    "label": "$option.ShareCardStrategy.Shinedust.label",
-                    "description": "$option.ShareCardStrategy.Shinedust.description",
-                    "pipeline_override": {
-                        "ShareFilter_SelectedCardStrategy": {
-                            "next": [
-                                "ShareFilter_ShinedustStrategy"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "LatestCardDexCompletion",
-                    "label": "$option.ShareCardStrategy.LatestCardDexCompletion.label",
-                    "description": "$option.ShareCardStrategy.LatestCardDexCompletion.description",
-                    "pipeline_override": {
-                        "ShareFilter_SelectedCardStrategy": {
-                            "next": [
-                                "ShareFilter_LatestCardDexCompletionStrategy"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
         "ShareRecipientStrategy": {
             "type": "select",
             "label": "$option.ShareRecipientStrategy.label",
@@ -63,29 +31,69 @@
                 {
                     "name": "FirstStarredFriend",
                     "label": "$option.ShareRecipientStrategy.FirstStarredFriend.label",
-                    "description": "$option.ShareRecipientStrategy.FirstStarredFriend.description",
                     "pipeline_override": {
-                        "Share_SelectedRecipientStrategy": {
+                        "Share_ClickShare": {
                             "next": [
                                 "Share_SelectFirstStarredFriend"
                             ]
                         }
                     }
                 }
-                // TODO: 全部星标好友循环策略后续再做，完成后再恢复到 MXU 选项中。
-                // ,
-                // {
-                //     "name": "AllStarredFriendsUntilBlocked",
-                //     "label": "$option.ShareRecipientStrategy.AllStarredFriendsUntilBlocked.label",
-                //     "description": "$option.ShareRecipientStrategy.AllStarredFriendsUntilBlocked.description",
-                //     "pipeline_override": {
-                //         "Share_SelectedRecipientStrategy": {
-                //             "next": [
-                //                 "Share_SelectAllStarredFriendsUntilBlocked"
-                //             ]
-                //         }
-                //     }
-                // }
+            ]
+        },
+        "ShareKeepTwoCards": {
+            "type": "switch",
+            "label": "$option.ShareKeepTwoCards.label",
+            "default_case": "Yes",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.ShareKeepTwoCards.No.label",
+                    "pipeline_override": {
+                        "ShareFilter_WantedCardCount": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "^[1-9][0-9]*$"
+                                    ]
+                                }
+                            }
+                        },
+                        "ShareFilter_CardCount": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "^[1-9][0-9]*$"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.ShareKeepTwoCards.Yes.label",
+                    "pipeline_override": {
+                        "ShareFilter_WantedCardCount": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "^([3-9]|[1-9][0-9]+)$"
+                                    ]
+                                }
+                            }
+                        },
+                        "ShareFilter_CardCount": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "^([3-9]|[1-9][0-9]+)$"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
             ]
         }
     }

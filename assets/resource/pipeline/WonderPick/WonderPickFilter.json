@@ -1,0 +1,256 @@
+{
+    "WonderPickFilter_Ended": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    180,
+                    199,
+                    360,
+                    863
+                ],
+                "expected": [
+                    "已結束"
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        },
+        "next": [
+            "[Anchor]WonderPickFilter_ExitTarget"
+        ]
+    },
+    "WonderPickFilter_EntryPolicyFlow": {
+        "next": [
+            "WonderPickScout_PrepareSelectionFlow"
+        ]
+    },
+    "WonderPickFilter_ExitAfterHit": {
+        "anchor": {
+            "WonderPick_ReturnedToListReentryTarget": "WonderPick_ReturnedToListSkipReentry"
+        },
+        "next": [
+            "WonderPick_FinishFlow"
+        ]
+    },
+    "WonderPickFilter_ExitWithoutHit": {
+        "anchor": {
+            "WonderPick_ReturnedToListReentryTarget": "WonderPick_ReturnedToListSkipReentry"
+        },
+        "next": [
+            "WonderPickFilter_ResetToTopForNormal"
+        ]
+    },
+    "WonderPickFilter_FourCostText": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": "WonderPickFilter_StaminaIcon",
+                "roi_offset": [
+                    25,
+                    -11,
+                    28,
+                    37
+                ],
+                "expected": [
+                    "^4$"
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        }
+    },
+    "WonderPickFilter_HighRareEnabledGate": {},
+    "WonderPickFilter_ResetToTopForNormal": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    20,
+                    600,
+                    10,
+                    10
+                ],
+                "end": [
+                    [
+                        20,
+                        900,
+                        10,
+                        10
+                    ]
+                ],
+                "duration": [
+                    400
+                ]
+            }
+        },
+        "repeat": 4,
+        "repeat_wait_freezes": 300,
+        "post_wait_freezes": 300,
+        "next": [
+            "WonderPickScout_PrepareSelectionFlow"
+        ]
+    },
+    "WonderPickFilter_ReturnedToList": {
+        "anchor": {
+            "WonderPickFilter_ExitTarget": "WonderPickFilter_ExitAfterHit",
+            "WonderPick_ReturnedToListReentryTarget": "WonderPickFilter_ReturnedToList"
+        },
+        "next": [
+            "WonderPickFilter_SearchFlow"
+        ]
+    },
+    "WonderPickFilter_SearchFlow": {
+        "next": [
+            "WonderPickFilter_Ended",
+            "WonderPickFilter_SelectFourCost",
+            "WonderPickFilter_SelectWantIt",
+            "[JumpBack]WonderPickFilter_SwipeForward"
+        ]
+    },
+    "WonderPickFilter_SelectFourCost": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "WonderPickFilter_HighRareEnabledGate",
+                    "WonderPickFilter_StaminaIcon",
+                    "WonderPickFilter_FourCostText"
+                ],
+                "box_index": 2
+            }
+        },
+        "pre_wait_freezes": 300,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "next": [
+            "WonderPickFilter_SelectionAccepted"
+        ]
+    },
+    "WonderPickFilter_SelectWantIt": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "WonderPickFilter_WantItEnabledGate",
+                    "WonderPickFilter_WantItTarget"
+                ],
+                "box_index": 1
+            }
+        },
+        "pre_wait_freezes": 300,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "next": [
+            "WonderPickFilter_SelectionAccepted"
+        ]
+    },
+    "WonderPickFilter_SelectionAccepted": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "WonderPickScout_SelectionAcceptedGate"
+                ]
+            }
+        },
+        "next": [
+            "WonderPick_ConfirmPickTarget"
+        ]
+    },
+    "WonderPickFilter_StaminaIcon": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    264,
+                    199,
+                    192,
+                    863
+                ],
+                "template": [
+                    "WonderPick/WPicon.png"
+                ],
+                "threshold": [
+                    0.8
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        }
+    },
+    "WonderPickFilter_Start": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "WonderPickScout_SelectPlayerFlow"
+                ]
+            }
+        },
+        "pre_delay": 1000,
+        "anchor": {
+            "WonderPickFilter_ExitTarget": "WonderPickFilter_ExitWithoutHit",
+            "WonderPick_ReturnedToListReentryTarget": "WonderPickFilter_ReturnedToList"
+        },
+        "timeout": 10000,
+        "next": [
+            "WonderPickFilter_SearchFlow"
+        ],
+        "on_error": [
+            "WonderPick_RecoverHomeThenRestart"
+        ]
+    },
+    "WonderPickFilter_SwipeForward": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    20,
+                    900,
+                    10,
+                    10
+                ],
+                "end": [
+                    [
+                        20,
+                        600,
+                        10,
+                        10
+                    ]
+                ],
+                "duration": [
+                    400
+                ]
+            }
+        },
+        "post_wait_freezes": 300
+    },
+    "WonderPickFilter_WantItEnabledGate": {},
+    "WonderPickFilter_WantItTarget": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    10,
+                    204,
+                    696,
+                    863
+                ],
+                "template": [
+                    "Share/WantedIcon.png"
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        }
+    }
+}

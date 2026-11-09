@@ -73,6 +73,11 @@
     },
     "Battle_FinishFlow": {
         "next": [
+            "Battle_LoopFinishedFlow"
+        ]
+    },
+    "Battle_LoopFinishedFlow": {
+        "next": [
             "Battle_FinishReturnHomeFlow"
         ]
     },
