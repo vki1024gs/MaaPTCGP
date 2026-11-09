@@ -543,15 +543,9 @@ def verify_cli_install():
 if __name__ == "__main__":
     require_supported_target()
     clean_install()
-    clean_install_cli()
     install_mxu_shell()
     install_maafw_for_mxu()
     install_resource()
     install_docs()
     verify_install()
-    install_maafw_for_cli()
-    install_cli_resource()
-    verify_cli_install()
-
     print(f"Install MXU-only release to {install_path} successfully.")
-    print(f"Install MaaPiCli development runtime to {install_cli_path} successfully.")

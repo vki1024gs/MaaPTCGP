@@ -65,7 +65,7 @@ The MaaCommonAssets source files must already be available. If the destination d
 
 | File | Purpose |
 | --- | --- |
-| `install.py` | Assemble and validate `install/` and `install-cli/`, copying executables, resources, tasks, translations, and OCR models |
+| `install.py` | Assemble and validate the desktop `install/`, copying executables, resources, tasks, translations, and OCR models |
 | `requirements.txt` | Python dependencies for packaging and Schema validation |
 | `validate_schema.py` | Validate resource, interface, and task JSON/JSONC against schemas; also available for manual developer checks |
 | `package_macos_dmg.sh` | Wrap an install directory in an ad-hoc signed `.app` and DMG on macOS; requires `create-dmg` |
@@ -83,7 +83,9 @@ python3 tools/ci/install.py v0.2.5 macos aarch64
 bash tools/ci/package_macos_dmg.sh install build/MaaPTCGP.dmg v0.2.5
 ```
 
-`install.py` deletes and recreates existing `install/` and `install-cli/` directories. Do not use it for routine development resource syncing. Supported targets are Windows/macOS x86_64 and aarch64, and Linux x86_64. The DMG tool replaces an existing output file. Ad-hoc signing is not notarization.
+`install.py` only deletes and recreates the existing `install/` directory. Do not use it for routine development resource syncing. Supported targets are Windows/macOS x86_64 and aarch64, and Linux x86_64. The DMG tool replaces an existing output file. Ad-hoc signing is not notarization.
+
+The separate `tools/install_cli.py` builds the optional command-line runtime in `install-cli/`. It does not require MXU or run during desktop releases. Place MaaPiCli and its matching MaaFramework libraries in `deps/bin/`, then run `python3 tools/install_cli.py v0.3.2 macos aarch64`. MaaFramework v5.15.0 and later no longer bundle MaaPiCli.
 
 CI packages the ADB script without running its connection operations. At runtime it discovers endpoints from verified BlueStacks or MuMuPlayer Pro processes and connects or repairs the ADB service when needed, without fixed emulator ports.
 

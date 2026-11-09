@@ -65,7 +65,7 @@ python3 tools/setup_ocr_model.py
 
 | 文件 | 用途 |
 | --- | --- |
-| `install.py` | 组装并校验 `install/` 与 `install-cli/`，复制程序、资源、任务、翻译及 OCR 模型 |
+| `install.py` | 组装并校验桌面版 `install/`，复制程序、资源、任务、翻译及 OCR 模型 |
 | `requirements.txt` | Python 打包与 Schema 校验依赖 |
 | `validate_schema.py` | 校验资源、接口与任务 JSON/JSONC 的 Schema；开发者也可手动调用 |
 | `package_macos_dmg.sh` | 在 macOS 上将安装目录封装为临时签名的 `.app` 和 DMG；需要 `create-dmg` |
@@ -83,7 +83,9 @@ python3 tools/ci/install.py v0.2.5 macos aarch64
 bash tools/ci/package_macos_dmg.sh install build/MaaPTCGP.dmg v0.2.5
 ```
 
-`install.py` 会删除并重建现有 `install/` 和 `install-cli/`，不要用于日常开发资源同步。支持 Windows/macOS 的 x86_64、aarch64，以及 Linux x86_64。DMG 工具会替换同名输出文件；临时签名不等于公证。
+`install.py` 只删除并重建现有 `install/`，不要用于日常开发资源同步。支持 Windows/macOS 的 x86_64、aarch64，以及 Linux x86_64。DMG 工具会替换同名输出文件；临时签名不等于公证。
+
+独立的 `tools/install_cli.py` 用于可选的命令行运行环境，仅重建 `install-cli/`，不需要 MXU，也不参与桌面版发布。先将 MaaPiCli 及匹配的 MaaFramework 运行库放入 `deps/bin/`，再运行 `python3 tools/install_cli.py v0.3.2 macos aarch64`。MaaFramework v5.15.0 起不再附带 MaaPiCli。
 
 ADB 脚本不在 CI 中执行连接操作，只作为安装包依赖。运行时从已确认的 BlueStacks 或 MuMuPlayer Pro 进程发现端点，必要时连接或修复 ADB 服务，不使用固定模拟器端口。
 
