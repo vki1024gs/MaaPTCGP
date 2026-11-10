@@ -25,17 +25,23 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 ### 📆 Daily
 
 - 📬 Claim gift box mail rewards
-- 🎴 Open available daily packs with pack selection options
+- 🎴 Open daily packs<br>
+  <sub>Supports favorite pack selection</sub>
 - 🎟️ Claim the daily free shop ticket
-- 🔮 Run Wonder Picks with high-rarity and Want It target searches
-- ⚔️ Run event, random, and step-up battles, with rerun PROMO drop events, Random Battle mission rewards, event battle point recovery, and recommended deck selection
-- 🎁 Prioritize wanted cards and latest Card Dex completion, with a 4-diamond fallback and an option to keep at least 2 copies
+- 🔮 Wonder Picks<br>
+  <sub>Search for 2-star card and Want It targets</sub>
+- ⚔️ Event, random, and step-up battles<br>
+  <sub>Supports rerun PROMO drop events, Random Battle mission rewards, event battle point recovery, and recommended deck selection</sub>
+- 🎁 Share cards<br>
+  <sub>Prioritize wanted cards and latest Card Dex completion, with a 4-diamond fallback and an option to keep at least 2 copies</sub>
 - 📋 Claim daily mission rewards
 
 ### 🛠️ Utility
 
-- Skip pack-opening animations and register cards, stopping at the pack screen
-- 📌 Provide auto-claim for task-bar red dots (in development and may be unstable)
+- ⏩ Skip pack opening<br>
+  <sub>Skip animations and register cards</sub>
+- 📌 Auto-claim task rewards<br>
+  <sub>In development and may be unstable</sub>
 
 ## Requirements
 

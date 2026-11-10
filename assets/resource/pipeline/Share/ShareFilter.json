@@ -97,7 +97,7 @@
         },
         "post_delay": 500,
         "next": [
-            "ShareFilter_SortedCardSelectionFlow"
+            "ShareFilter_SelectTopShareableCard"
         ]
     },
     "ShareFilter_CloseSavedFilter": {
@@ -118,6 +118,28 @@
         "action": {
             "type": "Click"
         }
+    },
+    "ShareFilter_CloseSortMenu": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "ShareFilter_SelectSortDESC",
+                    "Common_CloseClick"
+                ],
+                "box_index": 1
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "ShareFilter_WantedCardsTitle"
+        ]
     },
     "ShareFilter_OpenFourDiamondFilter": {
         "recognition": {
@@ -187,10 +209,9 @@
         "action": {
             "type": "Click"
         },
-        "post_delay": 300,
+        "post_wait_freezes": 300,
         "next": [
-            "ShareFilter_SortButtonVisible",
-            "ShareFilter_SelectSortDESC"
+            "ShareFilter_SortFinishFlow"
         ]
     },
     "ShareFilter_SelectTopShareableCard": {
@@ -247,12 +268,8 @@
                 ]
             }
         },
-        "timeout": 9000,
         "next": [
             "Share_ConfirmSelectedCard"
-        ],
-        "on_error": [
-            "ShareFilter_SwipeToCardDex"
         ]
     },
     "ShareFilter_SortButtonVisible": {
@@ -270,20 +287,53 @@
                 ]
             }
         },
-        "action": {
-            "type": "Click",
+        "next": [
+            "ShareFilter_SortFinishFlow"
+        ]
+    },
+    "ShareFilter_SortCountSelected": {
+        "recognition": {
+            "type": "And",
             "param": {
-                "target": [
-                    340,
-                    1183,
-                    39,
-                    48
+                "all_of": [
+                    "ShareFilter_SelectSortDESC",
+                    "ShareFilter_SortCountSelectedColor"
                 ]
             }
         },
         "next": [
-            "ShareFilter_SelectTopShareableCard"
+            "ShareFilter_SortButtonVisible",
+            "ShareFilter_SelectSortDESC"
         ]
+    },
+    "ShareFilter_SortCountSelectedColor": {
+        "recognition": {
+            "type": "ColorMatch",
+            "param": {
+                "roi": [
+                    380,
+                    777,
+                    223,
+                    65
+                ],
+                "method": 4,
+                "lower": [
+                    [
+                        76,
+                        92,
+                        116
+                    ]
+                ],
+                "upper": [
+                    [
+                        76,
+                        92,
+                        116
+                    ]
+                ],
+                "count": 2000
+            }
+        }
     },
     "ShareFilter_SortDESC": {
         "recognition": {
@@ -297,10 +347,20 @@
                 ],
                 "expected": [
                     "分送"
-                ],
-                "threshold": 0.9
+                ]
             }
         },
+        "next": [
+            "ShareFilter_SortedCardSelectionFlow"
+        ]
+    },
+    "ShareFilter_SortFinishFlow": {
+        "next": [
+            "ShareFilter_WantedCardsTitle",
+            "ShareFilter_CloseSortMenu"
+        ]
+    },
+    "ShareFilter_SortedCardSelectionFlow": {
         "action": {
             "type": "Click",
             "param": {
@@ -314,12 +374,8 @@
         },
         "post_delay": 500,
         "next": [
+            "ShareFilter_SortCountSelected",
             "ShareFilter_SelectSortDESC"
-        ]
-    },
-    "ShareFilter_SortedCardSelectionFlow": {
-        "next": [
-            "ShareFilter_SortDESC"
         ]
     },
     "ShareFilter_SwipePastCardDexEmpty": {
@@ -378,7 +434,7 @@
         "post_delay": 900,
         "next": [
             "ShareFilter_SwipePastCardDexEmpty",
-            "ShareFilter_SortedCardSelectionFlow"
+            "ShareFilter_SelectTopShareableCard"
         ]
     },
     "ShareFilter_WantedCardCount": {
@@ -427,12 +483,6 @@
                     214,
                     79
                 ],
-                "roi_offset": [
-                    -120,
-                    50,
-                    240,
-                    120
-                ],
                 "expected": [
                     "沒有對象"
                 ]
@@ -444,7 +494,7 @@
     },
     "ShareFilter_WantedCardsFlow": {
         "next": [
-            "ShareFilter_WantedCardsTitle"
+            "ShareFilter_SortDESC"
         ]
     },
     "ShareFilter_WantedCardsTitle": {
@@ -462,9 +512,13 @@
                 ]
             }
         },
+        "timeout": 3500,
         "next": [
             "ShareFilter_WantedCardsEmpty",
             "ShareFilter_SelectWantedCard"
+        ],
+        "on_error": [
+            "ShareFilter_SwipeToCardDex"
         ]
     }
 }

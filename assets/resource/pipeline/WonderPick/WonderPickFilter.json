@@ -197,31 +197,6 @@
             "WonderPick_RecoverHomeThenRestart"
         ]
     },
-    "WonderPickFilter_SwipeForward": {
-        "action": {
-            "type": "Swipe",
-            "param": {
-                "begin": [
-                    20,
-                    900,
-                    10,
-                    10
-                ],
-                "end": [
-                    [
-                        20,
-                        600,
-                        10,
-                        10
-                    ]
-                ],
-                "duration": [
-                    400
-                ]
-            }
-        },
-        "post_wait_freezes": 300
-    },
     "WonderPickFilter_WantItEnabledGate": {},
     "WonderPickFilter_WantItTarget": {
         "recognition": {
@@ -240,5 +215,30 @@
                 "index": 0
             }
         }
+    },
+    "WonderPickFilter_SwipeForward": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    20,
+                    900,
+                    10,
+                    10
+                ],
+                "end": [
+                    [
+                        20,
+                        615,
+                        10,
+                        10
+                    ]
+                ],
+                "duration": [
+                    400
+                ]
+            }
+        },
+        "post_wait_freezes": 100
     }
 }
