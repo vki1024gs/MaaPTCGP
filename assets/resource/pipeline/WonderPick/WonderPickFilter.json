@@ -113,7 +113,13 @@
         "action": {
             "type": "Click",
             "param": {
-                "target": true
+                "target": true,
+                "target_offset": [
+                    218,
+                    -90,
+                    13,
+                    3
+                ]
             }
         },
         "next": [
@@ -197,25 +203,6 @@
             "WonderPick_RecoverHomeThenRestart"
         ]
     },
-    "WonderPickFilter_WantItEnabledGate": {},
-    "WonderPickFilter_WantItTarget": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    10,
-                    204,
-                    696,
-                    863
-                ],
-                "template": [
-                    "WonderPick/WPWantedIcon.png"
-                ],
-                "order_by": "Vertical",
-                "index": 0
-            }
-        }
-    },
     "WonderPickFilter_SwipeForward": {
         "action": {
             "type": "Swipe",
@@ -240,5 +227,24 @@
             }
         },
         "post_wait_freezes": 100
+    },
+    "WonderPickFilter_WantItEnabledGate": {},
+    "WonderPickFilter_WantItTarget": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    10,
+                    204,
+                    696,
+                    863
+                ],
+                "template": [
+                    "WonderPick/WPWantedIcon.png"
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        }
     }
 }

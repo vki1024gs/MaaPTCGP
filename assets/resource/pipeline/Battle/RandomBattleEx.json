@@ -190,7 +190,8 @@
                     0
                 ]
             }
-        }
+        },
+        "post_delay": 800
     },
     "RandomBattleEx_SelectUpperIncompleteCandidate": {
         "recognition": {
@@ -215,7 +216,8 @@
                     0
                 ]
             }
-        }
+        },
+        "post_delay": 800
     },
     "RandomBattleEx_Start": {
         "anchor": {
