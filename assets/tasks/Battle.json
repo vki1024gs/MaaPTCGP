@@ -149,10 +149,49 @@
                 {
                     "name": "Yes",
                     "label": "$option.RandomBattleTaskReward.Yes.label",
+                    "option": [
+                        "RandomBattlePromoRewards"
+                    ],
                     "pipeline_override": {
+                        "RandomBattle_SelectionPolicyFlow": {
+                            "next": [
+                                "RandomBattleEx_Start"
+                            ]
+                        },
                         "Battle_LoopFinishedFlow": {
                             "next": [
                                 "RandomBattleEx_Start"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "RandomBattlePromoRewards": {
+            "type": "switch",
+            "label": "$option.RandomBattlePromoRewards.label",
+            "description": "$option.RandomBattlePromoRewards.description",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "No",
+                    "label": "$option.RandomBattlePromoRewards.No.label"
+                },
+                {
+                    "name": "Yes",
+                    "label": "$option.RandomBattlePromoRewards.Yes.label",
+                    "pipeline_override": {
+                        "RandomBattleEx_BottomVisiblePairComplete": {
+                            "next": [
+                                "RandomBattleEx_SelectEliteForPromo"
+                            ]
+                        },
+                        "RandomBattleEx_ReturnToListFlow": {
+                            "next": [
+                                "RandomBattleEx_PromoRewards",
+                                "RandomBattleEx_CurrentDetailRewardAvailable",
+                                "[JumpBack]Common_CloseClick",
+                                "RandomBattleEx_ListStable"
                             ]
                         }
                     }

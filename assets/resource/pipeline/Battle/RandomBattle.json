@@ -47,7 +47,7 @@
         "rate_limit": 400,
         "next": [
             "RandomBattle_RandomClick",
-            "RandomBattle_SelectStageFlow"
+            "RandomBattle_SelectionPolicyFlow"
         ]
     },
     "RandomBattle_ReEnter": {
@@ -72,6 +72,11 @@
                 ]
             }
         },
+        "next": [
+            "RandomBattle_SelectionPolicyFlow"
+        ]
+    },
+    "RandomBattle_SelectionPolicyFlow": {
         "next": [
             "RandomBattle_SelectStageFlow"
         ]

@@ -1,7 +1,7 @@
 {
     "RandomBattleEx_BottomSelectFlow": {
         "next": [
-            "RandomBattle_Selected",
+            "RandomBattleEx_DetailVisible",
             "[JumpBack]RandomBattleEx_SelectUpperIncompleteCandidate",
             "[JumpBack]RandomBattleEx_SelectLowerIncompleteCandidate",
             "RandomBattleEx_BottomVisiblePairComplete"
@@ -51,6 +51,51 @@
         },
         "next": [
             "RandomBattle_Selected"
+        ]
+    },
+    "RandomBattleEx_CurrentEliteVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    230,
+                    176,
+                    293,
+                    68
+                ],
+                "expected": [
+                    "精英"
+                ]
+            }
+        }
+    },
+    "RandomBattleEx_CurrentPromoVisible": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    315,
+                    255,
+                    113,
+                    59
+                ],
+                "expected": [
+                    "機率報酬"
+                ]
+            }
+        }
+    },
+    "RandomBattleEx_DetailVisible": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattle_Selected"
+                ]
+            }
+        },
+        "next": [
+            "RandomBattleEx_ReturnToListFlow"
         ]
     },
     "RandomBattleEx_ListStable": {
@@ -130,6 +175,21 @@
             }
         }
     },
+    "RandomBattleEx_PromoRewards": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    "RandomBattleEx_CurrentPromoVisible",
+                    "RandomBattleEx_CurrentEliteVisible",
+                    "RandomBattle_Selected"
+                ]
+            }
+        },
+        "next": [
+            "RandomBattle_Selected"
+        ]
+    },
     "RandomBattleEx_ResetToTop": {
         "action": {
             "type": "Swipe",
@@ -165,6 +225,35 @@
             "RandomBattleEx_CurrentDetailRewardAvailable",
             "[JumpBack]Common_CloseClick",
             "RandomBattleEx_ListStable"
+        ]
+    },
+    "RandomBattleEx_SelectEliteForPromo": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    246,
+                    731,
+                    365,
+                    232
+                ],
+                "expected": [
+                    "精英"
+                ],
+                "order_by": "Vertical",
+                "index": 0
+            }
+        },
+        "pre_wait_freezes": 300,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_wait_freezes": 300,
+        "next": [
+            "RandomBattleEx_DetailVisible"
         ]
     },
     "RandomBattleEx_SelectLowerIncompleteCandidate": {
@@ -260,7 +349,7 @@
     },
     "RandomBattleEx_TopSelectFlow": {
         "next": [
-            "RandomBattle_Selected",
+            "RandomBattleEx_DetailVisible",
             "[JumpBack]RandomBattleEx_SelectUpperIncompleteCandidate",
             "[JumpBack]RandomBattleEx_SelectLowerIncompleteCandidate",
             "RandomBattleEx_TopVisiblePairComplete"

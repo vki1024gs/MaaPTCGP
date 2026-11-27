@@ -31,7 +31,7 @@ Powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework)
 - 🔮 Wonder Picks<br>
   <sub>Search for 2-star card and Want It targets</sub>
 - ⚔️ Event, random, and step-up battles<br>
-  <sub>Supports rerun PROMO drop events, Random Battle mission rewards, event battle point recovery, and recommended deck selection</sub>
+  <sub>Supports rerun PROMO drop events, Random Battle mission rewards and Elite PROMO repeat battles, event battle point recovery, and recommended deck selection</sub>
 - 🎁 Share cards<br>
   <sub>Prioritize wanted cards and latest Card Dex completion, with a 4-diamond fallback and an option to keep at least 2 copies</sub>
 - 📋 Claim daily mission rewards
